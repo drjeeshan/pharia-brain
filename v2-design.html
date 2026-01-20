@@ -19,7 +19,6 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         :root {
-            /* Color palette matching V1 */
             --bg-primary: #2a3035;
             --bg-card: rgba(255, 255, 255, 0.05);
             --bg-card-expanded: rgba(255, 255, 255, 0.08);
@@ -42,32 +41,7 @@
         .container { 
             max-width: 1400px; 
             margin: 0 auto; 
-            padding: 32px 24px; 
-        }
-        
-        .header { 
-            margin-bottom: 24px; 
-        }
-        
-        .section-label {
-            font-size: 0.7rem;
-            font-weight: 500;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            margin-bottom: 8px;
-        }
-        
-        .section-label::before {
-            content: '/';
-            margin-right: 4px;
-        }
-        
-        h1 {
-            font-size: clamp(1.75rem, 3.5vw, 2.25rem);
-            font-weight: 400;
-            letter-spacing: -0.02em;
-            color: var(--accent-blue);
+            padding: 24px; 
         }
         
         .layout { 
@@ -337,7 +311,6 @@
             color: var(--text-secondary);
         }
         
-        /* Learn More Section */
         .card-learn-more {
             margin-top: 14px;
             padding-top: 14px;
@@ -376,7 +349,6 @@
             margin-top: 6px;
         }
         
-        /* Video Modal */
         .video-modal {
             position: fixed;
             inset: 0;
@@ -496,11 +468,6 @@
 </head>
 <body>
     <div class="container">
-        <header class="header">
-            <div class="section-label">NETWORKS</div>
-            <h1>The architecture of mental capacity</h1>
-        </header>
-        
         <div class="layout">
             <div class="viewer-container">
                 <div class="loading-overlay" id="loading">
@@ -550,12 +517,10 @@
                 </div>
             </div>
             <div class="info-panel" id="info-panel">
-                <!-- Cards will be dynamically generated -->
             </div>
         </div>
     </div>
     
-    <!-- Video Modal -->
     <div class="video-modal" id="video-modal">
         <div class="video-modal-content">
             <div class="video-modal-header">
@@ -597,7 +562,6 @@
         import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
         import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 
-        // Network data - colors now match V1
         const networks = {
             'left-cen': {
                 label: 'Proactive Control Network',
@@ -726,7 +690,6 @@
         const height = container.clientHeight;
 
         const scene = new THREE.Scene();
-        // Dark charcoal background
         scene.background = new THREE.Color(0x2a3035);
         
         const camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 100);
@@ -742,7 +705,6 @@
         renderer.toneMapping = THREE.ACESFilmicToneMapping;
         renderer.toneMappingExposure = 1.2;
 
-        // Post-processing with bloom
         const composer = new EffectComposer(renderer);
         const renderPass = new RenderPass(scene, camera);
         composer.addPass(renderPass);
@@ -765,7 +727,6 @@
         controls.autoRotate = true;
         controls.autoRotateSpeed = 0.3;
 
-        // Lighting
         scene.add(new THREE.AmbientLight(0x404550, 0.4));
         
         const dir1 = new THREE.DirectionalLight(0xffffff, 0.5);
@@ -780,7 +741,6 @@
         dir3.position.set(0, -3, 0);
         scene.add(dir3);
 
-        // Base solid material
         baseMaterial = new THREE.MeshLambertMaterial({ 
             color: 0x3a4045,
             transparent: true,
@@ -789,7 +749,6 @@
             depthWrite: true
         });
 
-        // Wireframe material
         wireframeMaterial = new THREE.MeshBasicMaterial({
             color: 0x5a6570,
             wireframe: true,
@@ -798,7 +757,6 @@
             depthWrite: false
         });
 
-        // Create highlight materials for each network
         Object.entries(networks).forEach(([key, net]) => {
             highlightMaterials[key] = new THREE.MeshLambertMaterial({
                 color: net.color,
@@ -855,11 +813,8 @@
                 });
 
                 brainGroup.add(model);
-                console.log('Loaded', allMeshes.length, 'meshes with wireframe overlay');
-
                 highlightNetwork(currentNetwork);
                 renderCards();
-
                 document.getElementById('loading').classList.add('hidden');
             },
             (progress) => {
@@ -887,7 +842,6 @@
                 mesh.renderOrder = 1;
             });
 
-            let count = 0;
             network.meshNames.forEach(name => {
                 const mesh = meshByName[name];
                 if (mesh) {
@@ -900,18 +854,13 @@
                         wireframeMesh.material = hlWireMat.clone();
                         wireframeMesh.renderOrder = 3;
                     }
-                    
-                    count++;
                 }
             });
-
-            console.log(`Highlighted ${count}/${network.meshNames.length} for ${networkId}`);
         }
 
         function renderCards() {
             const panel = document.getElementById('info-panel');
             const networkOrder = ['left-cen', 'right-cen', 'salience', 'dmn'];
-            
             const sortedNetworks = [currentNetwork, ...networkOrder.filter(id => id !== currentNetwork)];
             
             panel.innerHTML = sortedNetworks.map(id => {
@@ -955,7 +904,6 @@
             panel.querySelectorAll('.network-card').forEach(card => {
                 card.addEventListener('click', (e) => {
                     if (e.target.closest('.learn-more-btn')) return;
-                    
                     const networkId = card.dataset.network;
                     if (networkId !== currentNetwork) {
                         animateCardSwitch(networkId);
@@ -966,8 +914,7 @@
             panel.querySelectorAll('.learn-more-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.stopPropagation();
-                    const networkId = btn.dataset.network;
-                    openVideoModal(networkId);
+                    openVideoModal(btn.dataset.network);
                 });
             });
         }
@@ -981,32 +928,24 @@
             document.getElementById('modal-subtitle').textContent = `${net.learnMore.guest} · ${net.learnMore.source}`;
             document.getElementById('modal-youtube-link').href = net.learnMore.fullUrl;
             
-            const embedUrl = `https://www.youtube.com/embed/${net.learnMore.youtubeId}?autoplay=1&start=${net.learnMore.startTime}&rel=0`;
-            iframe.src = embedUrl;
-            
+            iframe.src = `https://www.youtube.com/embed/${net.learnMore.youtubeId}?autoplay=1&start=${net.learnMore.startTime}&rel=0`;
             modal.classList.add('active');
             document.body.style.overflow = 'hidden';
         }
         
         function closeVideoModal() {
             const modal = document.getElementById('video-modal');
-            const iframe = document.getElementById('video-iframe');
-            
-            iframe.src = '';
+            document.getElementById('video-iframe').src = '';
             modal.classList.remove('active');
             document.body.style.overflow = '';
         }
         
         document.getElementById('modal-close').addEventListener('click', closeVideoModal);
         document.getElementById('video-modal').addEventListener('click', (e) => {
-            if (e.target === e.currentTarget) {
-                closeVideoModal();
-            }
+            if (e.target === e.currentTarget) closeVideoModal();
         });
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                closeVideoModal();
-            }
+            if (e.key === 'Escape') closeVideoModal();
         });
         
         function animateCardSwitch(newNetworkId) {
@@ -1016,8 +955,7 @@
             
             const firstPositions = new Map();
             cards.forEach(card => {
-                const rect = card.getBoundingClientRect();
-                firstPositions.set(card.dataset.network, { top: rect.top });
+                firstPositions.set(card.dataset.network, { top: card.getBoundingClientRect().top });
             });
             
             currentNetwork = newNetworkId;
@@ -1065,13 +1003,10 @@
             
             const newCards = Array.from(panel.querySelectorAll('.network-card'));
             newCards.forEach(card => {
-                const networkId = card.dataset.network;
-                const first = firstPositions.get(networkId);
+                const first = firstPositions.get(card.dataset.network);
                 const last = card.getBoundingClientRect();
-                
                 if (first) {
-                    const deltaY = first.top - last.top;
-                    card.style.transform = `translateY(${deltaY}px)`;
+                    card.style.transform = `translateY(${first.top - last.top}px)`;
                     card.style.transition = 'none';
                 }
             });
@@ -1089,19 +1024,15 @@
             newCards.forEach(card => {
                 card.addEventListener('click', (e) => {
                     if (e.target.closest('.learn-more-btn')) return;
-                    
                     const networkId = card.dataset.network;
-                    if (networkId !== currentNetwork) {
-                        animateCardSwitch(networkId);
-                    }
+                    if (networkId !== currentNetwork) animateCardSwitch(networkId);
                 });
             });
             
             panel.querySelectorAll('.learn-more-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.stopPropagation();
-                    const networkId = btn.dataset.network;
-                    openVideoModal(networkId);
+                    openVideoModal(btn.dataset.network);
                 });
             });
             
@@ -1112,7 +1043,6 @@
 
         renderCards();
 
-        // Animation with pulse effect
         let time = 0;
         function animate() {
             requestAnimationFrame(animate);
@@ -1140,7 +1070,6 @@
             composer.setSize(w, h);
         });
 
-        // Controls UI
         document.getElementById('controls-toggle').addEventListener('click', () => {
             document.getElementById('controls-panel').classList.toggle('hidden');
         });
