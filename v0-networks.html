@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pharia Health - Brain Networks (V0)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+        }
+    }
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg-dark: #1a2421;
+            --bg-card: #212d29;
+            --accent-blue: #a8c5e2;
+            --text-primary: #f5f5f5;
+            --text-secondary: #8a9a91;
+            --text-muted: #5a6b62;
+            --border-subtle: rgba(168, 197, 226, 0.15);
+            --border-hover: rgba(168, 197, 226, 0.3);
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 48px 24px; }
+        .header { text-align: center; margin-bottom: 40px; }
+        .section-label {
+            font-size: 0.75rem; font-weight: 500; letter-spacing: 1.5px;
+            text-transform: uppercase; color: var(--accent-blue); margin-bottom: 16px;
+        }
+        .section-label::before { content: '/'; margin-right: 4px; }
+        h1 { font-size: clamp(2rem, 4vw, 2.75rem); font-weight: 400; margin-bottom: 12px; letter-spacing: -0.02em; }
+        h1 em { font-style: italic; color: var(--accent-blue); }
+        .header p { color: var(--text-secondary); font-size: 1rem; max-width: 520px; margin: 0 auto; line-height: 1.6; }
+        .layout { display: grid; grid-template-columns: 1fr; gap: 24px; }
+        @media (min-width: 900px) { .layout { grid-template-columns: 1fr 360px; } }
+        .viewer-container {
+            background: var(--bg-card); border-radius: 20px; border: 1px solid var(--border-subtle);
+            overflow: hidden; position: relative; aspect-ratio: 4/3; min-height: 480px;
+        }
+        #brain-canvas { width: 100%; height: 100%; display: block; }
+        .viewer-hint {
+            position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+            display: flex; align-items: center; gap: 8px; color: var(--text-muted); font-size: 0.8rem;
+        }
+        .viewer-hint::before { content: ''; width: 6px; height: 6px; background: var(--accent-blue); border-radius: 50%; opacity: 0.7; }
+        .loading-overlay {
+            position: absolute; inset: 0; background: var(--bg-card);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 16px; z-index: 10; transition: opacity 0.5s ease;
+        }
+        .loading-overlay.hidden { opacity: 0; pointer-events: none; }
+        .spinner { width: 36px; height: 36px; border: 2px solid var(--border-subtle); border-top-color: var(--accent-blue); border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loading-text { color: var(--text-secondary); font-size: 0.875rem; }
+        .info-panel { display: flex; flex-direction: column; gap: 16px; }
+        .network-info { background: var(--bg-card); border-radius: 20px; border: 1px solid var(--border-subtle); padding: 28px; }
+        .network-label { font-size: 0.7rem; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+        .network-label::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+        .network-name { font-size: 1.5rem; font-weight: 500; margin-bottom: 4px; letter-spacing: -0.01em; }
+        .network-metaphor { font-size: 0.95rem; margin-bottom: 16px; font-style: italic; }
+        .network-description { color: var(--text-secondary); font-size: 0.875rem; line-height: 1.7; margin-bottom: 24px; }
+        .target-info { background: rgba(0, 0, 0, 0.2); border-radius: 14px; padding: 18px; }
+        .target-label { font-size: 0.65rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
+        .target-name { font-weight: 600; font-size: 1rem; display: flex; align-items: center; gap: 10px; }
+        .target-name::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: currentColor; box-shadow: 0 0 10px currentColor; }
+        .structures-list { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border-subtle); }
+        .structures-label { font-size: 0.65rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; }
+        .structure-tag { display: inline-block; background: rgba(168, 197, 226, 0.08); border: 1px solid var(--border-subtle); padding: 5px 12px; border-radius: 20px; font-size: 0.75rem; margin: 3px 4px 3px 0; color: var(--text-secondary); }
+        .network-buttons { display: flex; flex-direction: column; gap: 10px; }
+        .network-btn { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 14px; padding: 16px 18px; text-align: left; cursor: pointer; transition: all 0.2s ease; color: var(--text-primary); }
+        .network-btn:hover { background: #2a3832; border-color: var(--border-hover); }
+        .network-btn.active { border-color: var(--accent-blue); background: rgba(168, 197, 226, 0.08); }
+        .network-btn-name { font-weight: 500; font-size: 0.95rem; margin-bottom: 3px; }
+        .network-btn-meta { font-size: 0.75rem; color: var(--text-muted); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="section-label">The Science</div>
+            <h1>Target the <em>Network</em></h1>
+            <p>TMS targets the surface node to shift the entire neural circuit back to optimal functioning.</p>
+        </header>
+        <div class="layout">
+            <div class="viewer-container">
+                <div class="loading-overlay" id="loading"><div class="spinner"></div><div class="loading-text">Loading brain model...</div></div>
+                <canvas id="brain-canvas"></canvas>
+                <div class="viewer-hint">Drag to rotate · Click networks</div>
+            </div>
+            <div class="info-panel">
+                <div class="network-info" id="network-info">
+                    <div class="network-label" id="network-label" style="color: #7eb8e7;">Proactive Control Network</div>
+                    <div class="network-name" id="network-name">Left-Central Executive Network</div>
+                    <div class="network-metaphor" id="network-metaphor" style="color: #7eb8e7;">"The CEO"</div>
+                    <div class="network-description" id="network-description">Your brain's command center for goal-directed behavior. When this network is underactive, motivation drops, decisions feel harder, and getting started becomes a struggle.</div>
+                    <div class="target-info">
+                        <div class="target-label">TMS Target</div>
+                        <div class="target-name" id="target-name" style="color: #7eb8e7;">Left DLPFC</div>
+                    </div>
+                    <div class="structures-list">
+                        <div class="structures-label">Key Structures</div>
+                        <div id="structures-tags"></div>
+                    </div>
+                </div>
+                <div class="network-buttons">
+                    <button class="network-btn active" data-network="left-cen"><div class="network-btn-name">Left-Central Executive</div><div class="network-btn-meta">"The CEO" · Left DLPFC</div></button>
+                    <button class="network-btn" data-network="right-cen"><div class="network-btn-name">Right-Central Executive</div><div class="network-btn-meta">"The Filter" · Right DLPFC</div></button>
+                    <button class="network-btn" data-network="salience"><div class="network-btn-name">Salience Network</div><div class="network-btn-meta">"The Priority Switch" · dmPFC</div></button>
+                    <button class="network-btn" data-network="dmn"><div class="network-btn-name">Default Mode Network</div><div class="network-btn-meta">"The Inner Critic" · dmPFC</div></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+        import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+        import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+        import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+        import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+
+        const networks = {
+            'left-cen': { label: 'Proactive Control Network', name: 'Left-Central Executive Network', metaphor: '"The CEO"', color: '#7eb8e7', description: "Your brain's command center for goal-directed behavior. When this network is underactive, motivation drops, decisions feel harder, and getting started becomes a struggle.", target: 'Left DLPFC', meshNames: ['Allen_middle_frontal_gyrus_L','Allen_superior_frontal_gyrus_L','Allen_angular_gyrus_L','Allen_supramarginal_gyrus_L'], structureNames: ['Left DLPFC', 'Posterior Parietal Cortex'] },
+            'right-cen': { label: 'Reactive Control Network', name: 'Right-Central Executive Network', metaphor: '"The Filter"', color: '#e8a0b0', description: "Your mental noise-canceler. This network helps filter out distractions and quiet anxious rumination. When underactive, worries amplify and intrusive thoughts take over.", target: 'Right DLPFC', meshNames: ['Allen_middle_frontal_gyrus_R','Allen_superior_frontal_gyrus_R','Allen_angular_gyrus_R','Allen_supramarginal_gyrus_R'], structureNames: ['Right DLPFC', 'Posterior Parietal Cortex'] },
+            'salience': { label: 'Salience Network (SN)', name: 'Salience Network', metaphor: '"The Priority Switch"', color: '#b8a0e8', description: "Your brain's relevance detector. It decides what deserves your attention right now. When dysregulated, you feel stuck — unable to shift focus or recognize what matters.", target: 'dmPFC', meshNames: ['Allen_superior_frontal_gyrus_L','Allen_superior_frontal_gyrus_R','Allen_paracingulate_gyrus_L','Allen_paracingulate_gyrus_R','Allen_frontal_pole_L','Allen_frontal_pole_R','Allen_long_insular_gyri_L','Allen_long_insular_gyri_R','Allen_short_insular_gyri_L','Allen_short_insular_gyri_R','Allen_cingulate_gyrus_rostral_anterior_part_L','Allen_cingulate_gyrus_rostral_anterior_part_R'], structureNames: ['dmPFC', 'Anterior Insula', 'ACC'] },
+            'dmn': { label: 'Default Mode Network (DMN)', name: 'Default Mode Network', metaphor: '"The Inner Critic"', color: '#e8c87e', description: "Your internal narrator. Active during self-reflection, it can become an inner critic when overactive — fueling negative self-talk and the inability to be present.", target: 'dmPFC', meshNames: ['Allen_superior_frontal_gyrus_L','Allen_superior_frontal_gyrus_R','Allen_paracingulate_gyrus_L','Allen_paracingulate_gyrus_R','Allen_frontal_pole_L','Allen_frontal_pole_R','Allen_precuneus_L','Allen_precuneus_R','Allen_cingulate_gyrus_caudal_posterior_part_L','Allen_cingulate_gyrus_caudal_posterior_part_R','Allen_gyrus_rectus_straight_gyrus_L','Allen_gyrus_rectus_straight_gyrus_R','Allen_medial_orbital_gyrus_L','Allen_medial_orbital_gyrus_R'], structureNames: ['dmPFC', 'PCC', 'vmPFC'] }
+        };
+
+        let currentNetwork = 'left-cen', allMeshes = [], meshByName = {}, baseMaterial, highlightMaterials = {};
+        const canvas = document.getElementById('brain-canvas'), container = canvas.parentElement;
+        const width = container.clientWidth, height = container.clientHeight;
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 100);
+        camera.position.set(0, 0, 2.5);
+        const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+        renderer.setSize(width, height);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.toneMapping = THREE.ReinhardToneMapping;
+        const composer = new EffectComposer(renderer);
+        composer.addPass(new RenderPass(scene, camera));
+        const bloomPass = new UnrealBloomPass(new THREE.Vector2(width, height), 0.8, 0.4, 0.2);
+        composer.addPass(bloomPass);
+        composer.addPass(new OutputPass());
+        const controls = new OrbitControls(camera, canvas);
+        controls.enableDamping = true; controls.dampingFactor = 0.05; controls.enablePan = false; controls.autoRotate = true; controls.autoRotateSpeed = 0.4;
+        scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+        const dir1 = new THREE.DirectionalLight(0xffffff, 0.8); dir1.position.set(5, 5, 5); scene.add(dir1);
+        const dir2 = new THREE.DirectionalLight(0x88aacc, 0.4); dir2.position.set(-5, 3, -5); scene.add(dir2);
+        const dir3 = new THREE.DirectionalLight(0xccaa88, 0.2); dir3.position.set(0, -3, 0); scene.add(dir3);
+        baseMaterial = new THREE.MeshLambertMaterial({ color: 0xbbb5aa, transparent: true, opacity: 0.2, side: THREE.DoubleSide, depthWrite: false });
+        Object.entries(networks).forEach(([key, net]) => {
+            highlightMaterials[key] = new THREE.MeshLambertMaterial({ color: net.color, emissive: net.color, emissiveIntensity: 0.6, transparent: true, opacity: 0.85, side: THREE.DoubleSide, depthWrite: true });
+        });
+        const brainGroup = new THREE.Group(); scene.add(brainGroup);
+        const loader = new GLTFLoader();
+        loader.load('./brain.glb', (gltf) => {
+            const model = gltf.scene;
+            const box = new THREE.Box3().setFromObject(model);
+            const size = box.getSize(new THREE.Vector3());
+            const scale = 1.5 / Math.max(size.x, size.y, size.z);
+            model.scale.set(scale, scale, scale);
+            const scaledBox = new THREE.Box3().setFromObject(model);
+            const c = scaledBox.getCenter(new THREE.Vector3());
+            model.position.set(-c.x, -c.y, -c.z);
+            model.traverse((child) => { if (child.isMesh) { allMeshes.push(child); meshByName[child.name] = child; child.material = baseMaterial.clone(); child.renderOrder = 0; } });
+            brainGroup.add(model);
+            highlightNetwork(currentNetwork); updateStructureTags(currentNetwork);
+            document.getElementById('loading').classList.add('hidden');
+        }, (p) => { if (p.total) document.querySelector('.loading-text').textContent = `Loading: ${Math.round((p.loaded/p.total)*100)}%`; }, (e) => console.error('Load error:', e));
+
+        function highlightNetwork(id) {
+            const net = networks[id], hlMat = highlightMaterials[id];
+            allMeshes.forEach(m => { m.material = baseMaterial; m.renderOrder = 1; });
+            net.meshNames.forEach(name => { const m = meshByName[name]; if (m) { m.material = hlMat; m.renderOrder = 2; } });
+        }
+        function updateStructureTags(id) { document.getElementById('structures-tags').innerHTML = networks[id].structureNames.map(n => `<span class="structure-tag">${n}</span>`).join(''); }
+        function updateNetworkInfo(id) {
+            const net = networks[id];
+            document.getElementById('network-label').textContent = net.label; document.getElementById('network-label').style.color = net.color;
+            document.getElementById('network-name').textContent = net.name;
+            document.getElementById('network-metaphor').textContent = net.metaphor; document.getElementById('network-metaphor').style.color = net.color;
+            document.getElementById('network-description').textContent = net.description;
+            document.getElementById('target-name').textContent = net.target; document.getElementById('target-name').style.color = net.color;
+            document.querySelectorAll('.network-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.network === id));
+            highlightNetwork(id); updateStructureTags(id); currentNetwork = id;
+        }
+        document.querySelectorAll('.network-btn').forEach(btn => btn.addEventListener('click', () => updateNetworkInfo(btn.dataset.network)));
+        let time = 0;
+        function animate() { requestAnimationFrame(animate); controls.update(); time += 0.02; Object.values(highlightMaterials).forEach(mat => mat.emissiveIntensity = 0.5 + Math.sin(time) * 0.15); renderer.render(scene, camera); }
+        animate();
+        window.addEventListener('resize', () => { const w = container.clientWidth, h = container.clientHeight; camera.aspect = w/h; camera.updateProjectionMatrix(); renderer.setSize(w, h); });
+    </script>
+</body>
+</html>
