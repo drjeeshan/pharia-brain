@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pharia Health - Brain Networks</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+        }
+    }
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --bg-primary: #ECEAE1;
+            --bg-card: #ffffff;
+            --accent-blue: #A4C8FF;
+            --accent-blue-dark: #202621;
+            --text-primary: #202621;
+            --text-secondary: #5a6b62;
+            --text-muted: #8a9a91;
+            --border-subtle: rgba(32, 38, 33, 0.1);
+            --border-hover: rgba(32, 38, 33, 0.2);
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+        
+        .container { 
+            max-width: 1400px; 
+            margin: 0 auto; 
+            padding: 32px 24px; 
+        }
+        
+        .header { 
+            text-align: center; 
+            margin-bottom: 40px; 
+        }
+        
+        .section-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--accent-blue);
+            margin-bottom: 16px;
+        }
+        
+        .section-label::before {
+            content: '/';
+            margin-right: 4px;
+        }
+        
+        h1 {
+            font-size: clamp(2rem, 4vw, 2.75rem);
+            font-weight: 400;
+            margin-bottom: 12px;
+            letter-spacing: -0.02em;
+        }
+        
+        h1 em { 
+            font-style: italic; 
+            color: var(--accent-blue); 
+        }
+        
+        .header p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            max-width: 520px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        .layout { 
+            display: grid; 
+            grid-template-columns: 1fr; 
+            gap: 24px; 
+        }
+        
+        @media (min-width: 900px) { 
+            .layout { grid-template-columns: 1fr 360px; } 
+        }
+        
+        .viewer-container {
+            background: linear-gradient(145deg, #4a5a48 0%, #3a4838 100%);
+            border-radius: 20px;
+            border: 1px solid var(--border-subtle);
+            overflow: hidden;
+            position: relative;
+            aspect-ratio: 4/3;
+            min-height: 480px;
+        }
+        
+        #brain-canvas { 
+            width: 100%; 
+            height: 100%; 
+            display: block; 
+        }
+        
+        .viewer-hint {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+        
+        .viewer-hint::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: var(--accent-blue);
+            border-radius: 50%;
+            opacity: 0.7;
+        }
+        
+        .controls-panel {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            background: rgba(0, 0, 0, 0.75);
+            border-radius: 12px;
+            padding: 16px;
+            font-size: 0.75rem;
+            z-index: 20;
+            min-width: 200px;
+        }
+        
+        .controls-panel h3 {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent-blue);
+            margin-bottom: 12px;
+        }
+        
+        .control-group {
+            margin-bottom: 12px;
+        }
+        
+        .control-group label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 4px;
+            color: var(--text-secondary);
+        }
+        
+        .control-group input[type="range"] {
+            width: 100%;
+            height: 4px;
+            -webkit-appearance: none;
+            background: var(--border-subtle);
+            border-radius: 2px;
+            outline: none;
+        }
+        
+        .control-group input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 14px;
+            height: 14px;
+            background: var(--accent-blue);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        
+        .controls-toggle {
+            position: absolute;
+            bottom: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            z-index: 19;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+        
+        .controls-toggle:hover {
+            background: rgba(0, 0, 0, 0.8);
+            color: #ffffff;
+        }
+        
+        .controls-toggle svg {
+            width: 14px;
+            height: 14px;
+        }
+        
+        .controls-panel.hidden {
+            display: none;
+        }
+        
+        .loading-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(145deg, #4a5a48 0%, #3a4838 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            z-index: 10;
+            transition: opacity 0.5s ease;
+        }
+        
+        .loading-overlay.hidden { 
+            opacity: 0; 
+            pointer-events: none; 
+        }
+        
+        .spinner {
+            width: 36px;
+            height: 36px;
+            border: 2px solid rgba(168, 197, 226, 0.3);
+            border-top-color: var(--accent-blue);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        .loading-text { 
+            color: #8a9a91; 
+            font-size: 0.875rem; 
+        }
+        
+        .info-panel { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 12px; 
+            position: relative;
+        }
+        
+        .network-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            border: 1px solid var(--border-subtle);
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+            overflow: hidden;
+        }
+        
+        .network-card.animating {
+            transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), 
+                        padding 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+                        box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        
+        .network-card:hover:not(.expanded) {
+            background: #f8f7f4;
+        }
+        
+        .network-card.expanded {
+            cursor: default;
+            padding: 28px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        
+        .network-card.expanded:hover {
+            background: var(--bg-card);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        
+        .card-title {
+            font-size: 0.95rem;
+            font-weight: 500;
+            margin-bottom: 4px;
+            transition: font-size 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        
+        .network-card.expanded .card-title {
+            font-size: 1.4rem;
+            margin-bottom: 8px;
+        }
+        
+        .card-meta {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .card-meta-metaphor {
+            font-style: italic;
+        }
+        
+        .card-expand-icon {
+            width: 20px;
+            height: 20px;
+            color: var(--text-muted);
+            transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+            flex-shrink: 0;
+        }
+        
+        .network-card.expanded .card-expand-icon {
+            opacity: 0;
+            transform: rotate(180deg);
+        }
+        
+        .card-content {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+                        opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1) 0.1s,
+                        margin 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        
+        .network-card.expanded .card-content {
+            max-height: 400px;
+            opacity: 1;
+            margin-top: 16px;
+        }
+        
+        .card-description {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+        
+        .card-structures {
+            padding-top: 16px;
+            border-top: 1px solid var(--border-subtle);
+        }
+        
+        .card-structures-label {
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+        
+        .structure-tag {
+            display: inline-block;
+            background: rgba(32, 38, 33, 0.05);
+            border: 1px solid var(--border-subtle);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            margin: 3px 4px 3px 0;
+            color: var(--text-secondary);
+        }
+        
+        /* Learn More Section */
+        .card-learn-more {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-subtle);
+        }
+        
+        .learn-more-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(32, 38, 33, 0.05);
+            border: 1px solid var(--border-subtle);
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+        
+        .learn-more-btn:hover {
+            background: rgba(32, 38, 33, 0.1);
+            border-color: var(--border-hover);
+        }
+        
+        .learn-more-btn svg {
+            width: 16px;
+            height: 16px;
+            color: #FF0000;
+        }
+        
+        .learn-more-source {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 6px;
+        }
+        
+        /* Video Modal */
+        .video-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            padding: 20px;
+        }
+        
+        .video-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .video-modal-content {
+            background: var(--bg-card);
+            border-radius: 16px;
+            max-width: 900px;
+            width: 100%;
+            overflow: hidden;
+            transform: scale(0.95) translateY(20px);
+            transition: transform 0.3s ease;
+        }
+        
+        .video-modal.active .video-modal-content {
+            transform: scale(1) translateY(0);
+        }
+        
+        .video-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        
+        .video-modal-title {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+        
+        .video-modal-subtitle {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        
+        .video-modal-close {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            color: var(--text-muted);
+            transition: color 0.2s ease;
+            border-radius: 8px;
+        }
+        
+        .video-modal-close:hover {
+            color: var(--text-primary);
+            background: rgba(0, 0, 0, 0.05);
+        }
+        
+        .video-modal-close svg {
+            width: 24px;
+            height: 24px;
+        }
+        
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+        }
+        
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .video-modal-footer {
+            padding: 16px 24px;
+            border-top: 1px solid var(--border-subtle);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .video-modal-footer a {
+            font-size: 0.8rem;
+            color: var(--accent-blue);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .video-modal-footer a:hover {
+            text-decoration: underline;
+        }
+        
+        .video-modal-footer svg {
+            width: 14px;
+            height: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="layout">
+            <div class="viewer-container">
+                <div class="loading-overlay" id="loading">
+                    <div class="spinner"></div>
+                    <div class="loading-text">Loading brain model...</div>
+                </div>
+                <canvas id="brain-canvas"></canvas>
+                <button class="controls-toggle" id="controls-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                    </svg>
+                    Drag to rotate · Click networks
+                </button>
+                <div class="controls-panel hidden" id="controls-panel">
+                    <h3>Bloom Settings</h3>
+                    <div class="control-group">
+                        <label>Strength <span id="strength-val">0.45</span></label>
+                        <input type="range" id="bloom-strength" min="0" max="2" step="0.05" value="0.45">
+                    </div>
+                    <div class="control-group">
+                        <label>Radius <span id="radius-val">0.35</span></label>
+                        <input type="range" id="bloom-radius" min="0" max="2" step="0.05" value="0.35">
+                    </div>
+                    <div class="control-group">
+                        <label>Threshold <span id="threshold-val">0.2</span></label>
+                        <input type="range" id="bloom-threshold" min="0" max="1" step="0.05" value="0.2">
+                    </div>
+                    <h3>Material Settings</h3>
+                    <div class="control-group">
+                        <label>Emissive <span id="emissive-val">0.15</span></label>
+                        <input type="range" id="emissive-intensity" min="0" max="1" step="0.05" value="0.15">
+                    </div>
+                    <div class="control-group">
+                        <label>Pulse Amount <span id="pulse-val">0.02</span></label>
+                        <input type="range" id="pulse-amount" min="0" max="0.2" step="0.005" value="0.02">
+                    </div>
+                    <div class="control-group">
+                        <label>Brain Opacity <span id="brain-opacity-val">0.2</span></label>
+                        <input type="range" id="brain-opacity" min="0.05" max="0.5" step="0.05" value="0.2">
+                    </div>
+                </div>
+            </div>
+            <div class="info-panel" id="info-panel">
+                <!-- Cards will be dynamically generated -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- Video Modal -->
+    <div class="video-modal" id="video-modal">
+        <div class="video-modal-content">
+            <div class="video-modal-header">
+                <div>
+                    <div class="video-modal-title" id="modal-title"></div>
+                    <div class="video-modal-subtitle" id="modal-subtitle"></div>
+                </div>
+                <button class="video-modal-close" id="modal-close">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="video-wrapper">
+                <iframe id="video-iframe" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen></iframe>
+            </div>
+            <div class="video-modal-footer">
+                <a href="#" id="modal-youtube-link" target="_blank">
+                    Watch on YouTube
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                        <polyline points="15 3 21 3 21 9"></polyline>
+                        <line x1="10" y1="14" x2="21" y2="3"></line>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+        import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+        import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+        import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+        import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+
+        // Network colors - softer, more Pharia-aligned
+        const networks = {
+            'left-cen': {
+                label: 'Proactive Control Network',
+                name: 'Left-Central Executive Network',
+                metaphor: '"The CEO"',
+                color: '#A4C8FF',
+                description: "Your brain's command center for goal-directed behavior. When this network is underactive, motivation drops, decisions feel harder, and getting started becomes a struggle.",
+                target: 'Left DLPFC',
+                meshNames: [
+                    'Allen_middle_frontal_gyrus_L',
+                    'Allen_superior_frontal_gyrus_L',
+                    'Allen_angular_gyrus_L',
+                    'Allen_supramarginal_gyrus_L'
+                ],
+                structureNames: ['Left DLPFC', 'Posterior Parietal Cortex'],
+                learnMore: {
+                    title: 'DLPFC & TMS for Depression',
+                    source: 'Stanford Psychiatry Professor on the Huberman Lab Podcast',
+                    guest: 'Dr. Nolan Williams',
+                    youtubeId: 'X4QE6t-MkYE',
+                    startTime: 2749,
+                    fullUrl: 'https://youtube.com/watch?v=X4QE6t-MkYE&t=2749s'
+                }
+            },
+            'right-cen': {
+                label: 'Reactive Control Network',
+                name: 'Right-Central Executive Network',
+                metaphor: '"The Filter"',
+                color: '#8AB3F9',
+                description: "Your mental noise-canceler. This network helps filter out distractions and quiet anxious rumination. When underactive, worries amplify and intrusive thoughts take over.",
+                target: 'Right DLPFC',
+                meshNames: [
+                    'Allen_middle_frontal_gyrus_R',
+                    'Allen_superior_frontal_gyrus_R',
+                    'Allen_angular_gyrus_R',
+                    'Allen_supramarginal_gyrus_R'
+                ],
+                structureNames: ['Right DLPFC', 'Posterior Parietal Cortex'],
+                learnMore: {
+                    title: 'Uncertainty and Control',
+                    source: 'Brown University Professor on the Rich Roll Podcast',
+                    guest: 'Dr. Judson Brewer',
+                    youtubeId: '1M-bUw-OiG0',
+                    startTime: 1596,
+                    fullUrl: 'https://youtube.com/watch?v=1M-bUw-OiG0&t=1596s'
+                }
+            },
+            'salience': {
+                label: 'Salience Network (SN)',
+                name: 'Salience Network',
+                metaphor: '"The Priority Switch"',
+                color: '#FFB974',
+                description: "Your brain's relevance detector. It decides what deserves your attention right now. When dysregulated, you feel stuck — unable to shift focus or recognize what matters.",
+                target: 'dmPFC',
+                meshNames: [
+                    'Allen_superior_frontal_gyrus_L',
+                    'Allen_superior_frontal_gyrus_R',
+                    'Allen_paracingulate_gyrus_L',
+                    'Allen_paracingulate_gyrus_R',
+                    'Allen_frontal_pole_L',
+                    'Allen_frontal_pole_R',
+                    'Allen_long_insular_gyri_L',
+                    'Allen_long_insular_gyri_R',
+                    'Allen_short_insular_gyri_L',
+                    'Allen_short_insular_gyri_R',
+                    'Allen_cingulate_gyrus_rostral_anterior_part_L',
+                    'Allen_cingulate_gyrus_rostral_anterior_part_R'
+                ],
+                structureNames: ['dmPFC', 'Anterior Insula', 'ACC'],
+                learnMore: {
+                    title: 'Cingulate Cortex & Emotional Processing',
+                    source: 'Stanford Psychiatry Professor on the Huberman Lab Podcast',
+                    guest: 'Dr. Nolan Williams',
+                    youtubeId: 'X4QE6t-MkYE',
+                    startTime: 2916,
+                    fullUrl: 'https://youtube.com/watch?v=X4QE6t-MkYE&t=2916s'
+                }
+            },
+            'dmn': {
+                label: 'Default Mode Network (DMN)',
+                name: 'Default Mode Network',
+                metaphor: '"The Inner Critic"',
+                color: '#C8D4C8',
+                description: "Your internal narrator. Active during self-reflection, it can become an inner critic when overactive — fueling negative self-talk and the inability to be present.",
+                target: 'dmPFC',
+                meshNames: [
+                    'Allen_superior_frontal_gyrus_L',
+                    'Allen_superior_frontal_gyrus_R',
+                    'Allen_paracingulate_gyrus_L',
+                    'Allen_paracingulate_gyrus_R',
+                    'Allen_frontal_pole_L',
+                    'Allen_frontal_pole_R',
+                    'Allen_precuneus_L',
+                    'Allen_precuneus_R',
+                    'Allen_cingulate_gyrus_caudal_posterior_part_L',
+                    'Allen_cingulate_gyrus_caudal_posterior_part_R',
+                    'Allen_gyrus_rectus_straight_gyrus_L',
+                    'Allen_gyrus_rectus_straight_gyrus_R',
+                    'Allen_medial_orbital_gyrus_L',
+                    'Allen_medial_orbital_gyrus_R'
+                ],
+                structureNames: ['dmPFC', 'PCC', 'vmPFC'],
+                learnMore: {
+                    title: 'Default Mode Network & Mind Wandering',
+                    source: 'Stanford Neurobiology Professor on the Huberman Lab Podcast',
+                    guest: 'Dr. Andrew Huberman',
+                    youtubeId: 'wTBSGgbIvsY',
+                    startTime: 1380,
+                    fullUrl: 'https://youtube.com/watch?v=wTBSGgbIvsY&t=1380s'
+                }
+            }
+        };
+
+        let currentNetwork = 'left-cen';
+        let allMeshes = [];
+        let meshByName = {};
+        let baseMaterial, highlightMaterials = {};
+        let baseEmissive = 0.15;
+        let pulseAmount = 0.02;
+
+        const canvas = document.getElementById('brain-canvas');
+        const container = canvas.parentElement;
+        const width = container.clientWidth;
+        const height = container.clientHeight;
+
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x202621);
+        const camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 100);
+        camera.position.set(0, 0, 1.8);
+
+        const renderer = new THREE.WebGLRenderer({ 
+            canvas, 
+            antialias: true, 
+            alpha: true
+        });
+        renderer.setSize(width, height);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.toneMapping = THREE.ReinhardToneMapping;
+
+        // Post-processing with bloom
+        const composer = new EffectComposer(renderer);
+        const renderPass = new RenderPass(scene, camera);
+        composer.addPass(renderPass);
+
+        const bloomPass = new UnrealBloomPass(
+            new THREE.Vector2(width, height),
+            0.45,  // strength
+            0.35,  // radius
+            0.2    // threshold
+        );
+        composer.addPass(bloomPass);
+
+        const outputPass = new OutputPass();
+        composer.addPass(outputPass);
+
+        const controls = new OrbitControls(camera, canvas);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.enablePan = false;
+        controls.autoRotate = true;
+        controls.autoRotateSpeed = 0.4;
+
+        // Softer lighting
+        scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+        const dir1 = new THREE.DirectionalLight(0xffffff, 0.8);
+        dir1.position.set(5, 5, 5);
+        scene.add(dir1);
+        const dir2 = new THREE.DirectionalLight(0x88aacc, 0.4);
+        dir2.position.set(-5, 3, -5);
+        scene.add(dir2);
+        const dir3 = new THREE.DirectionalLight(0xccaa88, 0.2);
+        dir3.position.set(0, -3, 0);
+        scene.add(dir3);
+
+        // Base material - more transparent for softer look
+        baseMaterial = new THREE.MeshLambertMaterial({ 
+            color: 0xbbb5aa,
+            transparent: true,
+            opacity: 0.2,
+            side: THREE.DoubleSide,
+            depthWrite: false
+        });
+
+        // Create highlight materials for each network - soft and glowy
+        Object.entries(networks).forEach(([key, net]) => {
+            highlightMaterials[key] = new THREE.MeshLambertMaterial({
+                color: net.color,
+                emissive: net.color,
+                emissiveIntensity: 0.15,
+                transparent: true,
+                opacity: 0.9,
+                side: THREE.DoubleSide,
+                depthWrite: true
+            });
+        });
+
+        const brainGroup = new THREE.Group();
+        scene.add(brainGroup);
+
+        const loader = new GLTFLoader();
+        loader.load('./brain.glb',
+            (gltf) => {
+                const model = gltf.scene;
+
+                const box = new THREE.Box3().setFromObject(model);
+                const size = box.getSize(new THREE.Vector3());
+                const maxDim = Math.max(size.x, size.y, size.z);
+                const scale = 1.5 / maxDim;
+                model.scale.set(scale, scale, scale);
+
+                const scaledBox = new THREE.Box3().setFromObject(model);
+                const scaledCenter = scaledBox.getCenter(new THREE.Vector3());
+                model.position.set(-scaledCenter.x, -scaledCenter.y, -scaledCenter.z);
+
+                model.traverse((child) => {
+                    if (child.isMesh) {
+                        allMeshes.push(child);
+                        meshByName[child.name] = child;
+                        child.material = baseMaterial.clone();
+                        child.renderOrder = 0;
+                    }
+                });
+
+                brainGroup.add(model);
+                console.log('Loaded', allMeshes.length, 'meshes');
+
+                highlightNetwork(currentNetwork);
+                renderCards();
+
+                document.getElementById('loading').classList.add('hidden');
+            },
+            (progress) => {
+                if (progress.total) {
+                    const pct = Math.round((progress.loaded / progress.total) * 100);
+                    document.querySelector('.loading-text').textContent = `Loading: ${pct}%`;
+                }
+            },
+            (error) => console.error('Load error:', error)
+        );
+
+        function highlightNetwork(networkId) {
+            const network = networks[networkId];
+            const hlMat = highlightMaterials[networkId];
+            
+            // Reset all meshes
+            allMeshes.forEach(mesh => {
+                mesh.material = baseMaterial;
+                mesh.renderOrder = 1;
+            });
+
+            // Highlight meshes - no glow meshes, just enhanced material
+            let count = 0;
+            network.meshNames.forEach(name => {
+                const mesh = meshByName[name];
+                if (mesh) {
+                    mesh.material = hlMat;
+                    mesh.renderOrder = 2;
+                    count++;
+                }
+            });
+
+            console.log(`Highlighted ${count}/${network.meshNames.length} for ${networkId}`);
+        }
+
+        function renderCards() {
+            const panel = document.getElementById('info-panel');
+            const networkOrder = ['left-cen', 'right-cen', 'salience', 'dmn'];
+            
+            // Sort: current network first, then others in original order
+            const sortedNetworks = [currentNetwork, ...networkOrder.filter(id => id !== currentNetwork)];
+            
+            panel.innerHTML = sortedNetworks.map(id => {
+                const net = networks[id];
+                const isExpanded = id === currentNetwork;
+                return `
+                    <div class="network-card ${isExpanded ? 'expanded' : ''}" data-network="${id}">
+                        <div class="card-header">
+                            <div>
+                                <div class="card-title">${net.label}</div>
+                                <div class="card-meta">
+                                    <span class="card-meta-metaphor" style="color: ${net.color}">${net.metaphor}</span>
+                                    <span>·</span>
+                                    <span style="color: ${net.color}">${net.target}</span>
+                                </div>
+                            </div>
+                            <svg class="card-expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M6 9l6 6 6-6"/>
+                            </svg>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-description">${net.description}</div>
+                            <div class="card-structures">
+                                <div class="card-structures-label">Key Structures</div>
+                                <div>${net.structureNames.map(n => `<span class="structure-tag">${n}</span>`).join('')}</div>
+                            </div>
+                            <div class="card-learn-more">
+                                <button class="learn-more-btn" data-network="${id}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                                    </svg>
+                                    Learn more from ${net.learnMore.guest}
+                                </button>
+                                <div class="learn-more-source">${net.learnMore.source}</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            // Add click listeners for card expansion
+            panel.querySelectorAll('.network-card').forEach(card => {
+                card.addEventListener('click', (e) => {
+                    // Don't expand if clicking the learn more button
+                    if (e.target.closest('.learn-more-btn')) return;
+                    
+                    const networkId = card.dataset.network;
+                    if (networkId !== currentNetwork) {
+                        animateCardSwitch(networkId);
+                    }
+                });
+            });
+            
+            // Add click listeners for learn more buttons
+            panel.querySelectorAll('.learn-more-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const networkId = btn.dataset.network;
+                    openVideoModal(networkId);
+                });
+            });
+        }
+        
+        function openVideoModal(networkId) {
+            const net = networks[networkId];
+            const modal = document.getElementById('video-modal');
+            const iframe = document.getElementById('video-iframe');
+            
+            // Set modal content
+            document.getElementById('modal-title').textContent = net.learnMore.title;
+            document.getElementById('modal-subtitle').textContent = `${net.learnMore.guest} · ${net.learnMore.source}`;
+            document.getElementById('modal-youtube-link').href = net.learnMore.fullUrl;
+            
+            // Set iframe source with autoplay and start time
+            const embedUrl = `https://www.youtube.com/embed/${net.learnMore.youtubeId}?autoplay=1&start=${net.learnMore.startTime}&rel=0`;
+            iframe.src = embedUrl;
+            
+            // Show modal
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeVideoModal() {
+            const modal = document.getElementById('video-modal');
+            const iframe = document.getElementById('video-iframe');
+            
+            // Stop video
+            iframe.src = '';
+            
+            // Hide modal
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        
+        // Modal event listeners
+        document.getElementById('modal-close').addEventListener('click', closeVideoModal);
+        document.getElementById('video-modal').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) {
+                closeVideoModal();
+            }
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeVideoModal();
+            }
+        });
+        
+        function animateCardSwitch(newNetworkId) {
+            const panel = document.getElementById('info-panel');
+            const cards = Array.from(panel.querySelectorAll('.network-card'));
+            const networkOrder = ['left-cen', 'right-cen', 'salience', 'dmn'];
+            
+            // FLIP Step 1: Record First positions
+            const firstPositions = new Map();
+            cards.forEach(card => {
+                const rect = card.getBoundingClientRect();
+                firstPositions.set(card.dataset.network, { top: rect.top });
+            });
+            
+            // Update state
+            currentNetwork = newNetworkId;
+            highlightNetwork(newNetworkId);
+            
+            // FLIP Step 2: Update DOM (Last)
+            const sortedNetworks = [currentNetwork, ...networkOrder.filter(id => id !== currentNetwork)];
+            
+            panel.innerHTML = sortedNetworks.map(id => {
+                const net = networks[id];
+                const isExpanded = id === currentNetwork;
+                return `
+                    <div class="network-card ${isExpanded ? 'expanded' : ''}" data-network="${id}">
+                        <div class="card-header">
+                            <div>
+                                <div class="card-title">${net.label}</div>
+                                <div class="card-meta">
+                                    <span class="card-meta-metaphor" style="color: ${net.color}">${net.metaphor}</span>
+                                    <span>·</span>
+                                    <span style="color: ${net.color}">${net.target}</span>
+                                </div>
+                            </div>
+                            <svg class="card-expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M6 9l6 6 6-6"/>
+                            </svg>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-description">${net.description}</div>
+                            <div class="card-structures">
+                                <div class="card-structures-label">Key Structures</div>
+                                <div>${net.structureNames.map(n => `<span class="structure-tag">${n}</span>`).join('')}</div>
+                            </div>
+                            <div class="card-learn-more">
+                                <button class="learn-more-btn" data-network="${id}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                                    </svg>
+                                    Learn more from ${net.learnMore.guest}
+                                </button>
+                                <div class="learn-more-source">${net.learnMore.source}</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            // FLIP Step 3: Invert - apply inverse transform
+            const newCards = Array.from(panel.querySelectorAll('.network-card'));
+            newCards.forEach(card => {
+                const networkId = card.dataset.network;
+                const first = firstPositions.get(networkId);
+                const last = card.getBoundingClientRect();
+                
+                if (first) {
+                    const deltaY = first.top - last.top;
+                    card.style.transform = `translateY(${deltaY}px)`;
+                    card.style.transition = 'none';
+                }
+            });
+            
+            // Force reflow
+            panel.offsetHeight;
+            
+            // FLIP Step 4: Play - animate to final position with stagger
+            newCards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.classList.add('animating');
+                    card.style.transition = '';
+                    card.style.transform = '';
+                }, index * 30);
+            });
+            
+            // Re-add click listeners for card expansion
+            newCards.forEach(card => {
+                card.addEventListener('click', (e) => {
+                    if (e.target.closest('.learn-more-btn')) return;
+                    
+                    const networkId = card.dataset.network;
+                    if (networkId !== currentNetwork) {
+                        animateCardSwitch(networkId);
+                    }
+                });
+            });
+            
+            // Re-add click listeners for learn more buttons
+            panel.querySelectorAll('.learn-more-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const networkId = btn.dataset.network;
+                    openVideoModal(networkId);
+                });
+            });
+            
+            // Cleanup
+            setTimeout(() => {
+                newCards.forEach(card => card.classList.remove('animating'));
+            }, 600);
+        }
+
+        // Initial render
+        renderCards();
+
+        // Animation with subtle pulse
+        let time = 0;
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            
+            time += 0.02;
+            const pulse = baseEmissive + Math.sin(time) * pulseAmount;
+            Object.values(highlightMaterials).forEach(mat => {
+                mat.emissiveIntensity = pulse;
+            });
+
+            // Use composer for bloom effect
+            composer.render();
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            const w = container.clientWidth;
+            const h = container.clientHeight;
+            camera.aspect = w / h;
+            camera.updateProjectionMatrix();
+            renderer.setSize(w, h);
+            composer.setSize(w, h);
+        });
+
+        // Controls UI
+        document.getElementById('controls-toggle').addEventListener('click', () => {
+            document.getElementById('controls-panel').classList.toggle('hidden');
+        });
+
+        document.getElementById('bloom-strength').addEventListener('input', (e) => {
+            bloomPass.strength = parseFloat(e.target.value);
+            document.getElementById('strength-val').textContent = e.target.value;
+        });
+
+        document.getElementById('bloom-radius').addEventListener('input', (e) => {
+            bloomPass.radius = parseFloat(e.target.value);
+            document.getElementById('radius-val').textContent = e.target.value;
+        });
+
+        document.getElementById('bloom-threshold').addEventListener('input', (e) => {
+            bloomPass.threshold = parseFloat(e.target.value);
+            document.getElementById('threshold-val').textContent = e.target.value;
+        });
+
+        document.getElementById('emissive-intensity').addEventListener('input', (e) => {
+            baseEmissive = parseFloat(e.target.value);
+            document.getElementById('emissive-val').textContent = e.target.value;
+        });
+
+        document.getElementById('pulse-amount').addEventListener('input', (e) => {
+            pulseAmount = parseFloat(e.target.value);
+            document.getElementById('pulse-val').textContent = e.target.value;
+        });
+
+        document.getElementById('brain-opacity').addEventListener('input', (e) => {
+            const opacity = parseFloat(e.target.value);
+            baseMaterial.opacity = opacity;
+            allMeshes.forEach(mesh => {
+                if (mesh.material !== baseMaterial && !Object.values(highlightMaterials).includes(mesh.material)) {
+                    mesh.material.opacity = opacity;
+                }
+            });
+            document.getElementById('brain-opacity-val').textContent = e.target.value;
+        });
+    </script>
+</body>
+</html>
