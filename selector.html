@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pharia Brain - Version Selector</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #1a1d20;
+            color: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+        
+        .container {
+            max-width: 800px;
+            width: 100%;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+        
+        .logo {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #7ED4E6;
+            margin-bottom: 16px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 400;
+            margin-bottom: 12px;
+            letter-spacing: -0.02em;
+        }
+        
+        .subtitle {
+            color: #8a9a91;
+            font-size: 1rem;
+            max-width: 500px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        .versions {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .version-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 24px 28px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.2s ease;
+            display: block;
+        }
+        
+        .version-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .version-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+        
+        .version-name {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #7ED4E6;
+        }
+        
+        .version-tag {
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border-radius: 20px;
+            background: rgba(126, 212, 230, 0.15);
+            color: #7ED4E6;
+        }
+        
+        .version-tag.latest {
+            background: rgba(126, 212, 230, 0.3);
+        }
+        
+        .version-description {
+            color: #8a9a91;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+        
+        .version-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .feature-tag {
+            font-size: 0.7rem;
+            padding: 4px 10px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #a0a0a0;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 48px;
+            color: #5a6b62;
+            font-size: 0.8rem;
+        }
+        
+        .footer a {
+            color: #7ED4E6;
+            text-decoration: none;
+        }
+        
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo">Pharia Health</div>
+            <h1>Brain Network Visualizer</h1>
+            <p class="subtitle">Interactive 3D visualization of brain networks targeted by TMS therapy. Select a version to explore.</p>
+        </header>
+        
+        <div class="versions">
+            <a href="v2-design.html" class="version-card">
+                <div class="version-header">
+                    <div class="version-name">V2 — New Design</div>
+                    <span class="version-tag latest">Latest</span>
+                </div>
+                <p class="version-description">Dark theme with wireframe brain visualization. New layout matching Magda's design direction. Work in progress on fonts and colors.</p>
+                <div class="version-features">
+                    <span class="feature-tag">Wireframe brain</span>
+                    <span class="feature-tag">Dark UI</span>
+                    <span class="feature-tag">Video explanations</span>
+                    <span class="feature-tag">Accordion cards</span>
+                </div>
+            </a>
+            
+            <a href="v1-videos.html" class="version-card">
+                <div class="version-header">
+                    <div class="version-name">V1 — Video Explanations</div>
+                    <span class="version-tag">Stable</span>
+                </div>
+                <p class="version-description">Light cream theme with embedded YouTube videos from experts (Dr. Nolan Williams, Dr. Jud Brewer, Dr. Huberman). Video links verified.</p>
+                <div class="version-features">
+                    <span class="feature-tag">Light theme</span>
+                    <span class="feature-tag">Video modals</span>
+                    <span class="feature-tag">Expert explanations</span>
+                    <span class="feature-tag">Bloom effects</span>
+                </div>
+            </a>
+            
+            <a href="v0-networks.html" class="version-card">
+                <div class="version-header">
+                    <div class="version-name">V0 — Networks Only</div>
+                    <span class="version-tag">Original</span>
+                </div>
+                <p class="version-description">Original dark green theme with basic network visualization. Simple and functional — good baseline reference.</p>
+                <div class="version-features">
+                    <span class="feature-tag">Dark green theme</span>
+                    <span class="feature-tag">4 networks</span>
+                    <span class="feature-tag">Basic controls</span>
+                </div>
+            </a>
+        </div>
+        
+        <footer class="footer">
+            <p>Built for Pharia Health · <a href="https://github.com/drjeeshan/pharia-brain" target="_blank">View on GitHub</a></p>
+        </footer>
+    </div>
+</body>
+</html>
