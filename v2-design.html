@@ -19,12 +19,12 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         :root {
-            /* Updated color palette to match Magda's design */
+            /* Color palette matching V1 */
             --bg-primary: #2a3035;
             --bg-card: rgba(255, 255, 255, 0.05);
             --bg-card-expanded: rgba(255, 255, 255, 0.08);
-            --accent-cyan: #7ED4E6;
-            --accent-cyan-soft: rgba(126, 212, 230, 0.8);
+            --accent-blue: #A4C8FF;
+            --accent-blue-soft: rgba(164, 200, 255, 0.8);
             --text-primary: #ffffff;
             --text-secondary: rgba(255, 255, 255, 0.7);
             --text-muted: rgba(255, 255, 255, 0.5);
@@ -67,7 +67,7 @@
             font-size: clamp(1.75rem, 3.5vw, 2.25rem);
             font-weight: 400;
             letter-spacing: -0.02em;
-            color: var(--accent-cyan);
+            color: var(--accent-blue);
         }
         
         .layout { 
@@ -141,7 +141,7 @@
             font-size: 0.65rem;
             text-transform: uppercase;
             letter-spacing: 1px;
-            color: var(--accent-cyan);
+            color: var(--accent-blue);
             margin-bottom: 12px;
         }
         
@@ -169,7 +169,7 @@
             -webkit-appearance: none;
             width: 14px;
             height: 14px;
-            background: var(--accent-cyan);
+            background: var(--accent-blue);
             border-radius: 50%;
             cursor: pointer;
         }
@@ -200,7 +200,7 @@
             width: 36px;
             height: 36px;
             border: 2px solid var(--border-subtle);
-            border-top-color: var(--accent-cyan);
+            border-top-color: var(--accent-blue);
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
@@ -255,7 +255,6 @@
         .card-title {
             font-size: 0.95rem;
             font-weight: 500;
-            color: var(--accent-cyan);
             margin-bottom: 4px;
             transition: font-size 0.4s cubic-bezier(0.22, 1, 0.36, 1);
         }
@@ -478,7 +477,7 @@
         
         .video-modal-footer a {
             font-size: 0.8rem;
-            color: var(--accent-cyan);
+            color: var(--accent-blue);
             text-decoration: none;
             display: inline-flex;
             align-items: center;
@@ -598,13 +597,13 @@
         import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
         import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 
-        // Network data
+        // Network data - colors now match V1
         const networks = {
             'left-cen': {
                 label: 'Proactive Control Network',
                 name: 'Left-Central Executive Network',
                 metaphor: '"The CEO"',
-                color: '#7ED4E6',
+                color: '#A4C8FF',
                 description: "Your brain's command center for goal-directed behavior. When this network is underactive, motivation drops, decisions feel harder, and getting started becomes a struggle.",
                 target: 'Left DLPFC',
                 meshNames: [
@@ -627,7 +626,7 @@
                 label: 'Reactive Control Network',
                 name: 'Right-Central Executive Network',
                 metaphor: '"The Filter"',
-                color: '#6BC4D6',
+                color: '#8AB3F9',
                 description: "Your mental noise-canceler. This network helps filter out distractions and quiet anxious rumination. When underactive, worries amplify and intrusive thoughts take over.",
                 target: 'Right DLPFC',
                 meshNames: [
@@ -681,7 +680,7 @@
                 label: 'Default Mode Network (DMN)',
                 name: 'Default Mode Network',
                 metaphor: '"The Inner Critic"',
-                color: '#9BB5C4',
+                color: '#C8D4C8',
                 description: "Your internal narrator. Active during self-reflection, it can become an inner critic when overactive — fueling negative self-talk and the inability to be present.",
                 target: 'dmPFC',
                 meshNames: [
@@ -727,7 +726,7 @@
         const height = container.clientHeight;
 
         const scene = new THREE.Scene();
-        // Dark charcoal background matching Magda's design
+        // Dark charcoal background
         scene.background = new THREE.Color(0x2a3035);
         
         const camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 100);
@@ -743,16 +742,16 @@
         renderer.toneMapping = THREE.ACESFilmicToneMapping;
         renderer.toneMappingExposure = 1.2;
 
-        // Post-processing with bloom - enhanced for the glowing effect
+        // Post-processing with bloom
         const composer = new EffectComposer(renderer);
         const renderPass = new RenderPass(scene, camera);
         composer.addPass(renderPass);
 
         const bloomPass = new UnrealBloomPass(
             new THREE.Vector2(width, height),
-            0.6,   // strength - higher for more glow
-            0.4,   // radius
-            0.15   // threshold - lower to catch more of the highlights
+            0.6,
+            0.4,
+            0.15
         );
         composer.addPass(bloomPass);
 
@@ -766,7 +765,7 @@
         controls.autoRotate = true;
         controls.autoRotateSpeed = 0.3;
 
-        // Softer, more atmospheric lighting
+        // Lighting
         scene.add(new THREE.AmbientLight(0x404550, 0.4));
         
         const dir1 = new THREE.DirectionalLight(0xffffff, 0.5);
@@ -781,7 +780,7 @@
         dir3.position.set(0, -3, 0);
         scene.add(dir3);
 
-        // Base solid material - darker, more subtle
+        // Base solid material
         baseMaterial = new THREE.MeshLambertMaterial({ 
             color: 0x3a4045,
             transparent: true,
@@ -790,7 +789,7 @@
             depthWrite: true
         });
 
-        // Wireframe material for the circuit-like texture
+        // Wireframe material
         wireframeMaterial = new THREE.MeshBasicMaterial({
             color: 0x5a6570,
             wireframe: true,
@@ -801,7 +800,6 @@
 
         // Create highlight materials for each network
         Object.entries(networks).forEach(([key, net]) => {
-            // Solid highlight material
             highlightMaterials[key] = new THREE.MeshLambertMaterial({
                 color: net.color,
                 emissive: net.color,
@@ -812,7 +810,6 @@
                 depthWrite: true
             });
             
-            // Wireframe for highlighted regions
             highlightWireframeMaterials[key] = new THREE.MeshBasicMaterial({
                 color: net.color,
                 wireframe: true,
@@ -845,11 +842,9 @@
                         allMeshes.push(child);
                         meshByName[child.name] = child;
                         
-                        // Apply base solid material
                         child.material = baseMaterial.clone();
                         child.renderOrder = 0;
                         
-                        // Create wireframe overlay for circuit texture effect
                         const wireframeClone = child.clone();
                         wireframeClone.material = wireframeMaterial.clone();
                         wireframeClone.renderOrder = 1;
@@ -881,7 +876,6 @@
             const hlMat = highlightMaterials[networkId];
             const hlWireMat = highlightWireframeMaterials[networkId];
             
-            // Reset all meshes to base appearance
             allMeshes.forEach(mesh => {
                 mesh.material = baseMaterial.clone();
                 mesh.renderOrder = 0;
@@ -893,7 +887,6 @@
                 mesh.renderOrder = 1;
             });
 
-            // Highlight the network regions
             let count = 0;
             network.meshNames.forEach(name => {
                 const mesh = meshByName[name];
@@ -902,7 +895,6 @@
                     mesh.material.emissiveIntensity = baseEmissive;
                     mesh.renderOrder = 2;
                     
-                    // Also update the wireframe for this mesh
                     const wireframeMesh = wireframeMeshes.find(wm => wm.name === name + '_wireframe');
                     if (wireframeMesh) {
                         wireframeMesh.material = hlWireMat.clone();
@@ -929,9 +921,11 @@
                     <div class="network-card ${isExpanded ? 'expanded' : ''}" data-network="${id}">
                         <div class="card-header">
                             <div>
-                                <div class="card-title">${net.label}</div>
+                                <div class="card-title" style="color: ${net.color}">${net.label}</div>
                                 <div class="card-meta">
-                                    <span class="card-meta-metaphor">${net.metaphor}</span>
+                                    <span class="card-meta-metaphor" style="color: ${net.color}">${net.metaphor}</span>
+                                    <span>·</span>
+                                    <span style="color: ${net.color}">${net.target}</span>
                                 </div>
                             </div>
                             <svg class="card-expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -958,7 +952,6 @@
                 `;
             }).join('');
             
-            // Add event listeners
             panel.querySelectorAll('.network-card').forEach(card => {
                 card.addEventListener('click', (e) => {
                     if (e.target.closest('.learn-more-btn')) return;
@@ -1039,9 +1032,11 @@
                     <div class="network-card ${isExpanded ? 'expanded' : ''}" data-network="${id}">
                         <div class="card-header">
                             <div>
-                                <div class="card-title">${net.label}</div>
+                                <div class="card-title" style="color: ${net.color}">${net.label}</div>
                                 <div class="card-meta">
-                                    <span class="card-meta-metaphor">${net.metaphor}</span>
+                                    <span class="card-meta-metaphor" style="color: ${net.color}">${net.metaphor}</span>
+                                    <span>·</span>
+                                    <span style="color: ${net.color}">${net.target}</span>
                                 </div>
                             </div>
                             <svg class="card-expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1126,7 +1121,6 @@
             time += 0.02;
             const pulse = baseEmissive + Math.sin(time) * pulseAmount;
             
-            // Update emissive intensity on highlighted meshes
             allMeshes.forEach(mesh => {
                 if (mesh.material.emissive && mesh.material.emissiveIntensity > 0) {
                     mesh.material.emissiveIntensity = pulse;
