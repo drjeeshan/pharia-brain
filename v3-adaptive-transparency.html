@@ -494,8 +494,8 @@
                     </div>
                     <h3>Bloom Settings</h3>
                     <div class="control-group">
-                        <label>Strength <span id="strength-val">0.8</span></label>
-                        <input type="range" id="bloom-strength" min="0" max="2" step="0.05" value="0.8">
+                        <label>Strength <span id="strength-val">0.3</span></label>
+                        <input type="range" id="bloom-strength" min="0" max="2" step="0.05" value="0.3">
                     </div>
                     <div class="control-group">
                         <label>Radius <span id="radius-val">0.5</span></label>
@@ -715,12 +715,12 @@
         const renderPass = new RenderPass(scene, camera);
         composer.addPass(renderPass);
 
-        // Enhanced bloom for better glow on highlighted regions
+        // Bloom for glow on highlighted regions
         const bloomPass = new UnrealBloomPass(
             new THREE.Vector2(width, height),
-            0.8,   // strength - higher for more glow
+            0.3,   // strength
             0.5,   // radius
-            0.1    // threshold - lower to catch highlights
+            0.1    // threshold
         );
         composer.addPass(bloomPass);
 
