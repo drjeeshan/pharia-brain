@@ -19,7 +19,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         :root {
-            --bg-primary: #2a3035;
+            --bg-primary: #3a4838;
             --bg-card: rgba(255, 255, 255, 0.05);
             --bg-card-expanded: rgba(255, 255, 255, 0.08);
             --accent-blue: #A4C8FF;
@@ -55,7 +55,7 @@
         }
         
         .viewer-container {
-            background: var(--bg-primary);
+            background: linear-gradient(145deg, #4a5a48 0%, #3a4838 100%);
             border-radius: 20px;
             overflow: hidden;
             position: relative;
@@ -155,7 +155,7 @@
         .loading-overlay {
             position: absolute;
             inset: 0;
-            background: var(--bg-primary);
+            background: linear-gradient(145deg, #4a5a48 0%, #3a4838 100%);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -696,7 +696,7 @@
         const height = container.clientHeight;
 
         const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x2a3035);
+        scene.background = new THREE.Color(0x3a4838);
         
         const camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 100);
         camera.position.set(0, 0, 1.8);
