@@ -58,6 +58,39 @@
             display: block;
         }
         
+        .viewer-controls {
+            position: absolute;
+            bottom: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+        }
+        
+        .viewer-btn {
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #fff;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        
+        .viewer-btn:hover {
+            background: rgba(0,0,0,0.7);
+            border-color: rgba(255,255,255,0.4);
+        }
+        
+        .viewer-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+        
         .controls {
             max-width: 800px;
             margin: 0 auto;
@@ -188,6 +221,17 @@
         <div class="viewer">
             <div class="loading" id="loading">Loading brain model...</div>
             <canvas id="canvas"></canvas>
+            <div class="viewer-controls">
+                <button class="viewer-btn" id="play-pause-btn" title="Pause rotation">
+                    <svg id="pause-icon" viewBox="0 0 24 24" fill="currentColor">
+                        <rect x="6" y="4" width="4" height="16"/>
+                        <rect x="14" y="4" width="4" height="16"/>
+                    </svg>
+                    <svg id="play-icon" viewBox="0 0 24 24" fill="currentColor" style="display:none;">
+                        <polygon points="5,3 19,12 5,21"/>
+                    </svg>
+                </button>
+            </div>
         </div>
         
         <div class="controls">
@@ -345,6 +389,7 @@
         let currentNetwork = 'left-cen';
         let ghostOpacity = 0.15;
         let highlightOpacity = 0.95;
+        let isPlaying = true;
         
         // Load brain
         const loader = new GLTFLoader();
@@ -427,15 +472,36 @@
             }
         }
         
+        // Play/Pause toggle
+        function togglePlayPause() {
+            isPlaying = !isPlaying;
+            controls.autoRotate = isPlaying;
+            
+            const playIcon = document.getElementById('play-icon');
+            const pauseIcon = document.getElementById('pause-icon');
+            const btn = document.getElementById('play-pause-btn');
+            
+            if (isPlaying) {
+                playIcon.style.display = 'none';
+                pauseIcon.style.display = 'block';
+                btn.title = 'Pause rotation';
+            } else {
+                playIcon.style.display = 'block';
+                pauseIcon.style.display = 'none';
+                btn.title = 'Play rotation';
+            }
+        }
+        
         // Capture function
         function capture() {
             const resolution = parseInt(document.getElementById('resolution-select').value);
             
-            // Store original size
+            // Store original state
             const originalWidth = canvas.width;
             const originalHeight = canvas.height;
+            const wasPlaying = isPlaying;
             
-            // Stop rotation
+            // Stop rotation for capture
             controls.autoRotate = false;
             controls.update();
             
@@ -460,7 +526,9 @@
             renderer.setPixelRatio(window.devicePixelRatio);
             camera.aspect = 1;
             camera.updateProjectionMatrix();
-            controls.autoRotate = true;
+            
+            // Restore rotation state
+            controls.autoRotate = wasPlaying;
         }
         
         // Event listeners
@@ -481,6 +549,7 @@
         });
         
         document.getElementById('capture-btn').addEventListener('click', capture);
+        document.getElementById('play-pause-btn').addEventListener('click', togglePlayPause);
         
         // Resize handler
         function resize() {
