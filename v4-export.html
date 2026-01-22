@@ -675,7 +675,7 @@
                     </button>
                     
                     <div class="export-info">
-                        Exports as PNG with alpha channel. Perfect for slides and decks.
+                        Transparent exports use direct rendering (no bloom glow). Uncheck transparent for bloom effect with dark background.
                     </div>
                 </div>
                 
@@ -1341,8 +1341,13 @@
             camera.aspect = exportWidth / exportHeight;
             camera.updateProjectionMatrix();
             
-            // Render one frame
-            composer.render();
+            // KEY FIX: For transparent exports, render directly without post-processing
+            // The bloom pass doesn't preserve alpha channel
+            if (transparent) {
+                renderer.render(scene, camera);
+            } else {
+                composer.render();
+            }
             
             // Export canvas
             setTimeout(() => {
@@ -1351,7 +1356,8 @@
                 // Create download link
                 const link = document.createElement('a');
                 const networkName = selectedNetwork === 'none' ? 'brain' : selectedNetwork;
-                link.download = `pharia-brain-${networkName}-${exportWidth}x${exportHeight}.png`;
+                const bgSuffix = transparent ? 'transparent' : 'dark';
+                link.download = `pharia-brain-${networkName}-${exportWidth}x${exportHeight}-${bgSuffix}.png`;
                 link.href = dataURL;
                 link.click();
                 
