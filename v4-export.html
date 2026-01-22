@@ -62,7 +62,7 @@
             max-width: 800px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 16px;
         }
         
@@ -81,6 +81,11 @@
             margin-bottom: 8px;
         }
         
+        .control-group .value {
+            float: right;
+            color: rgba(255,255,255,0.8);
+        }
+        
         select {
             width: 100%;
             background: rgba(255,255,255,0.1);
@@ -94,6 +99,35 @@
         
         select option {
             background: #1a1d20;
+        }
+        
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            -webkit-appearance: none;
+            background: rgba(255,255,255,0.15);
+            border-radius: 3px;
+            outline: none;
+            margin-top: 4px;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            background: #A4C8FF;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+        
+        input[type="range"]::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            background: #A4C8FF;
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
         }
         
         .capture-btn {
@@ -166,6 +200,16 @@
                     <option value="dmn">DMN "The Inner Critic"</option>
                     <option value="none">No Highlight (Ghost Only)</option>
                 </select>
+            </div>
+            
+            <div class="control-group">
+                <label>Ghost Opacity <span class="value" id="ghost-value">15%</span></label>
+                <input type="range" id="ghost-opacity" min="0" max="50" value="15">
+            </div>
+            
+            <div class="control-group">
+                <label>Highlight Opacity <span class="value" id="highlight-value">95%</span></label>
+                <input type="range" id="highlight-opacity" min="50" max="100" value="95">
             </div>
             
             <div class="control-group">
@@ -299,6 +343,8 @@
         let allMeshes = [];
         let meshByName = {};
         let currentNetwork = 'left-cen';
+        let ghostOpacity = 0.15;
+        let highlightOpacity = 0.95;
         
         // Load brain
         const loader = new GLTFLoader();
@@ -327,7 +373,7 @@
                         child.material = new THREE.MeshLambertMaterial({
                             color: 0x5a6570,
                             transparent: true,
-                            opacity: 0.08,
+                            opacity: ghostOpacity,
                             side: THREE.DoubleSide
                         });
                     }
@@ -357,7 +403,7 @@
                 mesh.material = new THREE.MeshLambertMaterial({
                     color: 0x5a6570,
                     transparent: true,
-                    opacity: 0.08,
+                    opacity: ghostOpacity,
                     side: THREE.DoubleSide
                 });
             });
@@ -373,7 +419,7 @@
                         mesh.material = new THREE.MeshLambertMaterial({
                             color: color,
                             transparent: true,
-                            opacity: 0.95,
+                            opacity: highlightOpacity,
                             side: THREE.DoubleSide
                         });
                     }
@@ -420,6 +466,18 @@
         // Event listeners
         document.getElementById('network-select').addEventListener('change', (e) => {
             highlightNetwork(e.target.value);
+        });
+        
+        document.getElementById('ghost-opacity').addEventListener('input', (e) => {
+            ghostOpacity = parseInt(e.target.value) / 100;
+            document.getElementById('ghost-value').textContent = e.target.value + '%';
+            highlightNetwork(currentNetwork);
+        });
+        
+        document.getElementById('highlight-opacity').addEventListener('input', (e) => {
+            highlightOpacity = parseInt(e.target.value) / 100;
+            document.getElementById('highlight-value').textContent = e.target.value + '%';
+            highlightNetwork(currentNetwork);
         });
         
         document.getElementById('capture-btn').addEventListener('click', capture);
