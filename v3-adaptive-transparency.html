@@ -560,7 +560,8 @@
         import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
         import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
         import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
-        import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+        import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
+        import { GammaCorrectionShader } from 'three/addons/shaders/GammaCorrectionShader.js';
 
         const networks = {
             'left-cen': {
@@ -695,8 +696,11 @@
         const width = container.clientWidth;
         const height = container.clientHeight;
 
+        // Disable Three.js color management to get exact colors
+        THREE.ColorManagement.enabled = false;
+
         const scene = new THREE.Scene();
-        // Set scene background to exact CSS color - no tone mapping means exact match
+        // Set scene background to exact CSS color
         scene.background = new THREE.Color(0x202621);
         
         const camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 100);
@@ -708,7 +712,8 @@
         });
         renderer.setSize(width, height);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        // Disable tone mapping so background color renders exactly as specified
+        // Disable all color space transforms
+        renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
         renderer.toneMapping = THREE.NoToneMapping;
 
         const composer = new EffectComposer(renderer);
@@ -724,8 +729,9 @@
         );
         composer.addPass(bloomPass);
 
-        const outputPass = new OutputPass();
-        composer.addPass(outputPass);
+        // Use gamma correction instead of OutputPass to avoid color shifts
+        const gammaCorrectionPass = new ShaderPass(GammaCorrectionShader);
+        composer.addPass(gammaCorrectionPass);
 
         const controls = new OrbitControls(camera, canvas);
         controls.enableDamping = true;
