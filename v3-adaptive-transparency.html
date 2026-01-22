@@ -55,7 +55,7 @@
         }
         
         .viewer-container {
-            background: #202621;
+            background: var(--bg-primary);
             border-radius: 20px;
             overflow: hidden;
             position: relative;
@@ -155,7 +155,7 @@
         .loading-overlay {
             position: absolute;
             inset: 0;
-            background: #202621;
+            background: var(--bg-primary);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -696,7 +696,8 @@
         const height = container.clientHeight;
 
         const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x202621);
+        // No scene background - let CSS background show through for perfect color match
+        scene.background = null;
         
         const camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 100);
         camera.position.set(0, 0, 1.8);
@@ -704,15 +705,17 @@
         const renderer = new THREE.WebGLRenderer({ 
             canvas, 
             antialias: true, 
-            alpha: true
+            alpha: true  // Enable transparency so CSS background shows through
         });
         renderer.setSize(width, height);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         renderer.toneMapping = THREE.ACESFilmicToneMapping;
         renderer.toneMappingExposure = 1.2;
+        renderer.setClearColor(0x000000, 0);  // Transparent clear color
 
         const composer = new EffectComposer(renderer);
         const renderPass = new RenderPass(scene, camera);
+        renderPass.clearAlpha = 0;  // Don't clear alpha channel
         composer.addPass(renderPass);
 
         // Bloom for glow on highlighted regions - Magda's settings
