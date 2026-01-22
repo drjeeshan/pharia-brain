@@ -696,26 +696,23 @@
         const height = container.clientHeight;
 
         const scene = new THREE.Scene();
-        // No scene background - let CSS background show through for perfect color match
-        scene.background = null;
+        // Set scene background to exact CSS color - no tone mapping means exact match
+        scene.background = new THREE.Color(0x202621);
         
         const camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 100);
         camera.position.set(0, 0, 1.8);
 
         const renderer = new THREE.WebGLRenderer({ 
             canvas, 
-            antialias: true, 
-            alpha: true  // Enable transparency so CSS background shows through
+            antialias: true
         });
         renderer.setSize(width, height);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        renderer.toneMapping = THREE.ACESFilmicToneMapping;
-        renderer.toneMappingExposure = 1.2;
-        renderer.setClearColor(0x000000, 0);  // Transparent clear color
+        // Disable tone mapping so background color renders exactly as specified
+        renderer.toneMapping = THREE.NoToneMapping;
 
         const composer = new EffectComposer(renderer);
         const renderPass = new RenderPass(scene, camera);
-        renderPass.clearAlpha = 0;  // Don't clear alpha channel
         composer.addPass(renderPass);
 
         // Bloom for glow on highlighted regions - Magda's settings
@@ -737,17 +734,17 @@
         controls.autoRotate = true;
         controls.autoRotateSpeed = 0.3;
 
-        scene.add(new THREE.AmbientLight(0x404550, 0.4));
+        scene.add(new THREE.AmbientLight(0x404550, 0.5));
         
-        const dir1 = new THREE.DirectionalLight(0xffffff, 0.5);
+        const dir1 = new THREE.DirectionalLight(0xffffff, 0.6);
         dir1.position.set(5, 5, 5);
         scene.add(dir1);
         
-        const dir2 = new THREE.DirectionalLight(0x88aacc, 0.3);
+        const dir2 = new THREE.DirectionalLight(0x88aacc, 0.4);
         dir2.position.set(-5, 3, -5);
         scene.add(dir2);
         
-        const dir3 = new THREE.DirectionalLight(0x445566, 0.2);
+        const dir3 = new THREE.DirectionalLight(0x445566, 0.3);
         dir3.position.set(0, -3, 0);
         scene.add(dir3);
 
