@@ -485,34 +485,34 @@
                 <div class="controls-panel hidden" id="controls-panel">
                     <h3>Transparency Settings</h3>
                     <div class="control-group">
-                        <label>Base Opacity <span id="base-opacity-val">0.12</span></label>
-                        <input type="range" id="base-opacity" min="0.05" max="0.4" step="0.01" value="0.12">
+                        <label>Base Opacity <span id="base-opacity-val">0.05</span></label>
+                        <input type="range" id="base-opacity" min="0.01" max="0.4" step="0.01" value="0.05">
                     </div>
                     <div class="control-group">
-                        <label>Wireframe Opacity <span id="wire-opacity-val">0.15</span></label>
-                        <input type="range" id="wire-opacity" min="0.05" max="0.5" step="0.01" value="0.15">
+                        <label>Wireframe Opacity <span id="wire-opacity-val">0.05</span></label>
+                        <input type="range" id="wire-opacity" min="0.01" max="0.5" step="0.01" value="0.05">
                     </div>
                     <h3>Bloom Settings</h3>
                     <div class="control-group">
-                        <label>Strength <span id="strength-val">0.3</span></label>
-                        <input type="range" id="bloom-strength" min="0" max="2" step="0.05" value="0.3">
+                        <label>Strength <span id="strength-val">0.2</span></label>
+                        <input type="range" id="bloom-strength" min="0" max="2" step="0.05" value="0.2">
                     </div>
                     <div class="control-group">
-                        <label>Radius <span id="radius-val">0.5</span></label>
-                        <input type="range" id="bloom-radius" min="0" max="2" step="0.05" value="0.5">
+                        <label>Radius <span id="radius-val">0.15</span></label>
+                        <input type="range" id="bloom-radius" min="0" max="2" step="0.05" value="0.15">
                     </div>
                     <div class="control-group">
-                        <label>Threshold <span id="threshold-val">0.1</span></label>
-                        <input type="range" id="bloom-threshold" min="0" max="1" step="0.05" value="0.1">
+                        <label>Threshold <span id="threshold-val">0.45</span></label>
+                        <input type="range" id="bloom-threshold" min="0" max="1" step="0.05" value="0.45">
                     </div>
                     <h3>Highlight Settings</h3>
                     <div class="control-group">
-                        <label>Emissive <span id="emissive-val">0.4</span></label>
-                        <input type="range" id="emissive-intensity" min="0" max="1" step="0.05" value="0.4">
+                        <label>Emissive <span id="emissive-val">0.35</span></label>
+                        <input type="range" id="emissive-intensity" min="0" max="1" step="0.05" value="0.35">
                     </div>
                     <div class="control-group">
-                        <label>Pulse Amount <span id="pulse-val">0.08</span></label>
-                        <input type="range" id="pulse-amount" min="0" max="0.2" step="0.005" value="0.08">
+                        <label>Pulse Amount <span id="pulse-val">0.015</span></label>
+                        <input type="range" id="pulse-amount" min="0" max="0.2" step="0.005" value="0.015">
                     </div>
                 </div>
             </div>
@@ -682,13 +682,13 @@
         let wireframeByName = {};
         let highlightMaterials = {}, highlightWireframeMaterials = {};
         
-        // Adaptive transparency settings - very low for non-highlighted
-        let baseOpacity = 0.12;
-        let baseWireframeOpacity = 0.15;
+        // Magda's recommended default settings
+        let baseOpacity = 0.05;
+        let baseWireframeOpacity = 0.05;
         let highlightOpacity = 0.9;
         let highlightWireframeOpacity = 0.7;
-        let baseEmissive = 0.4;
-        let pulseAmount = 0.08;
+        let baseEmissive = 0.35;
+        let pulseAmount = 0.015;
 
         const canvas = document.getElementById('brain-canvas');
         const container = canvas.parentElement;
@@ -715,12 +715,12 @@
         const renderPass = new RenderPass(scene, camera);
         composer.addPass(renderPass);
 
-        // Bloom for glow on highlighted regions
+        // Bloom for glow on highlighted regions - Magda's settings
         const bloomPass = new UnrealBloomPass(
             new THREE.Vector2(width, height),
-            0.3,   // strength
-            0.5,   // radius
-            0.1    // threshold
+            0.2,    // strength
+            0.15,   // radius
+            0.45    // threshold
         );
         composer.addPass(bloomPass);
 
