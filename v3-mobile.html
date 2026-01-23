@@ -129,8 +129,14 @@
             font-size: 0.875rem; 
         }
         
-        .cards-section {
+        .cards-wrapper {
             flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cards-section {
+            height: 100%;
             overflow-y: auto;
             overflow-x: hidden;
             -webkit-overflow-scrolling: touch;
@@ -138,10 +144,70 @@
             scroll-behavior: smooth;
         }
         
+        /* Gradient fade at bottom to indicate more content */
+        .scroll-fade {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            background: linear-gradient(to bottom, transparent, var(--bg-primary));
+            pointer-events: none;
+            z-index: 5;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+        
+        .scroll-fade.hidden {
+            opacity: 0;
+        }
+        
+        /* Scroll indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            z-index: 10;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+        
+        .scroll-indicator.hidden {
+            opacity: 0;
+        }
+        
+        .scroll-indicator-text {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            background: rgba(0, 0, 0, 0.5);
+            padding: 6px 12px;
+            border-radius: 12px;
+            border: 1px solid var(--border-subtle);
+        }
+        
+        .scroll-indicator-arrow {
+            width: 20px;
+            height: 20px;
+            color: var(--text-muted);
+            animation: bounce 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(4px); }
+        }
+        
         .info-panel { 
             display: flex; 
             flex-direction: column; 
             gap: 10px;
+            padding-bottom: 60px; /* Extra space for scroll indicator */
         }
         
         .network-card {
@@ -436,6 +502,10 @@
             .network-card {
                 padding: 14px 16px;
             }
+            
+            .scroll-fade {
+                height: 50px;
+            }
         }
         
         /* Larger phones */
@@ -467,8 +537,17 @@
         </div>
     </div>
     
-    <div class="cards-section" id="cards-section">
-        <div class="info-panel" id="info-panel">
+    <div class="cards-wrapper">
+        <div class="cards-section" id="cards-section">
+            <div class="info-panel" id="info-panel">
+            </div>
+        </div>
+        <div class="scroll-fade" id="scroll-fade"></div>
+        <div class="scroll-indicator" id="scroll-indicator">
+            <span class="scroll-indicator-text">3 more networks</span>
+            <svg class="scroll-indicator-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 9l6 6 6-6"/>
+            </svg>
         </div>
     </div>
     
@@ -800,6 +879,34 @@
         function hideHint() {
             document.getElementById('viewer-hint').classList.add('hidden');
         }
+        
+        // Scroll indicator logic
+        const cardsSection = document.getElementById('cards-section');
+        const scrollFade = document.getElementById('scroll-fade');
+        const scrollIndicator = document.getElementById('scroll-indicator');
+        let hasScrolled = false;
+        
+        function updateScrollIndicator() {
+            const scrollTop = cardsSection.scrollTop;
+            const scrollHeight = cardsSection.scrollHeight;
+            const clientHeight = cardsSection.clientHeight;
+            const isAtBottom = scrollTop + clientHeight >= scrollHeight - 20;
+            
+            // Hide indicator after first scroll or when at bottom
+            if (scrollTop > 30 || isAtBottom) {
+                hasScrolled = true;
+                scrollIndicator.classList.add('hidden');
+            }
+            
+            // Hide fade when at bottom
+            if (isAtBottom) {
+                scrollFade.classList.add('hidden');
+            } else {
+                scrollFade.classList.remove('hidden');
+            }
+        }
+        
+        cardsSection.addEventListener('scroll', updateScrollIndicator, { passive: true });
 
         function highlightNetwork(networkId) {
             const network = networks[networkId];
@@ -843,6 +950,13 @@
             const networkOrder = ['left-cen', 'right-cen', 'salience', 'dmn'];
             const sortedNetworks = [currentNetwork, ...networkOrder.filter(id => id !== currentNetwork)];
             
+            // Update scroll indicator text based on remaining networks
+            const remainingCount = sortedNetworks.length - 1;
+            const indicatorText = document.querySelector('.scroll-indicator-text');
+            if (indicatorText) {
+                indicatorText.textContent = `${remainingCount} more network${remainingCount !== 1 ? 's' : ''}`;
+            }
+            
             panel.innerHTML = sortedNetworks.map(id => {
                 const net = networks[id];
                 const isExpanded = id === currentNetwork;
@@ -882,6 +996,15 @@
             }).join('');
             
             attachCardListeners();
+            
+            // Reset scroll indicator visibility when cards re-render (if not scrolled before)
+            if (!hasScrolled) {
+                scrollIndicator.classList.remove('hidden');
+                scrollFade.classList.remove('hidden');
+            }
+            
+            // Check scroll state after render
+            setTimeout(updateScrollIndicator, 100);
         }
         
         function attachCardListeners() {
@@ -910,17 +1033,12 @@
             highlightNetwork(newNetworkId);
             renderCards();
             
-            // Scroll to show expanded card
+            // Scroll to top to show expanded card
             setTimeout(() => {
-                const expandedCard = document.querySelector('.network-card.expanded');
-                if (expandedCard) {
-                    const cardsSection = document.getElementById('cards-section');
-                    const cardTop = expandedCard.offsetTop - cardsSection.offsetTop;
-                    cardsSection.scrollTo({
-                        top: cardTop - 16,
-                        behavior: 'smooth'
-                    });
-                }
+                cardsSection.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
             }, 50);
         }
         
