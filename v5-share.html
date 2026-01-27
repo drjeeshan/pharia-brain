@@ -454,10 +454,11 @@
             height: 16px;
         }
         
-        /* Network Cards */
+        /* Network Cards - v4 Style */
         .networks-grid {
-            display: grid;
-            gap: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
             margin-top: 24px;
         }
         
@@ -465,9 +466,10 @@
             background: var(--bg-card);
             border: 1px solid var(--border-subtle);
             border-radius: 16px;
-            padding: 20px;
+            padding: 18px 20px;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+            overflow: hidden;
             -webkit-tap-highlight-color: transparent;
         }
         
@@ -476,55 +478,112 @@
             border-color: var(--border-hover);
         }
         
-        .network-card.active {
-            border-color: currentColor;
+        .network-card.expanded {
+            cursor: default;
+            padding: 20px;
             background: var(--bg-card-hover);
+            border-color: var(--border-hover);
         }
         
-        .network-card-header {
+        .card-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 8px;
+            gap: 12px;
         }
         
-        .network-card-title {
-            font-size: 1rem;
+        .card-founder-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+            transition: font-size 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        
+        .network-card.expanded .card-founder-name {
+            font-size: 1.3rem;
+            margin-bottom: 6px;
+        }
+        
+        .card-scientific {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        
+        .card-scientific-name {
+            color: var(--text-secondary);
+        }
+        
+        .card-target {
             font-weight: 500;
         }
         
-        .network-card-metaphor {
-            font-family: 'Instrument Serif', Georgia, serif;
-            font-style: italic;
-            font-size: 0.85rem;
-        }
-        
-        .network-card-icon {
+        .card-expand-icon {
             width: 24px;
             height: 24px;
-            opacity: 0.5;
-            transition: all 0.3s ease;
+            color: var(--text-muted);
+            transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+            flex-shrink: 0;
         }
         
-        .network-card.active .network-card-icon {
-            opacity: 1;
+        .network-card.expanded .card-expand-icon {
+            opacity: 0;
             transform: rotate(180deg);
         }
         
-        .network-card-desc {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            line-height: 1.6;
+        .card-content {
             max-height: 0;
-            overflow: hidden;
             opacity: 0;
-            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            overflow: hidden;
+            transition: max-height 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+                        opacity 0.25s cubic-bezier(0.22, 1, 0.36, 1) 0.1s,
+                        margin 0.35s cubic-bezier(0.22, 1, 0.36, 1);
         }
         
-        .network-card.active .network-card-desc {
-            max-height: 150px;
+        .network-card.expanded .card-content {
+            max-height: 300px;
             opacity: 1;
-            margin-top: 12px;
+            margin-top: 16px;
+        }
+        
+        .card-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+        
+        .card-structures {
+            padding-top: 14px;
+            border-top: 1px solid var(--border-subtle);
+        }
+        
+        .card-structures-label {
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+        
+        .structures-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .structure-tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-subtle);
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
         }
         
         /* Final CTA */
@@ -585,6 +644,7 @@
             }
             
             .networks-grid {
+                display: grid;
                 grid-template-columns: 1fr 1fr;
                 gap: 16px;
             }
@@ -757,10 +817,12 @@
 
         const networks = {
             'left-cen': {
-                label: 'Proactive Control',
-                metaphor: '"The CEO"',
+                founderName: 'Founder Mode',
+                scientificName: 'Proactive Control Network',
                 color: '#A4C8FF',
-                description: "Your brain's command center for goal-directed behavior. When underactive, motivation drops and getting started becomes a struggle. We stimulate this network for drive and focus.",
+                target: 'Left DLPFC',
+                description: "Your brain's command center for goal-directed behavior. When this network is stimulated, motivation grows, decisions become easier, and there's less friction to get started.",
+                structureNames: ['Left DLPFC', 'Posterior Parietal Cortex'],
                 meshNames: [
                     'Allen_middle_frontal_gyrus_L',
                     'Allen_superior_frontal_gyrus_L',
@@ -769,10 +831,12 @@
                 ]
             },
             'right-cen': {
-                label: 'Reactive Control',
-                metaphor: '"The Filter"',
+                founderName: 'Deep Work',
+                scientificName: 'Reactive Control Network',
                 color: '#8AB3F9',
-                description: "Your mental noise-canceler. Helps filter distractions and quiet anxious rumination. When underactive, worries amplify. We target this for calm focus.",
+                target: 'Right DLPFC',
+                description: "Your mental noise-canceler. This network filters distractions and quiets anxious chatter. When optimized, you can sustain focus for hours and intrusive thoughts fade away.",
+                structureNames: ['Right DLPFC', 'Posterior Parietal Cortex'],
                 meshNames: [
                     'Allen_middle_frontal_gyrus_R',
                     'Allen_superior_frontal_gyrus_R',
@@ -781,10 +845,12 @@
                 ]
             },
             'salience': {
-                label: 'Salience Network',
-                metaphor: '"The Priority Switch"',
+                founderName: 'Lock-in',
+                scientificName: 'Salience Network',
                 color: '#FFB974',
-                description: "Your relevance detector. Decides what deserves attention now. When dysregulated, you feel stuck—unable to shift focus. We target this for mental flexibility.",
+                target: 'dmPFC',
+                description: "Your brain's relevance detector. It recognizes what matters and commits your attention. When dialed in, you stop second-guessing and start executing with clarity.",
+                structureNames: ['dmPFC', 'Anterior Insula', 'ACC'],
                 meshNames: [
                     'Allen_superior_frontal_gyrus_L',
                     'Allen_superior_frontal_gyrus_R',
@@ -795,10 +861,12 @@
                 ]
             },
             'dmn': {
-                label: 'Default Mode',
-                metaphor: '"The Inner Critic"',
+                founderName: 'EQ',
+                scientificName: 'Default Mode Network',
                 color: '#C8D4C8',
-                description: "Your internal narrator, active during self-reflection. When overactive, fuels negative self-talk and inability to be present. We target this for presence and calm.",
+                target: 'dmPFC',
+                description: "Your center for self-awareness and reading others. This network powers presence, empathy, and emotional intelligence. When balanced, you show up grounded and attuned.",
+                structureNames: ['dmPFC', 'PCC', 'vmPFC'],
                 meshNames: [
                     'Allen_superior_frontal_gyrus_L',
                     'Allen_superior_frontal_gyrus_R',
@@ -936,6 +1004,7 @@
 
                 brainGroup.add(model);
                 highlightNetwork(currentNetwork);
+                renderNetworkCards();
                 document.getElementById('loading').classList.add('hidden');
                 
                 canvas.addEventListener('touchstart', hideHint, { once: true });
@@ -991,36 +1060,50 @@
             });
         }
 
-        // Render network cards
+        // Render v4-style network cards
         function renderNetworkCards() {
             const grid = document.getElementById('networks-grid');
             const networkOrder = ['left-cen', 'right-cen', 'salience', 'dmn'];
+            const sortedNetworks = [currentNetwork, ...networkOrder.filter(id => id !== currentNetwork)];
             
-            grid.innerHTML = networkOrder.map(id => {
+            grid.innerHTML = sortedNetworks.map(id => {
                 const net = networks[id];
-                const isActive = id === currentNetwork;
+                const isExpanded = id === currentNetwork;
                 return `
-                    <div class="network-card ${isActive ? 'active' : ''}" data-network="${id}" style="--card-color: ${net.color}; border-color: ${isActive ? net.color : ''}">
-                        <div class="network-card-header">
+                    <div class="network-card ${isExpanded ? 'expanded' : ''}" data-network="${id}">
+                        <div class="card-header">
                             <div>
-                                <div class="network-card-title" style="color: ${net.color}">${net.label}</div>
-                                <div class="network-card-metaphor" style="color: ${net.color}">${net.metaphor}</div>
+                                <div class="card-founder-name" style="color: ${net.color}">${net.founderName}</div>
+                                <div class="card-scientific">
+                                    <span class="card-scientific-name">${net.scientificName}</span>
+                                    <span>·</span>
+                                    <span class="card-target" style="color: ${net.color}">${net.target}</span>
+                                </div>
                             </div>
-                            <svg class="network-card-icon" style="color: ${net.color}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <svg class="card-expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M6 9l6 6 6-6"/>
                             </svg>
                         </div>
-                        <div class="network-card-desc">${net.description}</div>
+                        <div class="card-content">
+                            <div class="card-description">${net.description}</div>
+                            <div class="card-structures">
+                                <div class="card-structures-label">Key Structures</div>
+                                <div class="structures-list">${net.structureNames.map(n => `<span class="structure-tag">${n}</span>`).join('')}</div>
+                            </div>
+                        </div>
                     </div>
                 `;
             }).join('');
             
+            // Attach click listeners
             grid.querySelectorAll('.network-card').forEach(card => {
                 card.addEventListener('click', () => {
                     const networkId = card.dataset.network;
-                    currentNetwork = networkId;
-                    highlightNetwork(networkId);
-                    renderNetworkCards();
+                    if (networkId !== currentNetwork) {
+                        currentNetwork = networkId;
+                        highlightNetwork(networkId);
+                        renderNetworkCards();
+                    }
                 });
             });
         }
