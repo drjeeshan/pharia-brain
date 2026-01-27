@@ -544,7 +544,7 @@
         }
         
         .network-card.expanded .card-content {
-            max-height: 300px;
+            max-height: 500px;
             opacity: 1;
             margin-top: 16px;
         }
@@ -584,6 +584,166 @@
             border-radius: 20px;
             font-size: 0.75rem;
             color: var(--text-secondary);
+        }
+        
+        /* Learn More Button */
+        .card-learn-more {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-subtle);
+        }
+        
+        .learn-more-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-subtle);
+            padding: 14px 16px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            width: 100%;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .learn-more-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .learn-more-btn:active {
+            transform: scale(0.98);
+        }
+        
+        .learn-more-btn svg {
+            width: 20px;
+            height: 20px;
+            color: #FF0000;
+            flex-shrink: 0;
+        }
+        
+        .learn-more-source {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+        
+        /* Video Modal */
+        .video-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .video-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .video-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 16px 16px;
+            padding-top: max(16px, env(safe-area-inset-top));
+            background: #1a1d20;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        
+        .video-modal-info {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .video-modal-title {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 4px;
+            color: var(--text-primary);
+        }
+        
+        .video-modal-subtitle {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+        
+        .video-modal-close {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+            color: var(--text-primary);
+            border-radius: 50%;
+            margin-left: 12px;
+            flex-shrink: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .video-modal-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .video-modal-close svg {
+            width: 20px;
+            height: 20px;
+            display: block;
+        }
+        
+        .video-wrapper {
+            flex: 1;
+            position: relative;
+            background: #000;
+        }
+        
+        .video-wrapper iframe {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            max-height: 56.25vw;
+            border: none;
+        }
+        
+        .video-modal-footer {
+            padding: 16px;
+            padding-bottom: max(16px, calc(16px + var(--safe-bottom)));
+            background: #1a1d20;
+            border-top: 1px solid var(--border-subtle);
+        }
+        
+        .video-modal-footer a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            color: var(--accent-blue);
+            text-decoration: none;
+            padding: 12px;
+            background: rgba(164, 200, 255, 0.1);
+            border-radius: 10px;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .video-modal-footer a:hover {
+            background: rgba(164, 200, 255, 0.2);
+        }
+        
+        .video-modal-footer svg {
+            width: 16px;
+            height: 16px;
         }
         
         /* Final CTA */
@@ -805,6 +965,37 @@
         <p class="cta-note">Founding member rates are limited. Price will increase.</p>
     </section>
 
+    <!-- Video Modal -->
+    <div class="video-modal" id="video-modal">
+        <div class="video-modal-header">
+            <div class="video-modal-info">
+                <div class="video-modal-title" id="modal-title"></div>
+                <div class="video-modal-subtitle" id="modal-subtitle"></div>
+            </div>
+            <button class="video-modal-close" id="modal-close">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        <div class="video-wrapper">
+            <iframe id="video-iframe" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen></iframe>
+        </div>
+        <div class="video-modal-footer">
+            <a href="#" id="modal-youtube-link" target="_blank">
+                Watch on YouTube
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                    <polyline points="15 3 21 3 21 9"></polyline>
+                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                </svg>
+            </a>
+        </div>
+    </div>
+
     <script type="module">
         import * as THREE from 'three';
         import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
@@ -828,7 +1019,15 @@
                     'Allen_superior_frontal_gyrus_L',
                     'Allen_angular_gyrus_L',
                     'Allen_supramarginal_gyrus_L'
-                ]
+                ],
+                learnMore: {
+                    title: 'DLPFC & TMS for Depression',
+                    source: 'Stanford Psychiatry Professor',
+                    guest: 'Dr. Nolan Williams',
+                    youtubeId: 'X4QE6t-MkYE',
+                    startTime: 2749,
+                    fullUrl: 'https://youtube.com/watch?v=X4QE6t-MkYE&t=2749s'
+                }
             },
             'right-cen': {
                 founderName: 'Deep Work',
@@ -842,7 +1041,15 @@
                     'Allen_superior_frontal_gyrus_R',
                     'Allen_angular_gyrus_R',
                     'Allen_supramarginal_gyrus_R'
-                ]
+                ],
+                learnMore: {
+                    title: 'Uncertainty and Control',
+                    source: 'Brown University Professor',
+                    guest: 'Dr. Judson Brewer',
+                    youtubeId: '1M-bUw-OiG0',
+                    startTime: 1596,
+                    fullUrl: 'https://youtube.com/watch?v=1M-bUw-OiG0&t=1596s'
+                }
             },
             'salience': {
                 founderName: 'Lock-in',
@@ -858,7 +1065,15 @@
                     'Allen_paracingulate_gyrus_R',
                     'Allen_long_insular_gyri_L',
                     'Allen_long_insular_gyri_R'
-                ]
+                ],
+                learnMore: {
+                    title: 'Cingulate Cortex & Emotions',
+                    source: 'Stanford Psychiatry Professor',
+                    guest: 'Dr. Nolan Williams',
+                    youtubeId: 'X4QE6t-MkYE',
+                    startTime: 2916,
+                    fullUrl: 'https://youtube.com/watch?v=X4QE6t-MkYE&t=2916s'
+                }
             },
             'dmn': {
                 founderName: 'EQ',
@@ -874,7 +1089,15 @@
                     'Allen_precuneus_R',
                     'Allen_cingulate_gyrus_caudal_posterior_part_L',
                     'Allen_cingulate_gyrus_caudal_posterior_part_R'
-                ]
+                ],
+                learnMore: {
+                    title: 'Default Mode & Mind Wandering',
+                    source: 'Stanford Neurobiology Professor',
+                    guest: 'Dr. Andrew Huberman',
+                    youtubeId: 'wTBSGgbIvsY',
+                    startTime: 1380,
+                    fullUrl: 'https://youtube.com/watch?v=wTBSGgbIvsY&t=1380s'
+                }
             }
         };
 
@@ -1060,7 +1283,7 @@
             });
         }
 
-        // Render v4-style network cards
+        // Render v4-style network cards with YouTube links
         function renderNetworkCards() {
             const grid = document.getElementById('networks-grid');
             const networkOrder = ['left-cen', 'right-cen', 'salience', 'dmn'];
@@ -1090,6 +1313,15 @@
                                 <div class="card-structures-label">Key Structures</div>
                                 <div class="structures-list">${net.structureNames.map(n => `<span class="structure-tag">${n}</span>`).join('')}</div>
                             </div>
+                            <div class="card-learn-more">
+                                <button class="learn-more-btn" data-network="${id}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                                    </svg>
+                                    Learn more from ${net.learnMore.guest}
+                                </button>
+                                <div class="learn-more-source">${net.learnMore.source}</div>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -1097,7 +1329,8 @@
             
             // Attach click listeners
             grid.querySelectorAll('.network-card').forEach(card => {
-                card.addEventListener('click', () => {
+                card.addEventListener('click', (e) => {
+                    if (e.target.closest('.learn-more-btn')) return;
                     const networkId = card.dataset.network;
                     if (networkId !== currentNetwork) {
                         currentNetwork = networkId;
@@ -1106,7 +1339,42 @@
                     }
                 });
             });
+            
+            // Learn more button listeners
+            grid.querySelectorAll('.learn-more-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    openVideoModal(btn.dataset.network);
+                });
+            });
         }
+        
+        // Video Modal Functions
+        function openVideoModal(networkId) {
+            const net = networks[networkId];
+            const modal = document.getElementById('video-modal');
+            const iframe = document.getElementById('video-iframe');
+            
+            document.getElementById('modal-title').textContent = net.learnMore.title;
+            document.getElementById('modal-subtitle').textContent = `${net.learnMore.guest} · ${net.learnMore.source}`;
+            document.getElementById('modal-youtube-link').href = net.learnMore.fullUrl;
+            
+            iframe.src = `https://www.youtube.com/embed/${net.learnMore.youtubeId}?autoplay=1&start=${net.learnMore.startTime}&rel=0&playsinline=1`;
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeVideoModal() {
+            const modal = document.getElementById('video-modal');
+            document.getElementById('video-iframe').src = '';
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        
+        document.getElementById('modal-close').addEventListener('click', closeVideoModal);
+        document.getElementById('video-modal').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) closeVideoModal();
+        });
         
         renderNetworkCards();
 
