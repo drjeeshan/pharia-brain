@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Align Your Brain to Your Ambition | Pharia Health</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Personalized, FDA-cleared brain stimulation. A full-day protocol to reach your target zone, followed by monthly maintenance. Founding member rates available.">
+    
+    <!-- Open Graph / Facebook / iMessage -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://phariahealth.com/brain">
+    <meta property="og:title" content="What if your brain could match your ambition?">
+    <meta property="og:description" content="Access your mind's full capacity with TMS therapy. Foundation day + monthly boosters.">
+    <meta property="og:image" content="https://drjeeshan.github.io/pharia-brain/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://phariahealth.com/brain">
+    <meta name="twitter:title" content="What if your brain could match your ambition?">
+    <meta name="twitter:description" content="Access your mind's full capacity with TMS therapy.">
+    <meta name="twitter:image" content="https://drjeeshan.github.io/pharia-brain/og-image.png">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+        }
+    }
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --bg-primary: #202621;
+            --bg-card: rgba(255, 255, 255, 0.05);
+            --bg-card-hover: rgba(255, 255, 255, 0.08);
+            --accent-blue: #A4C8FF;
+            --accent-blue-soft: rgba(164, 200, 255, 0.15);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.75);
+            --text-muted: rgba(255, 255, 255, 0.5);
+            --border-subtle: rgba(255, 255, 255, 0.1);
+            --border-hover: rgba(255, 255, 255, 0.2);
+            --safe-bottom: env(safe-area-inset-bottom, 0px);
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            -webkit-font-smoothing: antialiased;
+            line-height: 1.6;
+        }
+        
+        .serif {
+            font-family: 'Instrument Serif', Georgia, serif;
+        }
+        
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(to bottom, var(--bg-primary), transparent);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            color: var(--accent-blue);
+        }
+        
+        .logo svg {
+            width: 28px;
+            height: 28px;
+        }
+        
+        .header-cta {
+            background: var(--accent-blue);
+            color: var(--bg-primary);
+            padding: 10px 20px;
+            border-radius: 24px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        
+        .header-cta:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 20px rgba(164, 200, 255, 0.3);
+        }
+        
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 100px 24px 40px;
+            max-width: 600px;
+        }
+        
+        .hero-eyebrow {
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent-blue);
+            margin-bottom: 16px;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease forwards;
+        }
+        
+        .hero-title {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: clamp(2.2rem, 8vw, 3.2rem);
+            font-weight: 400;
+            line-height: 1.15;
+            margin-bottom: 20px;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease 0.1s forwards;
+        }
+        
+        .hero-title em {
+            color: var(--accent-blue);
+            font-style: italic;
+        }
+        
+        .hero-subtitle {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+            max-width: 440px;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease 0.2s forwards;
+        }
+        
+        .hero-cta-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease 0.3s forwards;
+        }
+        
+        .cta-primary {
+            background: var(--accent-blue);
+            color: var(--bg-primary);
+            padding: 16px 32px;
+            border-radius: 32px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .cta-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(164, 200, 255, 0.3);
+        }
+        
+        .cta-secondary {
+            background: transparent;
+            color: var(--accent-blue);
+            padding: 16px 32px;
+            border-radius: 32px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            text-decoration: none;
+            text-align: center;
+            border: 1px solid var(--accent-blue);
+            transition: all 0.2s ease;
+        }
+        
+        .cta-secondary:hover {
+            background: var(--accent-blue-soft);
+        }
+        
+        .hero-scroll {
+            position: absolute;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            opacity: 0;
+            animation: fadeIn 0.6s ease 0.6s forwards;
+        }
+        
+        .hero-scroll svg {
+            width: 20px;
+            height: 20px;
+            animation: bounce 2s ease-in-out infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(6px); }
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Model Section */
+        .section {
+            padding: 80px 24px;
+        }
+        
+        .section-label {
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent-blue);
+            margin-bottom: 16px;
+        }
+        
+        .section-title {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: clamp(1.8rem, 5vw, 2.4rem);
+            font-weight: 400;
+            line-height: 1.2;
+            margin-bottom: 24px;
+        }
+        
+        .model-section {
+            background: linear-gradient(135deg, rgba(164, 200, 255, 0.05) 0%, transparent 50%);
+        }
+        
+        .model-grid {
+            display: grid;
+            gap: 16px;
+            margin-top: 32px;
+        }
+        
+        .model-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            padding: 28px 24px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .model-card-highlight {
+            border-color: var(--accent-blue);
+            background: linear-gradient(135deg, rgba(164, 200, 255, 0.08) 0%, var(--bg-card) 100%);
+        }
+        
+        .model-card-badge {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: var(--accent-blue);
+            color: var(--bg-primary);
+            font-size: 0.65rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 12px;
+            letter-spacing: 0.05em;
+        }
+        
+        .model-card-name {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        
+        .model-card-title {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+        }
+        
+        .model-card-price {
+            display: flex;
+            align-items: baseline;
+            gap: 4px;
+            margin-bottom: 16px;
+        }
+        
+        .model-card-price-amount {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--accent-blue);
+        }
+        
+        .model-card-price-period {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+        
+        .model-card-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        
+        .model-card-features {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-subtle);
+        }
+        
+        .model-card-feature {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+        
+        .model-card-feature:last-child {
+            margin-bottom: 0;
+        }
+        
+        .model-card-feature svg {
+            width: 18px;
+            height: 18px;
+            color: var(--accent-blue);
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        
+        /* Brain Section */
+        .brain-section {
+            padding-bottom: 40px;
+        }
+        
+        .brain-viewer {
+            height: 50vh;
+            min-height: 300px;
+            max-height: 450px;
+            position: relative;
+            margin: 32px -24px 0;
+            background: radial-gradient(ellipse at center, rgba(164, 200, 255, 0.03) 0%, transparent 70%);
+        }
+        
+        #brain-canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+            touch-action: none;
+        }
+        
+        .loading-overlay {
+            position: absolute;
+            inset: 0;
+            background: var(--bg-primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            z-index: 10;
+            transition: opacity 0.5s ease;
+        }
+        
+        .loading-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .spinner {
+            width: 36px;
+            height: 36px;
+            border: 2px solid var(--border-subtle);
+            border-top-color: var(--accent-blue);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        .loading-text {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+        
+        .viewer-hint {
+            position: absolute;
+            bottom: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-muted);
+            padding: 10px 18px;
+            border-radius: 24px;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+        
+        .viewer-hint.hidden {
+            opacity: 0;
+        }
+        
+        .viewer-hint svg {
+            width: 16px;
+            height: 16px;
+        }
+        
+        /* Network Cards */
+        .networks-grid {
+            display: grid;
+            gap: 12px;
+            margin-top: 24px;
+        }
+        
+        .network-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .network-card:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--border-hover);
+        }
+        
+        .network-card.active {
+            border-color: currentColor;
+            background: var(--bg-card-hover);
+        }
+        
+        .network-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+        
+        .network-card-title {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+        
+        .network-card-metaphor {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-style: italic;
+            font-size: 0.85rem;
+        }
+        
+        .network-card-icon {
+            width: 24px;
+            height: 24px;
+            opacity: 0.5;
+            transition: all 0.3s ease;
+        }
+        
+        .network-card.active .network-card-icon {
+            opacity: 1;
+            transform: rotate(180deg);
+        }
+        
+        .network-card-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        
+        .network-card.active .network-card-desc {
+            max-height: 150px;
+            opacity: 1;
+            margin-top: 12px;
+        }
+        
+        /* Final CTA */
+        .final-cta {
+            padding: 60px 24px 100px;
+            text-align: center;
+            background: linear-gradient(to top, rgba(164, 200, 255, 0.08) 0%, transparent 100%);
+        }
+        
+        .final-cta-title {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: clamp(1.6rem, 5vw, 2rem);
+            margin-bottom: 12px;
+        }
+        
+        .final-cta-subtitle {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 28px;
+        }
+        
+        .final-cta .cta-primary {
+            display: inline-flex;
+        }
+        
+        .cta-note {
+            margin-top: 16px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        
+        /* Desktop */
+        @media (min-width: 768px) {
+            .hero-content {
+                padding: 120px 48px 60px;
+                max-width: 700px;
+            }
+            
+            .hero-cta-group {
+                flex-direction: row;
+            }
+            
+            .section {
+                padding: 100px 48px;
+                max-width: 900px;
+                margin: 0 auto;
+            }
+            
+            .model-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 24px;
+            }
+            
+            .brain-viewer {
+                margin: 48px auto 0;
+                max-width: 600px;
+                border-radius: 24px;
+            }
+            
+            .networks-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="20" cy="20" r="3" fill="currentColor"/>
+                <g stroke="currentColor" stroke-width="1.5">
+                    <line x1="20" y1="8" x2="20" y2="14"/>
+                    <line x1="20" y1="26" x2="20" y2="32"/>
+                    <line x1="8" y1="20" x2="14" y2="20"/>
+                    <line x1="26" y1="20" x2="32" y2="20"/>
+                    <line x1="11.5" y1="11.5" x2="15.5" y2="15.5"/>
+                    <line x1="24.5" y1="24.5" x2="28.5" y2="28.5"/>
+                    <line x1="28.5" y1="11.5" x2="24.5" y2="15.5"/>
+                    <line x1="15.5" y1="24.5" x2="11.5" y2="28.5"/>
+                </g>
+            </svg>
+            PHARIA<span style="font-weight: 400; opacity: 0.7; margin-left: 4px;">HEALTH</span>
+        </div>
+        <a href="https://cal.com/pharia/brain" class="header-cta" target="_blank">Book a Call</a>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-eyebrow">For Founders, Operators & High Performers</div>
+            <h1 class="hero-title">A new way to <em>access more</em> of your mind's capacity.</h1>
+            <p class="hero-subtitle">Personalized, FDA-cleared, non-invasive brain stimulation. Guided by clinicians to support consistent mental performance, clarity, and steadiness.</p>
+            <div class="hero-cta-group">
+                <a href="https://cal.com/pharia/brain" class="cta-primary" target="_blank">
+                    Get Started
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+                <a href="#networks" class="cta-secondary">Explore the Science</a>
+            </div>
+        </div>
+        <div class="hero-scroll">
+            <span>Scroll to learn more</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 9l6 6 6-6"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Model Section -->
+    <section class="section model-section">
+        <div class="section-label">/The Model</div>
+        <h2 class="section-title">Start fast. Stay sharp.</h2>
+        <p style="color: var(--text-secondary); max-width: 500px;">We've evolved our approach based on what we've learned from dozens of founders, investors, and executives.</p>
+        
+        <div class="model-grid">
+            <div class="model-card model-card-highlight">
+                <span class="model-card-badge">FOUNDING RATE</span>
+                <div class="model-card-name">Step 1</div>
+                <div class="model-card-title">Foundation Day</div>
+                <div class="model-card-price">
+                    <span class="model-card-price-amount">$995</span>
+                    <span class="model-card-price-period">one-time</span>
+                </div>
+                <p class="model-card-desc">A full day of personalized TMS treatment to get you into the target zone. We work with you to clarify your goals and stimulate the brain network most relevant to your outcome.</p>
+                <div class="model-card-features">
+                    <div class="model-card-feature">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                        <span>Full-day protocol with expert clinicians</span>
+                    </div>
+                    <div class="model-card-feature">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                        <span>Personalized targeting based on your goals</span>
+                    </div>
+                    <div class="model-card-feature">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                        <span>Effects typically felt within 24-72 hours</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="model-card">
+                <div class="model-card-name">Step 2</div>
+                <div class="model-card-title">Studio Access</div>
+                <div class="model-card-price">
+                    <span class="model-card-price-amount">$200</span>
+                    <span class="model-card-price-period">/month</span>
+                </div>
+                <p class="model-card-desc">Monthly 90-minute boosters to maintain the effect. Like a gym membership for your brain—stay in the zone as demands shift.</p>
+                <div class="model-card-features">
+                    <div class="model-card-feature">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                        <span>Two baseline stimulations per month</span>
+                    </div>
+                    <div class="model-card-feature">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                        <span>Additional sessions during high-demand periods</span>
+                    </div>
+                    <div class="model-card-feature">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                        <span>Ongoing tracking and clinical guidance</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Brain Networks Section -->
+    <section class="section brain-section" id="networks">
+        <div class="section-label">/The Science</div>
+        <h2 class="section-title">Four networks. <br>One target at a time.</h2>
+        <p style="color: var(--text-secondary); max-width: 500px;">We use precision TMS to modulate specific brain networks based on what you're optimizing for. Tap a network to explore.</p>
+        
+        <div class="brain-viewer">
+            <div class="loading-overlay" id="loading">
+                <div class="spinner"></div>
+                <div class="loading-text">Loading brain model...</div>
+            </div>
+            <canvas id="brain-canvas"></canvas>
+            <div class="viewer-hint" id="viewer-hint">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 9l-2 2-2-2"/>
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M12 14V6"/>
+                </svg>
+                Drag to rotate
+            </div>
+        </div>
+        
+        <div class="networks-grid" id="networks-grid"></div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="final-cta">
+        <h2 class="final-cta-title">Ready to align your brain<br>to your ambition?</h2>
+        <p class="final-cta-subtitle">Book a call to see if Pharia is right for you.</p>
+        <a href="https://cal.com/pharia/brain" class="cta-primary" target="_blank">
+            Schedule a Consultation
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+        </a>
+        <p class="cta-note">Founding member rates are limited. Price will increase.</p>
+    </section>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+        import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+        import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+        import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+        import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
+        import { GammaCorrectionShader } from 'three/addons/shaders/GammaCorrectionShader.js';
+
+        const networks = {
+            'left-cen': {
+                label: 'Proactive Control',
+                metaphor: '"The CEO"',
+                color: '#A4C8FF',
+                description: "Your brain's command center for goal-directed behavior. When underactive, motivation drops and getting started becomes a struggle. We stimulate this network for drive and focus.",
+                meshNames: [
+                    'Allen_middle_frontal_gyrus_L',
+                    'Allen_superior_frontal_gyrus_L',
+                    'Allen_angular_gyrus_L',
+                    'Allen_supramarginal_gyrus_L'
+                ]
+            },
+            'right-cen': {
+                label: 'Reactive Control',
+                metaphor: '"The Filter"',
+                color: '#8AB3F9',
+                description: "Your mental noise-canceler. Helps filter distractions and quiet anxious rumination. When underactive, worries amplify. We target this for calm focus.",
+                meshNames: [
+                    'Allen_middle_frontal_gyrus_R',
+                    'Allen_superior_frontal_gyrus_R',
+                    'Allen_angular_gyrus_R',
+                    'Allen_supramarginal_gyrus_R'
+                ]
+            },
+            'salience': {
+                label: 'Salience Network',
+                metaphor: '"The Priority Switch"',
+                color: '#FFB974',
+                description: "Your relevance detector. Decides what deserves attention now. When dysregulated, you feel stuck—unable to shift focus. We target this for mental flexibility.",
+                meshNames: [
+                    'Allen_superior_frontal_gyrus_L',
+                    'Allen_superior_frontal_gyrus_R',
+                    'Allen_paracingulate_gyrus_L',
+                    'Allen_paracingulate_gyrus_R',
+                    'Allen_long_insular_gyri_L',
+                    'Allen_long_insular_gyri_R'
+                ]
+            },
+            'dmn': {
+                label: 'Default Mode',
+                metaphor: '"The Inner Critic"',
+                color: '#C8D4C8',
+                description: "Your internal narrator, active during self-reflection. When overactive, fuels negative self-talk and inability to be present. We target this for presence and calm.",
+                meshNames: [
+                    'Allen_superior_frontal_gyrus_L',
+                    'Allen_superior_frontal_gyrus_R',
+                    'Allen_precuneus_L',
+                    'Allen_precuneus_R',
+                    'Allen_cingulate_gyrus_caudal_posterior_part_L',
+                    'Allen_cingulate_gyrus_caudal_posterior_part_R'
+                ]
+            }
+        };
+
+        let currentNetwork = 'left-cen';
+        let allMeshes = [];
+        let wireframeMeshes = [];
+        let meshByName = {};
+        let wireframeByName = {};
+        let highlightMaterials = {}, highlightWireframeMaterials = {};
+        
+        const baseOpacity = 0.05;
+        const baseWireframeOpacity = 0.05;
+        const highlightOpacity = 0.9;
+        const highlightWireframeOpacity = 0.7;
+        const baseEmissive = 0.35;
+        const pulseAmount = 0.015;
+
+        const canvas = document.getElementById('brain-canvas');
+        const container = canvas.parentElement;
+        const width = container.clientWidth;
+        const height = container.clientHeight;
+
+        THREE.ColorManagement.enabled = false;
+
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x202621);
+        
+        const camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 100);
+        camera.position.set(0, 0, 1.8);
+
+        const renderer = new THREE.WebGLRenderer({ 
+            canvas, 
+            antialias: true,
+            powerPreference: 'high-performance'
+        });
+        renderer.setSize(width, height);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
+        renderer.toneMapping = THREE.NoToneMapping;
+
+        const composer = new EffectComposer(renderer);
+        composer.addPass(new RenderPass(scene, camera));
+        composer.addPass(new UnrealBloomPass(new THREE.Vector2(width, height), 0.18, 0.12, 0.5));
+        composer.addPass(new ShaderPass(GammaCorrectionShader));
+
+        const controls = new OrbitControls(camera, canvas);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.08;
+        controls.enablePan = false;
+        controls.autoRotate = true;
+        controls.autoRotateSpeed = 0.4;
+        controls.enableZoom = true;
+        controls.minDistance = 1.2;
+        controls.maxDistance = 3;
+
+        scene.add(new THREE.AmbientLight(0x404550, 0.5));
+        const dir1 = new THREE.DirectionalLight(0xffffff, 0.6);
+        dir1.position.set(5, 5, 5);
+        scene.add(dir1);
+        const dir2 = new THREE.DirectionalLight(0x88aacc, 0.4);
+        dir2.position.set(-5, 3, -5);
+        scene.add(dir2);
+
+        Object.entries(networks).forEach(([key, net]) => {
+            highlightMaterials[key] = new THREE.MeshLambertMaterial({
+                color: net.color,
+                emissive: net.color,
+                emissiveIntensity: baseEmissive,
+                transparent: true,
+                opacity: highlightOpacity,
+                side: THREE.DoubleSide,
+                depthWrite: true
+            });
+            highlightWireframeMaterials[key] = new THREE.MeshBasicMaterial({
+                color: net.color,
+                wireframe: true,
+                transparent: true,
+                opacity: highlightWireframeOpacity,
+                depthWrite: false
+            });
+        });
+
+        const brainGroup = new THREE.Group();
+        scene.add(brainGroup);
+
+        const loader = new GLTFLoader();
+        loader.load('https://drjeeshan.github.io/pharia-brain/brain.glb',
+            (gltf) => {
+                const model = gltf.scene;
+                const box = new THREE.Box3().setFromObject(model);
+                const size = box.getSize(new THREE.Vector3());
+                const maxDim = Math.max(size.x, size.y, size.z);
+                const scale = 1.5 / maxDim;
+                model.scale.set(scale, scale, scale);
+
+                const scaledBox = new THREE.Box3().setFromObject(model);
+                const scaledCenter = scaledBox.getCenter(new THREE.Vector3());
+                model.position.set(-scaledCenter.x, -scaledCenter.y, -scaledCenter.z);
+
+                model.traverse((child) => {
+                    if (child.isMesh) {
+                        allMeshes.push(child);
+                        meshByName[child.name] = child;
+                        
+                        child.material = new THREE.MeshLambertMaterial({ 
+                            color: 0x4a5055,
+                            transparent: true,
+                            opacity: baseOpacity,
+                            side: THREE.DoubleSide,
+                            depthWrite: false
+                        });
+                        
+                        const wireframeClone = child.clone();
+                        wireframeClone.material = new THREE.MeshBasicMaterial({
+                            color: 0x6a7580,
+                            wireframe: true,
+                            transparent: true,
+                            opacity: baseWireframeOpacity,
+                            depthWrite: false
+                        });
+                        wireframeClone.renderOrder = 1;
+                        child.parent.add(wireframeClone);
+                        wireframeMeshes.push(wireframeClone);
+                        wireframeByName[child.name] = wireframeClone;
+                    }
+                });
+
+                brainGroup.add(model);
+                highlightNetwork(currentNetwork);
+                document.getElementById('loading').classList.add('hidden');
+                
+                canvas.addEventListener('touchstart', hideHint, { once: true });
+                canvas.addEventListener('mousedown', hideHint, { once: true });
+            },
+            (progress) => {
+                if (progress.total) {
+                    const pct = Math.round((progress.loaded / progress.total) * 100);
+                    document.querySelector('.loading-text').textContent = `Loading: ${pct}%`;
+                }
+            },
+            (error) => console.error('Load error:', error)
+        );
+
+        function hideHint() {
+            document.getElementById('viewer-hint').classList.add('hidden');
+        }
+
+        function highlightNetwork(networkId) {
+            const network = networks[networkId];
+            const hlMat = highlightMaterials[networkId];
+            const hlWireMat = highlightWireframeMaterials[networkId];
+            
+            allMeshes.forEach(mesh => {
+                mesh.material.color.setHex(0x4a5055);
+                mesh.material.emissive = undefined;
+                mesh.material.emissiveIntensity = 0;
+                mesh.material.opacity = baseOpacity;
+                mesh.material.depthWrite = false;
+                mesh.renderOrder = 0;
+            });
+            
+            wireframeMeshes.forEach(mesh => {
+                mesh.material.color.setHex(0x6a7580);
+                mesh.material.opacity = baseWireframeOpacity;
+                mesh.renderOrder = 1;
+            });
+
+            network.meshNames.forEach(name => {
+                const mesh = meshByName[name];
+                if (mesh) {
+                    mesh.material = hlMat.clone();
+                    mesh.material.emissiveIntensity = baseEmissive;
+                    mesh.material.depthWrite = true;
+                    mesh.renderOrder = 10;
+                    
+                    const wireframeMesh = wireframeByName[name];
+                    if (wireframeMesh) {
+                        wireframeMesh.material = hlWireMat.clone();
+                        wireframeMesh.renderOrder = 11;
+                    }
+                }
+            });
+        }
+
+        // Render network cards
+        function renderNetworkCards() {
+            const grid = document.getElementById('networks-grid');
+            const networkOrder = ['left-cen', 'right-cen', 'salience', 'dmn'];
+            
+            grid.innerHTML = networkOrder.map(id => {
+                const net = networks[id];
+                const isActive = id === currentNetwork;
+                return `
+                    <div class="network-card ${isActive ? 'active' : ''}" data-network="${id}" style="--card-color: ${net.color}; border-color: ${isActive ? net.color : ''}">
+                        <div class="network-card-header">
+                            <div>
+                                <div class="network-card-title" style="color: ${net.color}">${net.label}</div>
+                                <div class="network-card-metaphor" style="color: ${net.color}">${net.metaphor}</div>
+                            </div>
+                            <svg class="network-card-icon" style="color: ${net.color}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M6 9l6 6 6-6"/>
+                            </svg>
+                        </div>
+                        <div class="network-card-desc">${net.description}</div>
+                    </div>
+                `;
+            }).join('');
+            
+            grid.querySelectorAll('.network-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const networkId = card.dataset.network;
+                    currentNetwork = networkId;
+                    highlightNetwork(networkId);
+                    renderNetworkCards();
+                });
+            });
+        }
+        
+        renderNetworkCards();
+
+        let time = 0;
+        let lastTime = 0;
+        
+        function animate(currentTime) {
+            requestAnimationFrame(animate);
+            if (currentTime - lastTime < 16) return;
+            lastTime = currentTime;
+            
+            controls.update();
+            time += 0.02;
+            const pulse = baseEmissive + Math.sin(time) * pulseAmount;
+            
+            allMeshes.forEach(mesh => {
+                if (mesh.material.emissive && mesh.material.emissiveIntensity > 0) {
+                    mesh.material.emissiveIntensity = pulse;
+                }
+            });
+
+            composer.render();
+        }
+        animate(0);
+
+        function handleResize() {
+            const w = container.clientWidth;
+            const h = container.clientHeight;
+            camera.aspect = w / h;
+            camera.updateProjectionMatrix();
+            renderer.setSize(w, h);
+            composer.setSize(w, h);
+        }
+        
+        window.addEventListener('resize', handleResize);
+    </script>
+</body>
+</html>
