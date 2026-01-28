@@ -921,6 +921,33 @@
                 grid-template-columns: 1fr 1fr;
                 gap: 16px;
             }
+            
+            /* Desktop: All cards always expanded */
+            .network-card {
+                cursor: default;
+                padding: 20px;
+            }
+            
+            .network-card .card-founder-name {
+                font-size: 1.2rem;
+                margin-bottom: 6px;
+            }
+            
+            .network-card .card-content {
+                max-height: 500px;
+                opacity: 1;
+                margin-top: 16px;
+            }
+            
+            .network-card .card-expand-icon {
+                display: none;
+            }
+            
+            /* Highlight selected card on desktop */
+            .network-card.selected {
+                border-color: var(--accent-blue);
+                background: linear-gradient(135deg, rgba(164, 200, 255, 0.08) 0%, var(--bg-card) 100%);
+            }
         }
     </style>
 </head>
@@ -1401,17 +1428,28 @@
             });
         }
 
-        // Render v4-style network cards with YouTube links
+        // Check if we're on desktop
+        function isDesktop() {
+            return window.innerWidth >= 768;
+        }
+
+        // Render network cards - different behavior for mobile vs desktop
         function renderNetworkCards() {
             const grid = document.getElementById('networks-grid');
             const networkOrder = ['left-cen', 'right-cen', 'salience', 'dmn'];
-            const sortedNetworks = [currentNetwork, ...networkOrder.filter(id => id !== currentNetwork)];
+            
+            // On mobile, sort with current network first; on desktop, keep natural order
+            const sortedNetworks = isDesktop() 
+                ? networkOrder 
+                : [currentNetwork, ...networkOrder.filter(id => id !== currentNetwork)];
             
             grid.innerHTML = sortedNetworks.map(id => {
                 const net = networks[id];
-                const isExpanded = id === currentNetwork;
+                const isSelected = id === currentNetwork;
+                // On mobile: only current is expanded; on desktop: all expanded (CSS handles this)
+                const isExpanded = !isDesktop() && isSelected;
                 return `
-                    <div class="network-card ${isExpanded ? 'expanded' : ''}" data-network="${id}">
+                    <div class="network-card ${isExpanded ? 'expanded' : ''} ${isSelected ? 'selected' : ''}" data-network="${id}">
                         <div class="card-header">
                             <div>
                                 <div class="card-founder-name" style="color: ${net.color}">${net.founderName}</div>
@@ -1453,7 +1491,15 @@
                     if (networkId !== currentNetwork) {
                         currentNetwork = networkId;
                         highlightNetwork(networkId);
-                        renderNetworkCards();
+                        // On mobile: re-render to update accordion; on desktop: just update selection
+                        if (isDesktop()) {
+                            // Just update selected class
+                            grid.querySelectorAll('.network-card').forEach(c => {
+                                c.classList.toggle('selected', c.dataset.network === networkId);
+                            });
+                        } else {
+                            renderNetworkCards();
+                        }
                     }
                 });
             });
@@ -1495,6 +1541,13 @@
         });
         
         renderNetworkCards();
+        
+        // Re-render cards on resize (to handle mobile <-> desktop transition)
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(renderNetworkCards, 150);
+        });
 
         let time = 0;
         let lastTime = 0;
