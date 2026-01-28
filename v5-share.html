@@ -288,6 +288,118 @@
             border-color: rgba(255, 255, 255, 0.3);
         }
         
+        /* Referral Code Soft Gate */
+        .referral-toggle {
+            margin-top: 16px;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease 0.4s forwards;
+        }
+        
+        .referral-trigger {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-family: var(--font-body);
+            font-size: 0.8rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 0;
+            transition: color 0.2s ease;
+        }
+        
+        .referral-trigger:hover {
+            color: var(--text-secondary);
+        }
+        
+        .referral-trigger svg {
+            width: 14px;
+            height: 14px;
+            transition: transform 0.2s ease;
+        }
+        
+        .referral-toggle.active .referral-trigger svg {
+            transform: rotate(180deg);
+        }
+        
+        .referral-input-group {
+            display: none;
+            margin-top: 12px;
+            gap: 8px;
+            align-items: center;
+        }
+        
+        .referral-toggle.active .referral-input-group {
+            display: flex;
+        }
+        
+        .referral-input {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 12px 16px;
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            color: var(--text-primary);
+            width: 160px;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        
+        .referral-input::placeholder {
+            color: var(--text-muted);
+        }
+        
+        .referral-input:focus {
+            border-color: var(--accent-blue);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .referral-apply {
+            background: rgba(164, 200, 255, 0.15);
+            border: 1px solid rgba(164, 200, 255, 0.3);
+            color: var(--accent-blue);
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .referral-apply:hover {
+            background: rgba(164, 200, 255, 0.25);
+        }
+        
+        .referral-success {
+            display: none;
+            align-items: center;
+            gap: 8px;
+            color: #7FE5A0;
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            margin-top: 12px;
+        }
+        
+        .referral-success svg {
+            width: 16px;
+            height: 16px;
+        }
+        
+        .referral-toggle.success .referral-input-group {
+            display: none;
+        }
+        
+        .referral-toggle.success .referral-success {
+            display: flex;
+        }
+        
+        .referral-toggle.success .referral-trigger {
+            display: none;
+        }
+        
         .hero-scroll {
             position: absolute;
             bottom: 24px;
@@ -888,6 +1000,21 @@
             color: var(--text-muted);
         }
         
+        /* Final CTA Referral - Centered */
+        .final-cta .referral-toggle {
+            margin-top: 20px;
+            opacity: 1;
+            animation: none;
+        }
+        
+        .final-cta .referral-input-group {
+            justify-content: center;
+        }
+        
+        .final-cta .referral-success {
+            justify-content: center;
+        }
+        
         /* Desktop */
         @media (min-width: 768px) {
             .hero-content {
@@ -991,6 +1118,24 @@
                     </svg>
                 </a>
                 <a href="#networks" class="cta-secondary">Explore the Science</a>
+            </div>
+            <div class="referral-toggle" id="hero-referral">
+                <button class="referral-trigger" onclick="toggleReferral('hero-referral')">
+                    Have a referral code?
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 9l6 6 6-6"/>
+                    </svg>
+                </button>
+                <div class="referral-input-group">
+                    <input type="text" class="referral-input" placeholder="Enter code" maxlength="12">
+                    <button class="referral-apply" onclick="applyReferral('hero-referral')">Apply</button>
+                </div>
+                <div class="referral-success">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 6L9 17l-5-5"/>
+                    </svg>
+                    Priority access unlocked
+                </div>
             </div>
         </div>
         <div class="hero-scroll">
@@ -1107,6 +1252,24 @@
             </svg>
         </a>
         <p class="cta-note">Founding member rates are limited. Price will increase.</p>
+        <div class="referral-toggle" id="footer-referral">
+            <button class="referral-trigger" onclick="toggleReferral('footer-referral')">
+                Have a referral code?
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 9l6 6 6-6"/>
+                </svg>
+            </button>
+            <div class="referral-input-group">
+                <input type="text" class="referral-input" placeholder="Enter code" maxlength="12">
+                <button class="referral-apply" onclick="applyReferral('footer-referral')">Apply</button>
+            </div>
+            <div class="referral-success">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 6L9 17l-5-5"/>
+                </svg>
+                Priority access unlocked
+            </div>
+        </div>
     </section>
 
     <!-- Video Modal -->
@@ -1139,6 +1302,41 @@
             </a>
         </div>
     </div>
+
+    <!-- Referral Code Logic -->
+    <script>
+        function toggleReferral(id) {
+            const el = document.getElementById(id);
+            el.classList.toggle('active');
+            if (el.classList.contains('active')) {
+                el.querySelector('.referral-input').focus();
+            }
+        }
+        
+        function applyReferral(id) {
+            const el = document.getElementById(id);
+            const input = el.querySelector('.referral-input');
+            const code = input.value.trim();
+            
+            if (code.length > 0) {
+                // Show success state on both referral toggles
+                document.querySelectorAll('.referral-toggle').forEach(toggle => {
+                    toggle.classList.remove('active');
+                    toggle.classList.add('success');
+                });
+                
+                // Store in sessionStorage for potential use
+                sessionStorage.setItem('referralCode', code);
+            }
+        }
+        
+        // Check if code was already applied
+        if (sessionStorage.getItem('referralCode')) {
+            document.querySelectorAll('.referral-toggle').forEach(toggle => {
+                toggle.classList.add('success');
+            });
+        }
+    </script>
 
     <script type="module">
         import * as THREE from 'three';
