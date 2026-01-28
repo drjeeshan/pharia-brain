@@ -474,7 +474,7 @@
             max-height: 450px;
             position: relative;
             margin: 32px -24px 0;
-            background: radial-gradient(ellipse at center, rgba(164, 200, 255, 0.03) 0%, transparent 70%);
+            background: var(--bg-primary);
         }
         
         #brain-canvas {
@@ -1240,7 +1240,8 @@
         THREE.ColorManagement.enabled = false;
 
         const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x202621);
+        // Background color adjusted for gamma correction: 0x030403 becomes #202621 after gamma
+        scene.background = new THREE.Color(0x030403);
         
         const camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 100);
         camera.position.set(0, 0, 1.8);
