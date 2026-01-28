@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Align Your Brain to Your Ambition | Pharia Health</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Personalized, FDA-cleared brain stimulation. A full-day protocol to reach your target zone, followed by monthly maintenance. Founding member rates available.">
+    
+    <!-- Open Graph / Facebook / iMessage -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://phariahealth.com/brain">
+    <meta property="og:title" content="What if your brain could match your ambition?">
+    <meta property="og:description" content="Access your mind's full capacity with TMS therapy. Foundation day + monthly boosters.">
+    <meta property="og:image" content="https://drjeeshan.github.io/pharia-brain/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://phariahealth.com/brain">
+    <meta name="twitter:title" content="What if your brain could match your ambition?">
+    <meta name="twitter:description" content="Access your mind's full capacity with TMS therapy.">
+    <meta name="twitter:image" content="https://drjeeshan.github.io/pharia-brain/og-image.png">
+    
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+        }
+    }
+    </script>
+    <style>
+        /* Brand Font Declarations */
+        @font-face {
+            font-family: 'Founders Grotesk';
+            src: url('Brand%20Fonts/FoundersGrotesk%20Web/founders-grotesk-light.woff2') format('woff2');
+            font-weight: 300;
+            font-style: normal;
+            font-display: swap;
+        }
+        
+        @font-face {
+            font-family: 'Founders Grotesk';
+            src: url('Brand%20Fonts/FoundersGrotesk%20Web/founders-grotesk-regular.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+        
+        @font-face {
+            font-family: 'Matter';
+            src: url('Brand%20Fonts/Matter%20Web/Matter-Regular.woff2') format('woff2'),
+                 url('Brand%20Fonts/Matter%20Web/Matter-Regular.woff') format('woff');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+        
+        @font-face {
+            font-family: 'Matter';
+            src: url('Brand%20Fonts/Matter%20Web/Matter-Medium.woff2') format('woff2'),
+                 url('Brand%20Fonts/Matter%20Web/Matter-Medium.woff') format('woff');
+            font-weight: 500;
+            font-style: normal;
+            font-display: swap;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --bg-primary: #202621;
+            --bg-card: rgba(255, 255, 255, 0.05);
+            --bg-card-hover: rgba(255, 255, 255, 0.08);
+            --accent-blue: #A4C8FF;
+            --accent-blue-soft: rgba(164, 200, 255, 0.15);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.75);
+            --text-muted: rgba(255, 255, 255, 0.5);
+            --border-subtle: rgba(255, 255, 255, 0.1);
+            --border-hover: rgba(255, 255, 255, 0.2);
+            --safe-bottom: env(safe-area-inset-bottom, 0px);
+            
+            --font-headline: 'Founders Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-body: 'Matter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
+        html { scroll-behavior: smooth; }
+        
+        body {
+            font-family: var(--font-body);
+            font-weight: 400;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            -webkit-font-smoothing: antialiased;
+            line-height: 1.5;
+        }
+        
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.5), transparent);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            color: var(--accent-blue);
+        }
+        
+        .logo svg { width: 28px; height: 28px; }
+        
+        .header-cta {
+            background: var(--accent-blue);
+            color: var(--bg-primary);
+            padding: 10px 20px;
+            border-radius: 24px;
+            font-family: var(--font-body);
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        
+        .header-cta:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 20px rgba(164, 200, 255, 0.3);
+        }
+        
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-video {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            z-index: 0;
+        }
+        
+        .hero-overlay {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(32, 38, 33, 0.4) 0%, rgba(32, 38, 33, 0.6) 50%, rgba(32, 38, 33, 0.95) 100%);
+            z-index: 1;
+        }
+        
+        .hero-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 100px 24px 40px;
+            max-width: 600px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero-eyebrow {
+            font-family: var(--font-body);
+            font-size: 0.75rem;
+            font-weight: 400;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--accent-blue);
+            margin-bottom: 16px;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease forwards;
+        }
+        
+        .hero-title {
+            font-family: var(--font-headline);
+            font-weight: 300;
+            font-size: clamp(2.2rem, 8vw, 3.2rem);
+            line-height: 1;
+            letter-spacing: -0.02em;
+            margin-bottom: 20px;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease 0.1s forwards;
+        }
+        
+        .hero-title em { color: var(--accent-blue); font-style: normal; }
+        
+        .hero-subtitle {
+            font-family: var(--font-body);
+            font-size: 1rem;
+            line-height: 1.5;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+            max-width: 440px;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease 0.2s forwards;
+        }
+        
+        .hero-cta-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease 0.3s forwards;
+        }
+        
+        .cta-primary {
+            background: var(--accent-blue);
+            color: var(--bg-primary);
+            padding: 16px 32px;
+            border-radius: 32px;
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            font-weight: 500;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .cta-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(164, 200, 255, 0.3);
+        }
+        
+        .cta-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            color: var(--text-primary);
+            padding: 16px 32px;
+            border-radius: 32px;
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            font-weight: 500;
+            text-decoration: none;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.2s ease;
+        }
+        
+        .cta-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .hero-scroll {
+            position: absolute;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+            font-family: var(--font-body);
+            font-size: 0.7rem;
+            z-index: 2;
+            opacity: 0;
+            animation: fadeIn 0.6s ease 0.6s forwards;
+        }
+        
+        .hero-scroll svg { width: 20px; height: 20px; animation: bounce 2s ease-in-out infinite; }
+        
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        
+        /* Model Section */
+        .section { padding: 80px 24px; }
+        
+        .section-label {
+            font-family: var(--font-body);
+            font-size: 0.7rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--accent-blue);
+            margin-bottom: 16px;
+        }
+        
+        .section-title {
+            font-family: var(--font-headline);
+            font-weight: 300;
+            font-size: clamp(1.8rem, 5vw, 2.4rem);
+            line-height: 1.2;
+            letter-spacing: -0.01em;
+            margin-bottom: 24px;
+        }
+        
+        .model-section {
+            background: linear-gradient(135deg, rgba(164, 200, 255, 0.05) 0%, transparent 50%);
+        }
+        
+        .model-grid { display: grid; gap: 16px; margin-top: 32px; }
+        
+        .model-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            padding: 28px 24px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .model-card-highlight {
+            border-color: var(--accent-blue);
+            background: linear-gradient(135deg, rgba(164, 200, 255, 0.08) 0%, var(--bg-card) 100%);
+        }
+        
+        .model-card-badge {
+            position: absolute;
+            top: 16px; right: 16px;
+            background: var(--accent-blue);
+            color: var(--bg-primary);
+            font-family: var(--font-body);
+            font-size: 0.65rem;
+            font-weight: 500;
+            padding: 4px 10px;
+            border-radius: 12px;
+            letter-spacing: 0.05em;
+        }
+        
+        .model-card-name {
+            font-family: var(--font-body);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .model-card-title {
+            font-family: var(--font-headline);
+            font-weight: 400;
+            font-size: 1.5rem;
+            line-height: 1.3;
+            margin-bottom: 12px;
+        }
+        
+        .model-card-price {
+            display: flex;
+            align-items: baseline;
+            gap: 4px;
+            margin-bottom: 16px;
+        }
+        
+        .model-card-price-amount {
+            font-family: var(--font-headline);
+            font-size: 2rem;
+            font-weight: 300;
+            color: var(--accent-blue);
+        }
+        
+        .model-card-price-period {
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+        
+        .model-card-desc {
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        
+        .model-card-features {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-subtle);
+        }
+        
+        .model-card-feature {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+        
+        .model-card-feature:last-child { margin-bottom: 0; }
+        
+        .model-card-feature svg {
+            width: 18px; height: 18px;
+            color: var(--accent-blue);
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        
+        /* Brain Section */
+        .brain-section { padding-bottom: 40px; }
+        
+        .brain-viewer {
+            height: 45vh;
+            min-height: 280px;
+            max-height: 400px;
+            position: relative;
+            margin: 32px -24px 0;
+            background: var(--bg-primary);
+        }
+        
+        #brain-canvas {
+            width: 100%; height: 100%;
+            display: block;
+            touch-action: none;
+        }
+        
+        .loading-overlay {
+            position: absolute;
+            inset: 0;
+            background: var(--bg-primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            z-index: 10;
+            transition: opacity 0.5s ease;
+        }
+        
+        .loading-overlay.hidden { opacity: 0; pointer-events: none; }
+        
+        .spinner {
+            width: 36px; height: 36px;
+            border: 2px solid var(--border-subtle);
+            border-top-color: var(--accent-blue);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        .loading-text {
+            font-family: var(--font-body);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+        
+        .viewer-hint {
+            position: absolute;
+            bottom: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-muted);
+            padding: 10px 18px;
+            border-radius: 24px;
+            font-family: var(--font-body);
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+        
+        .viewer-hint.hidden { opacity: 0; }
+        .viewer-hint svg { width: 16px; height: 16px; }
+        
+        /* Carousel Styles */
+        .carousel-container {
+            margin-top: 24px;
+            position: relative;
+        }
+        
+        .carousel-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .carousel-dots {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .carousel-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--border-subtle);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 0;
+        }
+        
+        .carousel-dot.active {
+            width: 24px;
+            border-radius: 4px;
+        }
+        
+        .carousel-arrows {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .carousel-arrow {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .carousel-arrow:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--border-hover);
+        }
+        
+        .carousel-arrow:active {
+            transform: scale(0.95);
+        }
+        
+        .carousel-arrow svg {
+            width: 20px;
+            height: 20px;
+        }
+        
+        .carousel-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            padding: 24px;
+            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        
+        .carousel-card-header {
+            margin-bottom: 16px;
+        }
+        
+        .carousel-card-title {
+            font-family: var(--font-headline);
+            font-weight: 400;
+            font-size: 1.4rem;
+            line-height: 1.3;
+            margin-bottom: 8px;
+        }
+        
+        .carousel-card-meta {
+            font-family: var(--font-body);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .carousel-card-target {
+            font-weight: 500;
+        }
+        
+        .carousel-card-description {
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .carousel-card-structures {
+            padding-top: 16px;
+            border-top: 1px solid var(--border-subtle);
+            margin-bottom: 16px;
+        }
+        
+        .structures-label {
+            font-family: var(--font-body);
+            font-size: 0.65rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+        
+        .structures-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .structure-tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-subtle);
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-family: var(--font-body);
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        
+        .learn-more-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-subtle);
+            padding: 14px 16px;
+            border-radius: 12px;
+            font-family: var(--font-body);
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .learn-more-btn:hover { background: rgba(255, 255, 255, 0.1); }
+        .learn-more-btn:active { transform: scale(0.98); }
+        .learn-more-btn svg { width: 20px; height: 20px; color: #FF0000; flex-shrink: 0; }
+        
+        .learn-more-source {
+            font-family: var(--font-body);
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+        
+        /* Video Modal */
+        .video-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .video-modal.active { opacity: 1; visibility: visible; }
+        
+        .video-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 16px;
+            padding-top: max(16px, env(safe-area-inset-top));
+            background: #1a1d20;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        
+        .video-modal-info { flex: 1; min-width: 0; }
+        
+        .video-modal-title {
+            font-family: var(--font-headline);
+            font-size: 1rem;
+            margin-bottom: 4px;
+            color: var(--text-primary);
+        }
+        
+        .video-modal-subtitle {
+            font-family: var(--font-body);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        
+        .video-modal-close {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+            color: var(--text-primary);
+            border-radius: 50%;
+            margin-left: 12px;
+        }
+        
+        .video-modal-close:hover { background: rgba(255, 255, 255, 0.2); }
+        .video-modal-close svg { width: 20px; height: 20px; display: block; }
+        
+        .video-wrapper { flex: 1; position: relative; background: #000; }
+        
+        .video-wrapper iframe {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%; height: 100%;
+            max-height: 56.25vw;
+            border: none;
+        }
+        
+        .video-modal-footer {
+            padding: 16px;
+            padding-bottom: max(16px, calc(16px + var(--safe-bottom)));
+            background: #1a1d20;
+            border-top: 1px solid var(--border-subtle);
+        }
+        
+        .video-modal-footer a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--accent-blue);
+            text-decoration: none;
+            padding: 12px;
+            background: rgba(164, 200, 255, 0.1);
+            border-radius: 10px;
+        }
+        
+        .video-modal-footer a:hover { background: rgba(164, 200, 255, 0.2); }
+        .video-modal-footer svg { width: 16px; height: 16px; }
+        
+        /* Final CTA */
+        .final-cta {
+            padding: 60px 24px 100px;
+            text-align: center;
+            background: linear-gradient(to top, rgba(164, 200, 255, 0.08) 0%, transparent 100%);
+        }
+        
+        .final-cta-title {
+            font-family: var(--font-headline);
+            font-weight: 300;
+            font-size: clamp(1.6rem, 5vw, 2rem);
+            line-height: 1.2;
+            margin-bottom: 12px;
+        }
+        
+        .final-cta-subtitle {
+            font-family: var(--font-body);
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 28px;
+        }
+        
+        .final-cta .cta-primary { display: inline-flex; }
+        
+        .cta-note {
+            font-family: var(--font-body);
+            margin-top: 16px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        
+        /* Desktop */
+        @media (min-width: 768px) {
+            .hero-content { padding: 120px 48px 60px; max-width: 700px; }
+            .hero-cta-group { flex-direction: row; }
+            
+            .section { padding: 100px 48px; max-width: 900px; margin: 0 auto; }
+            .model-grid { grid-template-columns: 1fr 1fr; gap: 24px; }
+            
+            .brain-viewer {
+                margin: 48px auto 0;
+                max-width: 600px;
+                border-radius: 24px;
+            }
+            
+            .carousel-card {
+                padding: 32px;
+            }
+            
+            .carousel-card-title {
+                font-size: 1.6rem;
+            }
+            
+            .carousel-card-description {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="20" cy="20" r="3" fill="currentColor"/>
+                <g stroke="currentColor" stroke-width="1.5">
+                    <line x1="20" y1="8" x2="20" y2="14"/>
+                    <line x1="20" y1="26" x2="20" y2="32"/>
+                    <line x1="8" y1="20" x2="14" y2="20"/>
+                    <line x1="26" y1="20" x2="32" y2="20"/>
+                    <line x1="11.5" y1="11.5" x2="15.5" y2="15.5"/>
+                    <line x1="24.5" y1="24.5" x2="28.5" y2="28.5"/>
+                    <line x1="28.5" y1="11.5" x2="24.5" y2="15.5"/>
+                    <line x1="15.5" y1="24.5" x2="11.5" y2="28.5"/>
+                </g>
+            </svg>
+            PHARIA<span style="font-weight: 400; opacity: 0.7; margin-left: 4px;">HEALTH</span>
+        </div>
+        <a href="https://calendar.app.google/cTMLRgmxEUSYPG7U6" class="header-cta" target="_blank">Book a Call</a>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <video class="hero-video" autoplay muted loop playsinline>
+            <source src="https://drjeeshan.github.io/pharia-brain/Final%20Video.mp4" type="video/mp4">
+        </video>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <div class="hero-eyebrow">For Founders, Operators & High Performers</div>
+            <h1 class="hero-title">A new way to <em>access more</em> of your mind's capacity.</h1>
+            <p class="hero-subtitle">Personalized, FDA-cleared, non-invasive brain stimulation. Guided by clinicians to support consistent mental performance, clarity, and steadiness.</p>
+            <div class="hero-cta-group">
+                <a href="https://calendar.app.google/cTMLRgmxEUSYPG7U6" class="cta-primary" target="_blank">
+                    Get Started
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+                <a href="#networks" class="cta-secondary">Explore the Science</a>
+            </div>
+        </div>
+        <div class="hero-scroll">
+            <span>Scroll to learn more</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 9l6 6 6-6"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Model Section -->
+    <section class="section model-section">
+        <div class="section-label">/The Model</div>
+        <h2 class="section-title">Start fast. Stay sharp.</h2>
+        <p style="color: var(--text-secondary); max-width: 500px; font-family: var(--font-body);">We've evolved our approach based on what we've learned from dozens of founders, investors, and executives.</p>
+        
+        <div class="model-grid">
+            <div class="model-card model-card-highlight">
+                <span class="model-card-badge">FOUNDING RATE</span>
+                <div class="model-card-name">Step 1</div>
+                <div class="model-card-title">Foundation Day</div>
+                <div class="model-card-price">
+                    <span class="model-card-price-amount">$995</span>
+                    <span class="model-card-price-period">one-time</span>
+                </div>
+                <p class="model-card-desc">A full day of personalized TMS treatment to get you into the target zone. We work with you to clarify your goals and stimulate the brain network most relevant to your outcome.</p>
+                <div class="model-card-features">
+                    <div class="model-card-feature">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                        <span>Full-day protocol with expert clinicians</span>
+                    </div>
+                    <div class="model-card-feature">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                        <span>Personalized targeting based on your goals</span>
+                    </div>
+                    <div class="model-card-feature">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                        <span>Effects typically felt within 24-72 hours</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="model-card">
+                <div class="model-card-name">Step 2</div>
+                <div class="model-card-title">Studio Access</div>
+                <div class="model-card-price">
+                    <span class="model-card-price-amount">$200</span>
+                    <span class="model-card-price-period">/month</span>
+                </div>
+                <p class="model-card-desc">Monthly 90-minute boosters to maintain the effect. Like a gym membership for your brain—stay in the zone as demands shift.</p>
+                <div class="model-card-features">
+                    <div class="model-card-feature">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                        <span>Two baseline stimulations per month</span>
+                    </div>
+                    <div class="model-card-feature">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                        <span>Additional sessions during high-demand periods</span>
+                    </div>
+                    <div class="model-card-feature">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                        <span>Ongoing tracking and clinical guidance</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Brain Networks Section -->
+    <section class="section brain-section" id="networks">
+        <div class="section-label">/The Science</div>
+        <h2 class="section-title">Four networks. <br>One target at a time.</h2>
+        <p style="color: var(--text-secondary); max-width: 500px; font-family: var(--font-body);">We use precision TMS to modulate specific brain networks based on what you're optimizing for.</p>
+        
+        <div class="brain-viewer">
+            <div class="loading-overlay" id="loading">
+                <div class="spinner"></div>
+                <div class="loading-text">Loading brain model...</div>
+            </div>
+            <canvas id="brain-canvas"></canvas>
+            <div class="viewer-hint" id="viewer-hint">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 9l-2 2-2-2"/>
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M12 14V6"/>
+                </svg>
+                Drag to rotate
+            </div>
+        </div>
+        
+        <!-- Carousel -->
+        <div class="carousel-container">
+            <div class="carousel-nav">
+                <div class="carousel-dots" id="carousel-dots"></div>
+                <div class="carousel-arrows">
+                    <button class="carousel-arrow" id="prev-btn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M15 18l-6-6 6-6"/>
+                        </svg>
+                    </button>
+                    <button class="carousel-arrow" id="next-btn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 18l6-6-6-6"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="carousel-card" id="carousel-card"></div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="final-cta">
+        <h2 class="final-cta-title">Ready to align your brain<br>to your ambition?</h2>
+        <p class="final-cta-subtitle">Book a call to see if Pharia is right for you.</p>
+        <a href="https://calendar.app.google/cTMLRgmxEUSYPG7U6" class="cta-primary" target="_blank">
+            Schedule a Consultation
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+        </a>
+        <p class="cta-note">Founding member rates are limited. Price will increase.</p>
+    </section>
+
+    <!-- Video Modal -->
+    <div class="video-modal" id="video-modal">
+        <div class="video-modal-header">
+            <div class="video-modal-info">
+                <div class="video-modal-title" id="modal-title"></div>
+                <div class="video-modal-subtitle" id="modal-subtitle"></div>
+            </div>
+            <button class="video-modal-close" id="modal-close">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        <div class="video-wrapper">
+            <iframe id="video-iframe" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="video-modal-footer">
+            <a href="#" id="modal-youtube-link" target="_blank">
+                Watch on YouTube
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                    <polyline points="15 3 21 3 21 9"></polyline>
+                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                </svg>
+            </a>
+        </div>
+    </div>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+        import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+        import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+        import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+        import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
+        import { GammaCorrectionShader } from 'three/addons/shaders/GammaCorrectionShader.js';
+
+        const networks = {
+            'left-cen': {
+                founderName: 'Founder mode: Directed drive',
+                scientificName: 'Proactive Control Network',
+                color: '#A4C8FF',
+                target: 'Left DLPFC',
+                description: "Your brain's command center for goal-directed behavior. When this network is stimulated, motivation grows, decisions become easier, and there's less friction to get started.",
+                structureNames: ['Left DLPFC', 'Posterior Parietal Cortex'],
+                meshNames: ['Allen_middle_frontal_gyrus_L', 'Allen_superior_frontal_gyrus_L', 'Allen_angular_gyrus_L', 'Allen_supramarginal_gyrus_L'],
+                learnMore: { title: 'DLPFC & TMS for Depression', source: 'Stanford Psychiatry Professor', guest: 'Dr. Nolan Williams', youtubeId: 'X4QE6t-MkYE', startTime: 2749, fullUrl: 'https://youtube.com/watch?v=X4QE6t-MkYE&t=2749s' }
+            },
+            'right-cen': {
+                founderName: 'Deep work: Dial in attention',
+                scientificName: 'Reactive Control Network',
+                color: '#8AB3F9',
+                target: 'Right DLPFC',
+                description: "Your mental noise-canceler. This network filters distractions and quiets anxious chatter. When optimized, you can sustain focus for hours and intrusive thoughts fade away.",
+                structureNames: ['Right DLPFC', 'Posterior Parietal Cortex'],
+                meshNames: ['Allen_middle_frontal_gyrus_R', 'Allen_superior_frontal_gyrus_R', 'Allen_angular_gyrus_R', 'Allen_supramarginal_gyrus_R'],
+                learnMore: { title: 'Uncertainty and Control', source: 'Brown University Professor', guest: 'Dr. Judson Brewer', youtubeId: '1M-bUw-OiG0', startTime: 1596, fullUrl: 'https://youtube.com/watch?v=1M-bUw-OiG0&t=1596s' }
+            },
+            'salience': {
+                founderName: 'Present mind: Less chatter, more clarity',
+                scientificName: 'Salience Network',
+                color: '#FFB974',
+                target: 'dmPFC',
+                description: "Your brain's relevance detector. It recognizes what matters and commits your attention. When dialed in, you stop second-guessing and start executing with clarity.",
+                structureNames: ['dmPFC', 'Anterior Insula', 'ACC'],
+                meshNames: ['Allen_superior_frontal_gyrus_L', 'Allen_superior_frontal_gyrus_R', 'Allen_paracingulate_gyrus_L', 'Allen_paracingulate_gyrus_R', 'Allen_long_insular_gyri_L', 'Allen_long_insular_gyri_R'],
+                learnMore: { title: 'Cingulate Cortex & Emotions', source: 'Stanford Psychiatry Professor', guest: 'Dr. Nolan Williams', youtubeId: 'X4QE6t-MkYE', startTime: 2916, fullUrl: 'https://youtube.com/watch?v=X4QE6t-MkYE&t=2916s' }
+            },
+            'dmn': {
+                founderName: 'Calm steadiness: Respond over reacting',
+                scientificName: 'Default Mode Network',
+                color: '#C8D4C8',
+                target: 'dmPFC',
+                description: "Your center for self-awareness and reading others. This network powers presence, empathy, and emotional intelligence. When balanced, you show up grounded and attuned.",
+                structureNames: ['dmPFC', 'PCC', 'vmPFC'],
+                meshNames: ['Allen_superior_frontal_gyrus_L', 'Allen_superior_frontal_gyrus_R', 'Allen_precuneus_L', 'Allen_precuneus_R', 'Allen_cingulate_gyrus_caudal_posterior_part_L', 'Allen_cingulate_gyrus_caudal_posterior_part_R'],
+                learnMore: { title: 'Default Mode & Mind Wandering', source: 'Stanford Neurobiology Professor', guest: 'Dr. Andrew Huberman', youtubeId: 'wTBSGgbIvsY', startTime: 1380, fullUrl: 'https://youtube.com/watch?v=wTBSGgbIvsY&t=1380s' }
+            }
+        };
+
+        const networkOrder = ['left-cen', 'right-cen', 'salience', 'dmn'];
+        let currentIndex = 0;
+        let allMeshes = [], wireframeMeshes = [], meshByName = {}, wireframeByName = {};
+        let highlightMaterials = {}, highlightWireframeMaterials = {};
+        
+        const baseOpacity = 0.05, baseWireframeOpacity = 0.05;
+        const highlightOpacity = 0.9, highlightWireframeOpacity = 0.7;
+        const baseEmissive = 0.35, pulseAmount = 0.015;
+
+        // Three.js setup
+        const canvas = document.getElementById('brain-canvas');
+        const container = canvas.parentElement;
+        const width = container.clientWidth, height = container.clientHeight;
+
+        THREE.ColorManagement.enabled = false;
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x030403);
+        
+        const camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 100);
+        camera.position.set(0, 0, 1.8);
+
+        const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
+        renderer.setSize(width, height);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
+        renderer.toneMapping = THREE.NoToneMapping;
+
+        const composer = new EffectComposer(renderer);
+        composer.addPass(new RenderPass(scene, camera));
+        composer.addPass(new UnrealBloomPass(new THREE.Vector2(width, height), 0.18, 0.12, 0.5));
+        composer.addPass(new ShaderPass(GammaCorrectionShader));
+
+        const controls = new OrbitControls(camera, canvas);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.08;
+        controls.enablePan = false;
+        controls.autoRotate = true;
+        controls.autoRotateSpeed = 0.4;
+        controls.enableZoom = true;
+        controls.minDistance = 1.2;
+        controls.maxDistance = 3;
+
+        scene.add(new THREE.AmbientLight(0x404550, 0.5));
+        const dir1 = new THREE.DirectionalLight(0xffffff, 0.6);
+        dir1.position.set(5, 5, 5);
+        scene.add(dir1);
+        const dir2 = new THREE.DirectionalLight(0x88aacc, 0.4);
+        dir2.position.set(-5, 3, -5);
+        scene.add(dir2);
+
+        // Create materials for each network
+        Object.entries(networks).forEach(([key, net]) => {
+            highlightMaterials[key] = new THREE.MeshLambertMaterial({
+                color: net.color, emissive: net.color, emissiveIntensity: baseEmissive,
+                transparent: true, opacity: highlightOpacity, side: THREE.DoubleSide, depthWrite: true
+            });
+            highlightWireframeMaterials[key] = new THREE.MeshBasicMaterial({
+                color: net.color, wireframe: true, transparent: true, opacity: highlightWireframeOpacity, depthWrite: false
+            });
+        });
+
+        const brainGroup = new THREE.Group();
+        scene.add(brainGroup);
+
+        // Load brain model
+        const loader = new GLTFLoader();
+        loader.load('https://drjeeshan.github.io/pharia-brain/brain.glb',
+            (gltf) => {
+                const model = gltf.scene;
+                const box = new THREE.Box3().setFromObject(model);
+                const size = box.getSize(new THREE.Vector3());
+                const scale = 1.5 / Math.max(size.x, size.y, size.z);
+                model.scale.set(scale, scale, scale);
+
+                const scaledBox = new THREE.Box3().setFromObject(model);
+                const scaledCenter = scaledBox.getCenter(new THREE.Vector3());
+                model.position.set(-scaledCenter.x, -scaledCenter.y, -scaledCenter.z);
+
+                model.traverse((child) => {
+                    if (child.isMesh) {
+                        allMeshes.push(child);
+                        meshByName[child.name] = child;
+                        child.material = new THREE.MeshLambertMaterial({ color: 0x4a5055, transparent: true, opacity: baseOpacity, side: THREE.DoubleSide, depthWrite: false });
+                        
+                        const wireframeClone = child.clone();
+                        wireframeClone.material = new THREE.MeshBasicMaterial({ color: 0x6a7580, wireframe: true, transparent: true, opacity: baseWireframeOpacity, depthWrite: false });
+                        wireframeClone.renderOrder = 1;
+                        child.parent.add(wireframeClone);
+                        wireframeMeshes.push(wireframeClone);
+                        wireframeByName[child.name] = wireframeClone;
+                    }
+                });
+
+                brainGroup.add(model);
+                highlightNetwork(networkOrder[currentIndex]);
+                document.getElementById('loading').classList.add('hidden');
+                
+                canvas.addEventListener('touchstart', hideHint, { once: true });
+                canvas.addEventListener('mousedown', hideHint, { once: true });
+            },
+            (progress) => {
+                if (progress.total) {
+                    document.querySelector('.loading-text').textContent = `Loading: ${Math.round((progress.loaded / progress.total) * 100)}%`;
+                }
+            },
+            (error) => console.error('Load error:', error)
+        );
+
+        function hideHint() { document.getElementById('viewer-hint').classList.add('hidden'); }
+
+        function highlightNetwork(networkId) {
+            const network = networks[networkId];
+            const hlMat = highlightMaterials[networkId];
+            const hlWireMat = highlightWireframeMaterials[networkId];
+            
+            allMeshes.forEach(mesh => {
+                mesh.material.color.setHex(0x4a5055);
+                mesh.material.emissive = undefined;
+                mesh.material.emissiveIntensity = 0;
+                mesh.material.opacity = baseOpacity;
+                mesh.material.depthWrite = false;
+                mesh.renderOrder = 0;
+            });
+            
+            wireframeMeshes.forEach(mesh => {
+                mesh.material.color.setHex(0x6a7580);
+                mesh.material.opacity = baseWireframeOpacity;
+                mesh.renderOrder = 1;
+            });
+
+            network.meshNames.forEach(name => {
+                const mesh = meshByName[name];
+                if (mesh) {
+                    mesh.material = hlMat.clone();
+                    mesh.material.emissiveIntensity = baseEmissive;
+                    mesh.material.depthWrite = true;
+                    mesh.renderOrder = 10;
+                    
+                    const wireframeMesh = wireframeByName[name];
+                    if (wireframeMesh) {
+                        wireframeMesh.material = hlWireMat.clone();
+                        wireframeMesh.renderOrder = 11;
+                    }
+                }
+            });
+        }
+
+        // Carousel logic
+        function renderCarousel() {
+            const networkId = networkOrder[currentIndex];
+            const net = networks[networkId];
+            
+            // Update dots
+            const dotsContainer = document.getElementById('carousel-dots');
+            dotsContainer.innerHTML = networkOrder.map((id, i) => 
+                `<button class="carousel-dot ${i === currentIndex ? 'active' : ''}" data-index="${i}" style="background-color: ${i === currentIndex ? networks[id].color : ''}"></button>`
+            ).join('');
+            
+            // Update card
+            const card = document.getElementById('carousel-card');
+            card.style.borderColor = net.color;
+            card.innerHTML = `
+                <div class="carousel-card-header">
+                    <div class="carousel-card-title" style="color: ${net.color}">${net.founderName}</div>
+                    <div class="carousel-card-meta">
+                        <span>${net.scientificName}</span>
+                        <span>·</span>
+                        <span class="carousel-card-target" style="color: ${net.color}">${net.target}</span>
+                    </div>
+                </div>
+                <div class="carousel-card-description">${net.description}</div>
+                <div class="carousel-card-structures">
+                    <div class="structures-label">Key Structures</div>
+                    <div class="structures-list">${net.structureNames.map(n => `<span class="structure-tag">${n}</span>`).join('')}</div>
+                </div>
+                <button class="learn-more-btn" id="learn-more-btn">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                    </svg>
+                    Learn more from ${net.learnMore.guest}
+                </button>
+                <div class="learn-more-source">${net.learnMore.source}</div>
+            `;
+            
+            // Attach learn more listener
+            document.getElementById('learn-more-btn').addEventListener('click', () => openVideoModal(networkId));
+            
+            // Highlight brain network
+            highlightNetwork(networkId);
+        }
+
+        function goToSlide(index) {
+            currentIndex = (index + networkOrder.length) % networkOrder.length;
+            renderCarousel();
+        }
+
+        // Event listeners
+        document.getElementById('prev-btn').addEventListener('click', () => goToSlide(currentIndex - 1));
+        document.getElementById('next-btn').addEventListener('click', () => goToSlide(currentIndex + 1));
+        document.getElementById('carousel-dots').addEventListener('click', (e) => {
+            if (e.target.classList.contains('carousel-dot')) {
+                goToSlide(parseInt(e.target.dataset.index));
+            }
+        });
+
+        // Video Modal
+        function openVideoModal(networkId) {
+            const net = networks[networkId];
+            const modal = document.getElementById('video-modal');
+            const iframe = document.getElementById('video-iframe');
+            
+            document.getElementById('modal-title').textContent = net.learnMore.title;
+            document.getElementById('modal-subtitle').textContent = `${net.learnMore.guest} · ${net.learnMore.source}`;
+            document.getElementById('modal-youtube-link').href = net.learnMore.fullUrl;
+            
+            iframe.src = `https://www.youtube.com/embed/${net.learnMore.youtubeId}?autoplay=1&start=${net.learnMore.startTime}&rel=0&playsinline=1`;
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeVideoModal() {
+            document.getElementById('video-iframe').src = '';
+            document.getElementById('video-modal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        
+        document.getElementById('modal-close').addEventListener('click', closeVideoModal);
+        document.getElementById('video-modal').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) closeVideoModal();
+        });
+
+        // Initialize carousel
+        renderCarousel();
+
+        // Animation loop
+        let time = 0, lastTime = 0;
+        function animate(currentTime) {
+            requestAnimationFrame(animate);
+            if (currentTime - lastTime < 16) return;
+            lastTime = currentTime;
+            
+            controls.update();
+            time += 0.02;
+            const pulse = baseEmissive + Math.sin(time) * pulseAmount;
+            
+            allMeshes.forEach(mesh => {
+                if (mesh.material.emissive && mesh.material.emissiveIntensity > 0) {
+                    mesh.material.emissiveIntensity = pulse;
+                }
+            });
+
+            composer.render();
+        }
+        animate(0);
+
+        function handleResize() {
+            const w = container.clientWidth, h = container.clientHeight;
+            camera.aspect = w / h;
+            camera.updateProjectionMatrix();
+            renderer.setSize(w, h);
+            composer.setSize(w, h);
+        }
+        window.addEventListener('resize', handleResize);
+    </script>
+</body>
+</html>
