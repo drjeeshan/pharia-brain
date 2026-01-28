@@ -288,11 +288,9 @@
             border-color: rgba(255, 255, 255, 0.3);
         }
         
-        /* Referral Code Soft Gate */
+        /* Referral Code Soft Gate - HIDDEN FOR NOW */
         .referral-toggle {
-            margin-top: 16px;
-            opacity: 0;
-            animation: fadeInUp 0.6s ease 0.4s forwards;
+            display: none !important;
         }
         
         .referral-trigger {
@@ -1119,6 +1117,7 @@
                 </a>
                 <a href="#networks" class="cta-secondary">Explore the Science</a>
             </div>
+            <!-- Referral code UI hidden for now -->
             <div class="referral-toggle" id="hero-referral">
                 <button class="referral-trigger" onclick="toggleReferral('hero-referral')">
                     Have a referral code?
@@ -1252,6 +1251,7 @@
             </svg>
         </a>
         <p class="cta-note">Founding member rates are limited. Price will increase.</p>
+        <!-- Referral code UI hidden for now -->
         <div class="referral-toggle" id="footer-referral">
             <button class="referral-trigger" onclick="toggleReferral('footer-referral')">
                 Have a referral code?
@@ -1303,7 +1303,7 @@
         </div>
     </div>
 
-    <!-- Referral Code Logic -->
+    <!-- Referral Code Logic (kept for future use) -->
     <script>
         function toggleReferral(id) {
             const el = document.getElementById(id);
