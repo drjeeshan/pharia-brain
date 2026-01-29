@@ -159,12 +159,18 @@
             overflow: hidden;
         }
         
-        .hero-video {
+        .hero-video-container {
             position: absolute;
             top: 0; left: 0;
             width: 100%; height: 100%;
+            transition: transform 0.1s ease-out, border-radius 0.1s ease-out;
+            transform-origin: center center;
+            overflow: hidden;
+        }
+        
+        .hero-video {
+            width: 100%; height: 100%;
             object-fit: cover;
-            z-index: 0;
         }
         
         .hero-overlay {
@@ -189,8 +195,8 @@
         .hero-title {
             font-family: var(--font-headline);
             font-weight: 300;
-            font-size: clamp(2.4rem, 5vw, 3.5rem);
-            line-height: 1.1;
+            font-size: 2.5rem;
+            line-height: 120%;
             letter-spacing: -0.02em;
             margin-bottom: 24px;
             color: var(--text-primary);
@@ -200,8 +206,8 @@
         
         .hero-subtitle {
             font-family: var(--font-body);
-            font-size: 0.95rem;
-            line-height: 1.6;
+            font-size: 1rem;
+            line-height: 140%;
             color: var(--text-secondary);
             margin-bottom: 32px;
             max-width: 560px;
@@ -211,7 +217,7 @@
             display: flex;
             flex-wrap: wrap;
             gap: 12px;
-            margin-bottom: 40px;
+            margin-bottom: 120px;
         }
         
         .cta-primary {
@@ -278,6 +284,134 @@
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         
+        /* Mental Load Section */
+        .mental-load-section {
+            background: var(--bg-primary);
+            padding-top: 60px;
+            padding-bottom: 60px;
+        }
+        
+        .mental-load-section .section-label {
+            color: var(--accent-blue);
+        }
+        
+        .mental-load-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0;
+            margin-top: 24px;
+        }
+        
+        .mental-load-content {
+            background: var(--accent-blue);
+            border: none;
+            border-radius: 20px;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .mental-load-title {
+            font-family: var(--font-headline);
+            font-weight: 300;
+            font-size: 2rem;
+            line-height: 120%;
+            color: var(--bg-primary);
+            margin-bottom: 16px;
+        }
+        
+        .mental-load-subtitle {
+            font-family: var(--font-body);
+            font-size: 0.875rem;
+            line-height: 140%;
+            color: var(--bg-primary);
+            opacity: 0.8;
+            margin-bottom: 24px;
+            max-width: 450px;
+        }
+        
+        .mental-load-tags {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: auto;
+        }
+        
+        .mental-load-row {
+            display: flex;
+            gap: 8px;
+            width: 100%;
+        }
+        
+        .mental-load-tag {
+            background: transparent;
+            border: 1px solid var(--bg-primary);
+            border-radius: 20px;
+            padding: 10px 18px;
+            font-family: var(--font-body);
+            font-size: 0.8rem;
+            color: var(--bg-primary);
+        }
+        
+        .mental-load-tag-empty {
+            background: transparent;
+            border: 1px solid var(--bg-primary);
+            border-radius: 20px;
+            padding: 10px 18px;
+            flex-grow: 1;
+        }
+        
+        .mental-load-image {
+            border-radius: 20px;
+            overflow: hidden;
+            min-height: 300px;
+        }
+        
+        .mental-load-image img,
+        .mental-load-image video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        /* Who Section */
+        .who-section {
+            background: var(--bg-primary);
+            border-top: 1px solid var(--border-subtle);
+        }
+        
+        .who-section .section-label {
+            color: var(--text-muted);
+        }
+        
+        .who-title {
+            font-family: var(--font-headline);
+            font-weight: 300;
+            font-size: 2rem;
+            line-height: 130%;
+            color: var(--text-primary);
+            margin-bottom: 32px;
+            max-width: 900px;
+            border-left: 3px solid var(--accent-blue);
+            padding-left: 24px;
+        }
+        
+        .who-title em {
+            color: var(--accent-blue);
+            font-style: normal;
+        }
+        
+        .who-section .cta-secondary {
+            background: transparent;
+            border-color: var(--text-primary);
+            color: var(--text-primary);
+        }
+        
+        .who-section .cta-secondary:hover {
+            background: var(--text-primary);
+            color: var(--bg-primary);
+        }
+        
         /* Model Section */
         .section { padding: 80px 24px; }
         
@@ -293,9 +427,8 @@
         .section-title {
             font-family: var(--font-headline);
             font-weight: 300;
-            font-size: clamp(1.8rem, 5vw, 2.4rem);
-            line-height: 1.2;
-            letter-spacing: -0.01em;
+            font-size: 2rem;
+            line-height: 130%;
             margin-bottom: 24px;
         }
         
@@ -847,11 +980,44 @@
         
         /* Desktop */
         @media (min-width: 768px) {
-            .hero-content { padding: 120px 48px 200px; max-width: 700px; }
+            .hero-title {
+                font-size: 4rem;
+            }
+            
+            .hero-content { padding: 120px 48px 200px; max-width: 900px; }
             .hero-cta-group { flex-direction: row; }
             
-            .section { padding: 100px 48px; max-width: 1100px; margin: 0 auto; }
+            .section-title {
+                font-size: 3rem;
+                line-height: 120%;
+            }
+            
+            .mental-load-title {
+                font-size: 2rem;
+                line-height: 130%;
+            }
+            
+            .who-title {
+                font-size: 3rem;
+                line-height: 120%;
+            }
+            
+            .section { padding: 100px 48px; max-width: 1300px; margin: 0 auto; }
             .model-grid { grid-template-columns: 1fr 1fr; gap: 24px; }
+            
+            .mental-load-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .mental-load-content,
+            .mental-load-image {
+                height: 420px;
+                min-height: unset;
+            }
+            
+            .mental-load-content {
+                overflow: hidden;
+            }
             
             .brain-viewer {
                 margin: 48px auto 0;
@@ -893,10 +1059,12 @@
 
     <!-- Hero -->
     <section class="hero">
-        <video class="hero-video" autoplay muted loop playsinline>
-            <source src="https://drjeeshan.github.io/pharia-brain/Final%20Video.mp4" type="video/mp4">
-        </video>
-        <div class="hero-overlay"></div>
+        <div class="hero-video-container" id="hero-video-container">
+            <video class="hero-video" autoplay muted loop playsinline>
+                <source src="https://drjeeshan.github.io/pharia-brain/Final%20Video.mp4" type="video/mp4">
+            </video>
+            <div class="hero-overlay"></div>
+        </div>
         <div class="hero-content">
             <h1 class="hero-title">A new way to <em>access more</em> of your mind's capacity.</h1>
             <p class="hero-subtitle">Personalized, FDA-cleared, non-invasive brain stimulation. Guided by clinicians to support consistent mental performance, clarity, and steadiness.</p>
@@ -908,6 +1076,50 @@
         <div class="hero-brand">
             <img src="pharia-logotype.svg" alt="PHARIA HEALTH" class="hero-brand-logotype">
         </div>
+    </section>
+
+    <!-- Mental Load Section -->
+    <section class="section mental-load-section">
+        <div class="section-label">/The Mental Load</div>
+        
+        <div class="mental-load-grid">
+            <div class="mental-load-content">
+                <h2 class="mental-load-title">Your mind is your most valuable asset — access its true capacity.</h2>
+                <p class="mental-load-subtitle">You do big things with your mind. Pharia helps you access more of it during the seasons that demand the most.</p>
+                
+                <div class="mental-load-tags">
+                    <div class="mental-load-row">
+                        <span class="mental-load-tag">Cognitive Load</span>
+                        <span class="mental-load-tag">High Stakes Decisions</span>
+                        <span class="mental-load-tag-empty"></span>
+                        <span class="mental-load-tag">Racing Mind</span>
+                    </div>
+                    <div class="mental-load-row">
+                        <span class="mental-load-tag">Mental Loops</span>
+                        <span class="mental-load-tag-empty"></span>
+                        <span class="mental-load-tag">Fragmented Focus</span>
+                        <span class="mental-load-tag">Second Guessing</span>
+                    </div>
+                    <div class="mental-load-row">
+                        <span class="mental-load-tag-empty"></span>
+                        <span class="mental-load-tag">Emotional Intensity</span>
+                        <span class="mental-load-tag">Trouble Unwinding</span>
+                        <span class="mental-load-tag-empty"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="mental-load-image">
+                <video autoplay muted loop playsinline>
+                    <source src="abstract-waves.mp4" type="video/mp4">
+                </video>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Who Is It For Section -->
+    <section class="section who-section">
+        <div class="section-label">/Who Is It For?</div>
+        <h2 class="who-title">For people who want to <em>close the gap</em> between <em>their minds</em> and <em>their ambitions</em>.</h2>
     </section>
 
     <!-- Model Section -->
@@ -1396,6 +1608,27 @@
             composer.setSize(w, h);
         }
         window.addEventListener('resize', handleResize);
+
+        // Hero scroll shrink effect
+        const heroVideoContainer = document.getElementById('hero-video-container');
+        const hero = document.querySelector('.hero');
+        
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            const heroHeight = hero.offsetHeight;
+            const scrollProgress = Math.min(scrollY / (heroHeight * 0.5), 1);
+            
+            const scale = 1 - (scrollProgress * 0.08); // Shrinks to 92%
+            const borderRadius = scrollProgress * 24; // Up to 24px border radius
+            const margin = scrollProgress * 24; // Up to 24px margin
+            
+            heroVideoContainer.style.transform = `scale(${scale})`;
+            heroVideoContainer.style.borderRadius = `${borderRadius}px`;
+            heroVideoContainer.style.top = `${margin}px`;
+            heroVideoContainer.style.left = `${margin}px`;
+            heroVideoContainer.style.width = `calc(100% - ${margin * 2}px)`;
+            heroVideoContainer.style.height = `calc(100% - ${margin * 2}px)`;
+        });
     </script>
 </body>
 </html>
