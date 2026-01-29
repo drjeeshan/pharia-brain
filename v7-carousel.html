@@ -107,33 +107,39 @@
             left: 0;
             right: 0;
             z-index: 100;
-            padding: 16px 20px;
+            padding: 20px 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.5), transparent);
+            background: transparent;
         }
         
-        .logo {
+        .logo { display: flex; align-items: center; }
+        .logo-symbol { width: 36px; height: 36px; }
+        
+        .header-nav {
             display: flex;
-            align-items: center;
-            gap: 8px;
-            font-family: var(--font-body);
-            font-size: 0.9rem;
-            font-weight: 500;
-            letter-spacing: 0.05em;
-            color: var(--accent-blue);
+            gap: 32px;
         }
         
-        .logo svg { width: 28px; height: 28px; }
+        .header-nav a {
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            color: var(--text-primary);
+            text-decoration: none;
+            opacity: 0.9;
+            transition: opacity 0.2s ease;
+        }
+        
+        .header-nav a:hover { opacity: 1; }
         
         .header-cta {
             background: var(--accent-blue);
             color: var(--bg-primary);
-            padding: 10px 20px;
+            padding: 10px 24px;
             border-radius: 24px;
             font-family: var(--font-body);
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             font-weight: 500;
             text-decoration: none;
             transition: all 0.2s ease;
@@ -165,7 +171,7 @@
             position: absolute;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background: linear-gradient(to bottom, rgba(32, 38, 33, 0.4) 0%, rgba(32, 38, 33, 0.6) 50%, rgba(32, 38, 33, 0.95) 100%);
+            background: linear-gradient(to bottom, rgba(32, 38, 33, 0.3) 0%, rgba(32, 38, 33, 0.4) 50%, rgba(32, 38, 33, 0.7) 100%);
             z-index: 1;
         }
         
@@ -174,70 +180,52 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            padding: 100px 24px 40px;
-            max-width: 600px;
+            padding: 120px 40px 180px;
+            max-width: 700px;
             position: relative;
             z-index: 2;
-        }
-        
-        .hero-eyebrow {
-            font-family: var(--font-body);
-            font-size: 0.75rem;
-            font-weight: 400;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            color: var(--accent-blue);
-            margin-bottom: 16px;
-            opacity: 0;
-            animation: fadeInUp 0.6s ease forwards;
         }
         
         .hero-title {
             font-family: var(--font-headline);
             font-weight: 300;
-            font-size: clamp(2.2rem, 8vw, 3.2rem);
-            line-height: 1;
+            font-size: clamp(2.4rem, 5vw, 3.5rem);
+            line-height: 1.1;
             letter-spacing: -0.02em;
-            margin-bottom: 20px;
-            opacity: 0;
-            animation: fadeInUp 0.6s ease 0.1s forwards;
+            margin-bottom: 24px;
+            color: var(--text-primary);
         }
         
         .hero-title em { color: var(--accent-blue); font-style: normal; }
         
         .hero-subtitle {
             font-family: var(--font-body);
-            font-size: 1rem;
-            line-height: 1.5;
+            font-size: 0.95rem;
+            line-height: 1.6;
             color: var(--text-secondary);
             margin-bottom: 32px;
-            max-width: 440px;
-            opacity: 0;
-            animation: fadeInUp 0.6s ease 0.2s forwards;
+            max-width: 560px;
         }
         
         .hero-cta-group {
             display: flex;
-            flex-direction: column;
+            flex-wrap: wrap;
             gap: 12px;
-            opacity: 0;
-            animation: fadeInUp 0.6s ease 0.3s forwards;
+            margin-bottom: 40px;
         }
         
         .cta-primary {
             background: var(--accent-blue);
             color: var(--bg-primary);
-            padding: 16px 32px;
+            padding: 12px 28px;
             border-radius: 32px;
             font-family: var(--font-body);
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: 500;
             text-decoration: none;
-            text-align: center;
             transition: all 0.2s ease;
             display: inline-flex;
             align-items: center;
-            justify-content: center;
             gap: 8px;
         }
         
@@ -250,13 +238,12 @@
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
             color: var(--text-primary);
-            padding: 16px 32px;
+            padding: 12px 28px;
             border-radius: 32px;
             font-family: var(--font-body);
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: 500;
             text-decoration: none;
-            text-align: center;
             border: 1px solid rgba(255, 255, 255, 0.2);
             transition: all 0.2s ease;
         }
@@ -266,26 +253,28 @@
             border-color: rgba(255, 255, 255, 0.3);
         }
         
-        .hero-scroll {
+        .hero-brand {
             position: absolute;
             bottom: 24px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            color: var(--text-muted);
-            font-family: var(--font-body);
-            font-size: 0.7rem;
+            left: 40px;
+            right: 40px;
             z-index: 2;
-            opacity: 0;
-            animation: fadeIn 0.6s ease 0.6s forwards;
         }
         
-        .hero-scroll svg { width: 20px; height: 20px; animation: bounce 2s ease-in-out infinite; }
+        .hero-brand-logotype {
+            width: 100%;
+            max-width: 1400px;
+            height: auto;
+        }
         
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
+        /* Mobile adjustments */
+        @media (max-width: 767px) {
+            .header-nav { display: none; }
+            .header { padding: 16px 24px; }
+            .hero-content { padding: 100px 24px 120px; }
+            .hero-brand { bottom: 20px; left: 20px; right: 20px; }
+        }
+        
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         
@@ -743,6 +732,76 @@
         .video-modal-footer a:hover { background: rgba(164, 200, 255, 0.2); }
         .video-modal-footer svg { width: 16px; height: 16px; }
         
+        /* TMS Section */
+        .tms-section {
+            background: var(--bg-primary);
+        }
+        
+        .tms-grid {
+            display: grid;
+            gap: 16px;
+            margin-top: 32px;
+        }
+        
+        .tms-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            padding: 28px 24px;
+        }
+        
+        .tms-card-highlight {
+            border-color: var(--accent-blue);
+            background: linear-gradient(135deg, rgba(164, 200, 255, 0.08) 0%, var(--bg-card) 100%);
+        }
+        
+        .tms-card-light {
+            background: var(--accent-blue);
+            border-color: var(--accent-blue);
+        }
+        
+        .tms-card-light .tms-card-title,
+        .tms-card-light .tms-card-desc {
+            color: var(--bg-primary);
+        }
+        
+        .tms-card-title {
+            font-family: var(--font-headline);
+            font-weight: 400;
+            font-size: 1.3rem;
+            line-height: 1.3;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+            min-height: 2.6em;
+        }
+        
+        .tms-card-desc {
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        
+        .tms-learn-more {
+            display: inline-block;
+            margin-top: 24px;
+            padding: 14px 24px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 32px;
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        
+        .tms-learn-more:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--border-hover);
+        }
+        
         /* Final CTA */
         .final-cta {
             padding: 60px 24px 100px;
@@ -776,10 +835,10 @@
         
         /* Desktop */
         @media (min-width: 768px) {
-            .hero-content { padding: 120px 48px 60px; max-width: 700px; }
+            .hero-content { padding: 120px 48px 200px; max-width: 700px; }
             .hero-cta-group { flex-direction: row; }
             
-            .section { padding: 100px 48px; max-width: 900px; margin: 0 auto; }
+            .section { padding: 100px 48px; max-width: 1100px; margin: 0 auto; }
             .model-grid { grid-template-columns: 1fr 1fr; gap: 24px; }
             
             .brain-viewer {
@@ -799,6 +858,15 @@
             .carousel-card-description {
                 font-size: 1rem;
             }
+            
+            .tms-grid {
+                grid-template-columns: 1fr 1fr 1fr;
+                gap: 20px;
+            }
+            
+            .tms-card {
+                padding: 32px;
+            }
         }
     </style>
 </head>
@@ -806,22 +874,9 @@
     <!-- Header -->
     <header class="header">
         <div class="logo">
-            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="20" cy="20" r="3" fill="currentColor"/>
-                <g stroke="currentColor" stroke-width="1.5">
-                    <line x1="20" y1="8" x2="20" y2="14"/>
-                    <line x1="20" y1="26" x2="20" y2="32"/>
-                    <line x1="8" y1="20" x2="14" y2="20"/>
-                    <line x1="26" y1="20" x2="32" y2="20"/>
-                    <line x1="11.5" y1="11.5" x2="15.5" y2="15.5"/>
-                    <line x1="24.5" y1="24.5" x2="28.5" y2="28.5"/>
-                    <line x1="28.5" y1="11.5" x2="24.5" y2="15.5"/>
-                    <line x1="15.5" y1="24.5" x2="11.5" y2="28.5"/>
-                </g>
-            </svg>
-            PHARIA<span style="font-weight: 400; opacity: 0.7; margin-left: 4px;">HEALTH</span>
+            <img src="pharia-symbol.svg" alt="Pharia" class="logo-symbol">
         </div>
-        <a href="https://calendar.app.google/cTMLRgmxEUSYPG7U6" class="header-cta" target="_blank">Book a Call</a>
+        <a href="https://calendar.app.google/cTMLRgmxEUSYPG7U6" class="header-cta" target="_blank">Get Access</a>
     </header>
 
     <!-- Hero -->
@@ -831,29 +886,20 @@
         </video>
         <div class="hero-overlay"></div>
         <div class="hero-content">
-            <div class="hero-eyebrow">For Founders, Operators & High Performers</div>
             <h1 class="hero-title">A new way to <em>access more</em> of your mind's capacity.</h1>
             <p class="hero-subtitle">Personalized, FDA-cleared, non-invasive brain stimulation. Guided by clinicians to support consistent mental performance, clarity, and steadiness.</p>
             <div class="hero-cta-group">
-                <a href="https://calendar.app.google/cTMLRgmxEUSYPG7U6" class="cta-primary" target="_blank">
-                    Get Started
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M5 12h14M12 5l7 7-7 7"/>
-                    </svg>
-                </a>
-                <a href="#networks" class="cta-secondary">Explore the Science</a>
+                <a href="https://calendar.app.google/cTMLRgmxEUSYPG7U6" class="cta-primary" target="_blank">Get Access</a>
+                <a href="#networks" class="cta-secondary">Learn More About The Science</a>
             </div>
         </div>
-        <div class="hero-scroll">
-            <span>Scroll to learn more</span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M6 9l6 6 6-6"/>
-            </svg>
+        <div class="hero-brand">
+            <img src="pharia-logotype.svg" alt="PHARIA HEALTH" class="hero-brand-logotype">
         </div>
     </section>
 
     <!-- Model Section -->
-    <section class="section model-section">
+    <section class="section model-section" id="model">
         <div class="section-label">/The Model</div>
         <h2 class="section-title">Start fast. Stay sharp.</h2>
         <p style="color: var(--text-secondary); max-width: 500px; font-family: var(--font-body);">We've evolved our approach based on what we've learned from dozens of founders, investors, and executives.</p>
@@ -953,13 +999,36 @@
         </div>
     </section>
 
+    <!-- What is TMS Section -->
+    <section class="section tms-section" id="tms">
+        <div class="section-label">/How It Works</div>
+        <h2 class="section-title">About TMS</h2>
+        
+        <div class="tms-grid">
+            <div class="tms-card">
+                <div class="tms-card-title">Safe, FDA-cleared neurotech.</div>
+                <p class="tms-card-desc">Transcranial Magnetic Stimulation (TMS) is a non-invasive, FDA-cleared technology with nearly 20 years of clinical use. It delivers targeted magnetic pulses to improve how specific brain networks. TMS is always delivered under clinical oversight.</p>
+            </div>
+            
+            <div class="tms-card tms-card-highlight">
+                <div class="tms-card-title">Precise shifts for your goals.</div>
+                <p class="tms-card-desc">TMS delivers magnetic pulses to specific brain networks, giving your circuits repeated activation—like reps at the gym—to shift its baseline towards more optimal function.</p>
+            </div>
+            
+            <div class="tms-card tms-card-light">
+                <div class="tms-card-title">Adapted for high-performers.</div>
+                <p class="tms-card-desc">Pharia took 20 years of clinical TMS and adapted it for the modern high-performer: accelerated protocols, calibrated for healthier individuals, targeting the networks that drive focus, drive, and steadiness.</p>
+            </div>
+        </div>
+    </section>
+
     <!-- Final CTA -->
     <section class="final-cta">
         <h2 class="final-cta-title">Ready to align your brain<br>to your ambition?</h2>
         <p class="final-cta-subtitle">Book a call to see if Pharia is right for you.</p>
         <a href="https://calendar.app.google/cTMLRgmxEUSYPG7U6" class="cta-primary" target="_blank">
-            Schedule a Consultation
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            Book a Call
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;">
                 <path d="M5 12h14M12 5l7 7-7 7"/>
             </svg>
         </a>
