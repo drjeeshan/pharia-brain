@@ -274,6 +274,20 @@
         }
         
         /* Mobile adjustments */
+        @media (max-width: 1023px) {
+            .mental-load-tag-empty {
+                display: none !important;
+            }
+            
+            .mental-load-tags {
+                flex-direction: row !important;
+            }
+            
+            .mental-load-row {
+                display: contents !important;
+            }
+        }
+        
         @media (max-width: 767px) {
             .header-nav { display: none; }
             .header { padding: 16px 24px; }
@@ -332,13 +346,14 @@
         
         .mental-load-tags {
             display: flex;
-            flex-direction: column;
+            flex-wrap: wrap;
             gap: 8px;
             margin-top: auto;
         }
         
         .mental-load-row {
             display: flex;
+            flex-wrap: wrap;
             gap: 8px;
             width: 100%;
         }
@@ -1008,15 +1023,10 @@
             .section { padding: 100px 48px; max-width: 1300px; margin: 0 auto; }
             .model-grid { grid-template-columns: 1fr 1fr; gap: 24px; }
             
-            .mental-load-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 0;
-            }
-            
             .mental-load-content,
             .mental-load-image {
-                height: 500px;
-                min-height: unset;
+                height: auto;
+                min-height: 300px;
                 border-radius: 20px;
             }
             
@@ -1056,6 +1066,32 @@
             
             .tms-card {
                 padding: 32px;
+            }
+        }
+        
+        /* Large Desktop - Mental Load two-column */
+        @media (min-width: 1024px) {
+            .mental-load-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 0;
+            }
+            
+            .mental-load-tag-empty {
+                display: block;
+            }
+            
+            .mental-load-content,
+            .mental-load-image {
+                height: 500px;
+                min-height: unset;
+            }
+            
+            .mental-load-tags {
+                flex-direction: column;
+            }
+            
+            .mental-load-row {
+                flex-wrap: nowrap;
             }
         }
     </style>
