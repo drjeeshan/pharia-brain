@@ -298,7 +298,7 @@
         .mental-load-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 0;
+            gap: 16px;
             margin-top: 24px;
         }
         
@@ -993,8 +993,8 @@
             }
             
             .mental-load-title {
-                font-size: 2rem;
-                line-height: 130%;
+                font-size: 3rem;
+                line-height: 110%;
             }
             
             .who-title {
@@ -1007,12 +1007,14 @@
             
             .mental-load-grid {
                 grid-template-columns: 1fr 1fr;
+                gap: 0;
             }
             
             .mental-load-content,
             .mental-load-image {
-                height: 420px;
+                height: 500px;
                 min-height: unset;
+                border-radius: 20px;
             }
             
             .mental-load-content {
@@ -1027,6 +1029,13 @@
             
             .carousel-card {
                 padding: 32px;
+                max-width: 70%;
+                margin: 0 auto;
+            }
+            
+            .carousel-nav {
+                max-width: 70%;
+                margin: 0 auto 16px;
             }
             
             .carousel-card-title {
