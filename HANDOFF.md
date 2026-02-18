@@ -12,149 +12,165 @@ We've built an interactive 3D brain visualization that shows how TMS therapy tar
 
 ## What You're Looking At in V7
 
-V7 is a full prototype page that includes several sections (hero, mental load, pricing, brain visualization, TMS info, CTA). **The part you need to extract is the interactive 3D brain section** — specifically the "The Science" section with the rotating brain and carousel of network cards.
+V7 is a full prototype page that includes several sections (hero, mental load, pricing, brain visualization, TMS info, CTA). **The part you need to extract is the brain visualization section** — specifically:
 
-The rest of the page (hero video, pricing cards, etc.) is placeholder layout that your site will handle natively.
+1. **The 3D brain viewer** — a Three.js scene rendering a translucent brain with highlighted network regions
+2. **The network carousel** — cards below the brain that let users switch between four networks
+3. **The video modal** — YouTube embeds that open when users click "Learn more"
 
----
-
-## What the Brain Component Does
-
-1. Loads a 3D brain model (`brain.glb`, ~12MB, 283 meshes)
-2. Renders it with a translucent wireframe aesthetic and glow effects
-3. Users can rotate/zoom the brain with mouse/touch
-4. Four brain networks can be highlighted — when one is selected, those brain regions glow in their assigned color while everything else fades to near-transparent
-5. A carousel of cards lets users switch between the four networks
-6. Each card has a "Learn More" button that opens a YouTube video modal
+Everything else on the page (hero, pricing, etc.) is prototype layout that your Figma/design will replace.
 
 ---
 
-## Files You Need From the Repo
+## Files You Need
 
-| File | Purpose |
-|------|---------|
-| `v7-carousel.html` | All source code (JS, CSS, HTML in one file) — extract from here |
-| `brain.glb` | The 3D brain model — must be served as a static asset |
-| `og-image.png` | Social sharing preview image (1200×630) |
+| File | What It Is | Size |
+|------|-----------|------|
+| `v7-carousel.html` | Complete application (single HTML file with embedded CSS + JS) | ~64KB |
+| `brain.glb` | 3D brain model (Allen Brain Atlas, 283 meshes) | ~12MB |
 
----
-
-## Extracting Into a Next.js / React Component
-
-Everything you need is in the `<script type="module">` block at the bottom of `v7-carousel.html`. Here's what maps to what:
-
-### Three.js Dependencies (install via npm)
-
-```bash
-npm install three
-```
-
-All imports at the top of the script block map to:
-```js
-import * as THREE from 'three';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
-import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
-import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
-import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
-import { GammaCorrectionShader } from 'three/addons/shaders/GammaCorrectionShader.js';
-```
-
-### Key Architecture Pieces to Extract
-
-**1. The `networks` object** — This is the data model. It defines the four networks with their colors, descriptions, mesh names, and video links. Pull this out as a config/data file.
-
-**2. Scene initialization** — The renderer, camera, composer (bloom + gamma correction), orbit controls, and lighting setup. This becomes the core of your React component's `useEffect`.
-
-**3. `highlightNetwork(networkId)`** — The function that makes a selected network glow and fades everything else. This is the main interaction logic.
-
-**4. Model loading** — The GLTFLoader that loads `brain.glb`, traverses meshes, and creates both solid and wireframe materials for each mesh.
-
-**5. Animation loop** — The `animate()` function that handles auto-rotation, pulse effect, and rendering.
-
-**6. Carousel + Video Modal** — These are the UI layer. You'll likely rebuild these in React rather than extracting the vanilla JS.
-
-### Suggested React Component Structure
-
-```
-BrainVisualization/
-├── BrainScene.tsx          // Three.js canvas, scene, renderer, model loading
-├── NetworkCarousel.tsx     // Card carousel UI
-├── VideoModal.tsx          // YouTube embed modal
-├── networks.ts             // Network data (colors, descriptions, mesh names, videos)
-└── useBrainScene.ts        // Hook: Three.js lifecycle, cleanup, resize handling
-```
-
-The Three.js scene should use a `ref` for the canvas element, initialize in `useEffect`, and expose a `highlightNetwork(id)` method that the carousel calls when the user switches cards.
+That's it. The entire app is one HTML file plus one 3D model.
 
 ---
 
-## Critical Technical Requirements
+## Tech Stack
 
-These were discovered through debugging and are easy to get wrong:
+- **Three.js r160** (loaded via CDN importmap) — 3D rendering
+- **OrbitControls** — camera rotation/zoom
+- **GLTFLoader** — loads the brain.glb model
+- **EffectComposer** with UnrealBloomPass + GammaCorrectionShader — glow/bloom post-processing
+- **Vanilla JavaScript and CSS** — no framework, no build step
+
+---
+
+## The Four Brain Networks
+
+Each network highlights specific brain meshes in the 3D model. The `networks` object in the script defines everything:
+
+| Network Key | Display Name | Color | Target | Mesh Names |
+|-------------|-------------|-------|--------|------------|
+| `left-cen` | Founder mode: Directed drive | `#A4C8FF` | Left DLPFC | `Allen_middle_frontal_gyrus_L`, `Allen_superior_frontal_gyrus_L`, `Allen_angular_gyrus_L`, `Allen_supramarginal_gyrus_L` |
+| `right-cen` | Deep work: Dial in attention | `#8AB3F9` | Right DLPFC | `Allen_middle_frontal_gyrus_R`, `Allen_superior_frontal_gyrus_R`, `Allen_angular_gyrus_R`, `Allen_supramarginal_gyrus_R` |
+| `salience` | Present mind: Less chatter, more clarity | `#FFB974` | dmPFC | `Allen_superior_frontal_gyrus_L/R`, `Allen_paracingulate_gyrus_L/R`, `Allen_long_insular_gyri_L/R` |
+| `dmn` | Calm steadiness: Respond over reacting | `#C8D4C8` | dmPFC | `Allen_superior_frontal_gyrus_L/R`, `Allen_precuneus_L/R`, `Allen_cingulate_gyrus_caudal_posterior_part_L/R` |
+
+### Mesh Naming Convention
+
+The brain model uses the Allen Brain Atlas naming: `Allen_[structure]_[L/R]`
+
+- `_L` = brain's anatomical left hemisphere
+- `_R` = brain's anatomical right hemisphere
+
+**Important:** The model displays in neurological convention (brain's left appears on the viewer's left when viewed from the front). The `_L` suffix meshes correspond to the Left DLPFC and `_R` meshes to the Right DLPFC. Do not swap these.
+
+---
+
+## Critical Rendering Requirements
+
+These were hard-won through debugging — skipping any of them will cause visual issues:
 
 ### 1. Color Management Must Be Disabled
 ```js
 THREE.ColorManagement.enabled = false;
-```
-Set this *before* creating any materials. Without it, Three.js applies color space conversions that shift the network colors.
-
-### 2. Specific Color Space + Tone Mapping
-```js
 renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
 renderer.toneMapping = THREE.NoToneMapping;
 ```
+Without this, network colors shift and don't match the design.
 
-### 3. Post-Processing Order Matters
+### 2. Post-Processing Chain (Exact Order)
 ```
 RenderPass → UnrealBloomPass → GammaCorrectionShader
 ```
-Don't use `OutputPass` — it causes a background color mismatch between the canvas and the page.
+Do NOT use `OutputPass` instead of `GammaCorrectionShader` — it causes background color mismatch between the canvas and surrounding page.
 
-### 4. Dark Background Required
-The bloom/glow effects only look right against a dark background. The current value is `#202621` on the page and `0x030403` for the Three.js scene background. If your page section has a light background, the brain viewer needs its own dark container.
-
-### 5. Bloom Parameters (Designer-Approved)
+### 3. Bloom Parameters
 ```js
 new UnrealBloomPass(resolution, 0.18, 0.12, 0.5)
 // strength: 0.18, radius: 0.12, threshold: 0.5
 ```
 
-### 6. Mobile Performance
-- Pixel ratio capped at 2x: `renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))`
-- Animation throttled to ~60fps
-- Orbit controls have zoom limits: `minDistance: 1.2, maxDistance: 3`
+### 4. Dark Background Required
+The scene background is `0x030403` and the page background is `#202621`. The bloom effect requires a dark container to work properly.
 
 ---
 
-## The Four Networks (Data Reference)
+## Visual Parameters (Full Reference)
 
-| Network ID | Display Name | Nickname | Color | TMS Target |
-|-----------|-------------|----------|-------|-----------|
-| `left-cen` | Proactive Control Network | "The CEO" | `#A4C8FF` | Left DLPFC |
-| `right-cen` | Reactive Control Network | "The Filter" | `#8AB3F9` | Right DLPFC |
-| `salience` | Salience Network | "The Priority Switch" | `#FFB974` | dmPFC |
-| `dmn` | Default Mode Network | "The Inner Critic" | `#C8D4C8` | dmPFC |
+All values below are tuned and should be treated as design specs:
 
-### Mesh Mapping
-Each network highlights specific named meshes in the GLB model. The mesh names follow the pattern `Allen_[structure]_[L/R]`. The full mapping is in the `networks` object in the script — search for `meshNames` in `v7-carousel.html`.
+### Scene & Renderer
+| Parameter | Value |
+|-----------|-------|
+| Scene background | `0x030403` |
+| Page background (CSS) | `#202621` |
+| Camera FOV | 50 |
+| Camera distance | 1.8 |
+| Pixel ratio cap | `Math.min(devicePixelRatio, 2)` |
 
-### Visual Behavior
-- **Default state:** All meshes at 0.05 opacity with 0.05 wireframe opacity (near-invisible ghost)
-- **Highlighted state:** Selected network meshes jump to 0.9 opacity with their color + emissive glow, plus a subtle pulse animation
-- **Non-selected meshes** stay at 0.05 opacity so the highlighted deeper structures show through ("adaptive transparency")
+### Bloom (UnrealBloomPass)
+| Parameter | Value |
+|-----------|-------|
+| Strength | 0.18 |
+| Radius | 0.12 |
+| Threshold | 0.5 |
+
+### Mesh Opacity
+| State | Solid Opacity | Wireframe Opacity |
+|-------|--------------|-------------------|
+| Base (non-highlighted) | 0.05 | 0.05 |
+| Highlighted | 0.9 | 0.7 |
+
+### Emissive / Glow
+| Parameter | Value |
+|-----------|-------|
+| Base emissive intensity | 0.35 |
+| Pulse amount | ±0.015 (sine wave) |
+
+### Controls (OrbitControls)
+| Parameter | Value |
+|-----------|-------|
+| Auto-rotate speed | 0.4 |
+| Damping factor | 0.08 |
+| Min zoom distance | 1.2 |
+| Max zoom distance | 3.0 |
+| Pan | Disabled |
+
+### Lighting
+| Light | Type | Color | Intensity | Position |
+|-------|------|-------|-----------|----------|
+| Ambient | AmbientLight | `0x404550` | 0.5 | — |
+| Key | DirectionalLight | `0xffffff` | 0.6 | (5, 5, 5) |
+| Fill | DirectionalLight | `0x88aacc` | 0.4 | (-5, 3, -5) |
+
+### Base Mesh Materials
+| Property | Value |
+|----------|-------|
+| Color | `0x4a5055` |
+| Wireframe color | `0x6a7580` |
+| Side | DoubleSide |
+| depthWrite (base) | false |
+| depthWrite (highlighted) | true |
+
+---
+
+## Visual Behavior
+
+- **Default state:** All 283 meshes at 0.05 opacity with 0.05 wireframe opacity (near-invisible ghost brain)
+- **Highlighted state:** Selected network meshes at 0.9 opacity with emissive glow (0.35 intensity) + subtle pulse animation
+- **Non-highlighted meshes** stay translucent so deeper brain structures (like the insula or cingulate) glow through when selected
+- **Auto-rotation** at 0.4 speed, pauses when user drags
+- **Zoom** enabled between 1.2x and 3x distance
 
 ---
 
 ## Educational Videos
 
-Each network links to a YouTube clip from a neuroscience expert:
+Each network links to a curated YouTube clip:
 
-| Network | Expert | Video ID | Start Time (seconds) |
-|---------|--------|----------|---------------------|
+| Network | Expert | YouTube ID | Start Time (s) |
+|---------|--------|-----------|-----------------|
 | left-cen | Dr. Nolan Williams | `X4QE6t-MkYE` | 2749 |
-| right-cen | Dr. Jud Brewer | `1M-bUw-OiG0` | 1596 |
+| right-cen | Dr. Judson Brewer | `1M-bUw-OiG0` | 1596 |
 | salience | Dr. Nolan Williams | `X4QE6t-MkYE` | 2916 |
 | dmn | Dr. Andrew Huberman | `wTBSGgbIvsY` | 1380 |
 
@@ -165,46 +181,69 @@ https://www.youtube.com/embed/{videoId}?autoplay=1&start={startTime}&rel=0&plays
 
 ---
 
-## Serving the Brain Model
+## Integration into Next.js
 
-`brain.glb` is ~12MB. In the current prototype it loads from:
-```
-https://drjeeshan.github.io/pharia-brain/brain.glb
-```
+### Serving the Brain Model
 
-For production, copy `brain.glb` into your Next.js `public/` directory and update the loader path:
+Copy `brain.glb` into your `public/` directory and update the loader path:
 ```js
+// Current (prototype):
+loader.load('https://drjeeshan.github.io/pharia-brain/brain.glb', ...)
+
+// Production:
 loader.load('/brain.glb', ...)
 ```
 
-Consider showing a loading state — the prototype uses a spinner overlay that fades out once the model is loaded.
+The model is ~12MB — show a loading state while it downloads. The prototype uses a spinner overlay that fades out on load.
 
----
+### Building a Reusable Component
 
-## Using the Brain Across Multiple Pages
-
-Since this will appear as a section on different pages, build it as a reusable component that accepts props:
+Since the brain will appear across multiple pages, extract it as a React component:
 
 ```tsx
-<BrainVisualization 
-  initialNetwork="left-cen"    // Which network to highlight on load
-  showCarousel={true}           // Whether to show the card carousel
-  height="45vh"                 // Container height
-/>
+// Suggested props interface
+interface BrainVisualizationProps {
+  initialNetwork?: 'left-cen' | 'right-cen' | 'salience' | 'dmn';
+  showCarousel?: boolean;
+  showVideoModal?: boolean;
+  height?: string; // e.g. "45vh", "400px"
+}
 ```
 
-This way you can use the same component in different contexts:
+This lets you use the same component in different contexts:
 - Full interactive version with carousel on the Science page
 - Simplified version (single highlighted network, no carousel) on other pages
-- Different initial network highlighted depending on page context
+- Different initial network depending on page context
+
+### Key Extraction Steps
+
+1. **Three.js scene setup** — everything from `THREE.ColorManagement.enabled = false` through the EffectComposer setup goes into a `useEffect` with cleanup
+2. **The `networks` object** — extract as a shared constant/config file
+3. **`highlightNetwork()` function** — the core logic that sets mesh materials based on selected network
+4. **Carousel and video modal** — these are standard React UI, just need the network data
+5. **Animation loop** — use `requestAnimationFrame` with proper cleanup on unmount
+6. **Resize handling** — attach to window resize, clean up on unmount
+
+### Things to Watch For
+
+- **Dispose Three.js resources on unmount** — renderer, geometries, materials, textures. The prototype doesn't do this since it's a single page, but in a React SPA you'll get memory leaks without cleanup
+- **Canvas touch-action** — set to `none` to prevent scroll interference on mobile
+- **Pixel ratio** — cap at 2x for performance: `Math.min(window.devicePixelRatio, 2)`
+- **Frame rate** — the prototype throttles to ~60fps with a 16ms check in the animation loop
 
 ---
 
-## Brand Fonts Referenced in V7
+## Brand Fonts
 
-The prototype uses two custom fonts. Check with design whether the production site uses these or different ones:
+The prototype references two custom fonts (loaded from local files not in the repo):
 
-- **Founders Grotesk** (headlines) — loaded from `Brand Fonts/FoundersGrotesk Web/`
-- **Matter** (body text) — loaded from `Brand Fonts/Matter Web/`
+- **Founders Grotesk** (headlines) — weight 300, 400
+- **Matter** (body text) — weight 400, 500
 
-These font files are NOT in the GitHub repo. The carousel cards and UI text use these fonts, but the 3D brain itself doesn't depend on them.
+The 3D brain itself doesn't depend on fonts — only the carousel cards and UI text use them.
+
+---
+
+## Questions?
+
+The repo is at https://github.com/drjeeshan/pharia-brain. The `v7-carousel.html` file is self-contained — you can open it locally, search for any function name, and see exactly how it works.
