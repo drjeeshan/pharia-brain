@@ -1465,7 +1465,11 @@
                 const box = new THREE.Box3().setFromObject(model);
                 const size = box.getSize(new THREE.Vector3());
                 const scale = 1.5 / Math.max(size.x, size.y, size.z);
-                model.scale.set(scale, scale, scale);
+                // Mirror on X axis to correct MNI coordinate space flip:
+                // The Allen Atlas uses MNI/RAS+ space where _L meshes have negative X.
+                // During NIfTI→GLB export the X axis was flipped, so we invert it here
+                // to restore correct anatomical orientation (_L = viewer's left).
+                model.scale.set(-scale, scale, scale);
 
                 const scaledBox = new THREE.Box3().setFromObject(model);
                 const scaledCenter = scaledBox.getCenter(new THREE.Vector3());
