@@ -995,7 +995,169 @@
             height: auto;
             opacity: 0.8;
         }
-        
+
+        .footer-legal {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-top: 20px;
+            padding-bottom: 20px;
+        }
+
+        .footer-legal a {
+            font-family: var(--font-body);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .footer-legal a:hover {
+            color: var(--text-secondary);
+        }
+
+        /* Legal Modal */
+        .legal-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: 10000;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .legal-modal.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .legal-modal-container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .legal-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            background: #1a1d20;
+            border-bottom: 1px solid var(--border-subtle);
+            flex-shrink: 0;
+        }
+
+        .legal-modal-title {
+            font-family: var(--font-headline);
+            font-size: 1.1rem;
+            font-weight: 300;
+            color: var(--text-primary);
+        }
+
+        .legal-modal-close {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+            color: var(--text-primary);
+            border-radius: 50%;
+        }
+
+        .legal-modal-close:hover { background: rgba(255, 255, 255, 0.2); }
+        .legal-modal-close svg { width: 20px; height: 20px; display: block; }
+
+        .legal-modal-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 32px 20px;
+            background: var(--bg-primary);
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .legal-modal-body h1 {
+            font-family: var(--font-headline);
+            font-size: 1.8rem;
+            font-weight: 300;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .legal-modal-body .legal-company,
+        .legal-modal-body .legal-site,
+        .legal-modal-body .legal-date {
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        .legal-modal-body .legal-date {
+            font-weight: 600;
+            margin-bottom: 32px;
+        }
+
+        .legal-modal-body h2 {
+            font-family: var(--font-headline);
+            font-size: 1.3rem;
+            font-weight: 300;
+            color: var(--text-primary);
+            margin-top: 32px;
+            margin-bottom: 12px;
+        }
+
+        .legal-modal-body h3 {
+            font-family: var(--font-headline);
+            font-size: 1.1rem;
+            font-weight: 300;
+            color: var(--text-primary);
+            margin-top: 24px;
+            margin-bottom: 8px;
+        }
+
+        .legal-modal-body p {
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-top: 12px;
+        }
+
+        .legal-modal-body p.uppercase {
+            text-transform: uppercase;
+        }
+
+        .legal-modal-body ul {
+            list-style: disc;
+            padding-left: 24px;
+            margin-top: 12px;
+        }
+
+        .legal-modal-body ul li {
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+
+        .legal-modal-body ul li strong {
+            color: var(--text-primary);
+        }
+
+        .legal-modal-body a {
+            color: var(--accent-blue);
+            text-decoration: underline;
+        }
+
+        .legal-modal-body a:hover {
+            opacity: 0.8;
+        }
+
         /* Desktop */
         @media (min-width: 768px) {
             .hero-title {
@@ -1309,6 +1471,10 @@
         <div class="footer-brand">
             <img src="pharia-logotype.svg" alt="PHARIA HEALTH" class="footer-brand-logotype">
         </div>
+        <div class="footer-legal">
+            <a onclick="openLegalModal('privacy-modal')">Privacy Policy</a>
+            <a onclick="openLegalModal('terms-modal')">Terms &amp; Conditions</a>
+        </div>
     </section>
 
     <!-- Video Modal -->
@@ -1339,6 +1505,203 @@
             </a>
         </div>
     </div>
+
+    <!-- Privacy Policy Modal -->
+    <div class="legal-modal" id="privacy-modal">
+        <div class="legal-modal-container">
+            <div class="legal-modal-header">
+                <div class="legal-modal-title">Privacy Policy</div>
+                <button class="legal-modal-close" onclick="closeLegalModal('privacy-modal')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="legal-modal-body">
+                <h1>Privacy Policy</h1>
+                <div class="legal-company">Pharia Health Company</div>
+                <div class="legal-site">phariahealth.com</div>
+                <div class="legal-date">Effective Date: February 27, 2026</div>
+
+                <h2>1. Introduction</h2>
+                <p>Pharia Health Company (&ldquo;Pharia Health,&rdquo; &ldquo;we,&rdquo; &ldquo;our,&rdquo; or &ldquo;us&rdquo;) operates the website phariahealth.com (the &ldquo;Site&rdquo;). This Privacy Policy explains how we collect, use, disclose, and protect your personal information when you visit our Site or interact with us through the Site.</p>
+                <p>This Site is an informational and marketing website. It does not collect, store, or process Protected Health Information (&ldquo;PHI&rdquo;) as defined under the Health Insurance Portability and Accountability Act (HIPAA). No patient-provider relationship is created by your use of this Site. If you receive clinical services from a Pharia Health affiliated provider, your health information will be governed by separate clinical privacy policies, treatment consent forms, and a HIPAA Notice of Privacy Practices, which will be provided to you during your onboarding process.</p>
+                <p>We ask that you do not submit health information, medical records, or other sensitive clinical details through this Site&rsquo;s contact forms or other input fields. Pharia Health Company is not responsible for unsolicited health information submitted through this website.</p>
+                <p>By accessing or using the Site, you acknowledge that you have read and understood this Privacy Policy. If you do not agree with our practices, please do not use the Site.</p>
+
+                <h2>2. Information We Collect</h2>
+                <h3>2.1 Information You Provide to Us</h3>
+                <p>When you interact with our Site, you may voluntarily provide us with personal information, including:</p>
+                <ul>
+                    <li><strong>Contact Information:</strong> your name, email address, and phone number, which you may provide through contact forms or inquiry submissions.</li>
+                    <li><strong>Communication Content:</strong> any messages, questions, or feedback you submit to us through the Site.</li>
+                </ul>
+                <h3>2.2 Information Collected Automatically</h3>
+                <p>When you visit our Site, we may automatically collect certain information about your device and usage, including:</p>
+                <ul>
+                    <li><strong>Device and Browser Information:</strong> device type, operating system, browser type and version, and screen resolution.</li>
+                    <li><strong>Usage Data:</strong> pages viewed, time spent on pages, click patterns, referring URLs, and other interaction data.</li>
+                    <li><strong>IP Address and Location:</strong> your IP address and approximate geographic location derived from it.</li>
+                </ul>
+                <p>We may use analytics tools, such as PostHog, to collect and analyze this usage data. These tools may use cookies or similar tracking technologies.</p>
+
+                <h2>3. How We Use Your Information</h2>
+                <p>We use the information we collect for the following purposes:</p>
+                <ul>
+                    <li><strong>To respond to your inquiries:</strong> When you submit a contact form or request information, we use your contact details to follow up with you by phone, email, or other means.</li>
+                    <li><strong>To provide information about our services:</strong> We may contact you to share information about Pharia Health&rsquo;s services, including scheduling consultations.</li>
+                    <li><strong>To improve our Site:</strong> We analyze usage data to understand how visitors interact with our Site and to enhance the user experience.</li>
+                    <li><strong>To comply with legal obligations:</strong> We may use your information as required by applicable law, regulation, or legal process.</li>
+                    <li><strong>To deliver relevant advertising:</strong> We may use cookies and tracking pixels to display relevant advertisements to you on third-party platforms such as Meta (Facebook and Instagram). This may involve sharing certain browsing or interaction data with advertising partners.</li>
+                </ul>
+
+                <h2>4. SMS and Text Messaging</h2>
+                <p>If you book an appointment for services provided by a Pharia Health affiliated provider, you may receive SMS text messages related to appointment logistics, such as general timing reminders. These messages are sent through our third-party messaging provider, Twilio.</p>
+                <p>These messages do not contain Protected Health Information (PHI), including health information or treatment details.</p>
+                <p>Message frequency varies based on your appointment schedule. Message and data rates may apply. You may opt out of SMS messages at any time by replying STOP to any message. For help, reply HELP.</p>
+                <p>Your phone number will not be shared with third parties for their marketing purposes. Carrier-related information (such as delivery confirmations) may be shared with your mobile carrier as necessary to complete message delivery.</p>
+
+                <h2>5. Third-Party Service Providers</h2>
+                <p>We may share your information with trusted third-party service providers who assist us in operating our Site and conducting our business. These providers are contractually obligated to use your information only for the purposes we specify. Our current service providers include:</p>
+                <ul>
+                    <li><strong>Twilio:</strong> for sending SMS appointment reminders to individuals who have booked appointments with affiliated providers.</li>
+                    <li><strong>PostHog:</strong> for website analytics and usage tracking (if enabled).</li>
+                    <li><strong>Meta (Facebook/Instagram):</strong> for advertising and conversion tracking. Meta may collect data about your browsing activity on our Site through the Meta Pixel to serve you relevant advertisements. This data is used in accordance with Meta&rsquo;s privacy policy.</li>
+                </ul>
+                <p>We do not sell your personal information to third parties.</p>
+
+                <h2>6. Cookies and Tracking Technologies</h2>
+                <p>Our Site may use cookies and similar technologies to enhance your browsing experience and collect usage data. Cookies are small text files stored on your device. We also use tracking pixels, which are small pieces of code embedded on our Site that allow third-party advertising platforms to collect information about your visit.</p>
+                <p>Specifically, our Site uses the Meta Pixel, which collects data about your browsing activity (such as pages visited and actions taken) and sends it to Meta to help us measure the effectiveness of our advertising and deliver relevant ads to you on Facebook, Instagram, and other Meta platforms. This information may include your IP address, browser information, and on-site actions, and is processed by Meta in accordance with its privacy policy.</p>
+                <p>You can control cookies through your browser settings and may opt out of interest-based advertising through your Meta ad preferences or the Digital Advertising Alliance&rsquo;s opt-out tool. Disabling cookies or opting out may affect your experience on the Site and the relevance of ads you see on other platforms.</p>
+
+                <h2>7. Data Retention</h2>
+                <p>We retain personal information collected through the Site for as long as necessary to fulfill the purposes described in this Privacy Policy, unless a longer retention period is required by law. Contact information submitted through inquiry forms is retained for a reasonable period to follow up on your request and is deleted when it is no longer needed for that purpose.</p>
+
+                <h2>8. Data Security</h2>
+                <p>We implement reasonable administrative, technical, and physical safeguards to protect your personal information from unauthorized access, use, or disclosure. However, no method of transmission over the Internet or electronic storage is completely secure, and we cannot guarantee absolute security.</p>
+
+                <h2>9. Your Rights</h2>
+                <p>Depending on your jurisdiction, you may have certain rights regarding your personal information, including:</p>
+                <ul>
+                    <li>The right to access the personal information we hold about you.</li>
+                    <li>The right to request correction of inaccurate information.</li>
+                    <li>The right to request deletion of your personal information.</li>
+                    <li>The right to opt out of SMS communications by replying STOP.</li>
+                </ul>
+                <p>To exercise any of these rights, please contact us using the information provided in Section 12 below. We will respond to your request within a reasonable timeframe and in accordance with applicable law.</p>
+
+                <h2>10. Children&rsquo;s Privacy</h2>
+                <p>Our Site is not directed to individuals under the age of 18. We do not knowingly collect personal information from children. If we become aware that we have collected personal information from a child, we will take steps to delete such information promptly.</p>
+
+                <h2>11. Changes to This Privacy Policy</h2>
+                <p>We may update this Privacy Policy from time to time. When we make changes, we will update the &ldquo;Effective Date&rdquo; at the top of this page. We encourage you to review this Privacy Policy periodically. Your continued use of the Site following the posting of changes constitutes your acceptance of such changes.</p>
+
+                <h2>12. Contact Us</h2>
+                <p>If you have questions or concerns about this Privacy Policy or our data practices, please contact us at: <a href="mailto:anna@phariahealth.com">anna@phariahealth.com</a>.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Terms & Conditions Modal -->
+    <div class="legal-modal" id="terms-modal">
+        <div class="legal-modal-container">
+            <div class="legal-modal-header">
+                <div class="legal-modal-title">Terms &amp; Conditions</div>
+                <button class="legal-modal-close" onclick="closeLegalModal('terms-modal')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="legal-modal-body">
+                <h1>Terms &amp; Conditions</h1>
+                <div class="legal-company">Pharia Health Company</div>
+                <div class="legal-site">phariahealth.com</div>
+                <div class="legal-date">Effective Date: February 27, 2026</div>
+
+                <h2>1. Agreement to Terms</h2>
+                <p>By accessing or using the website phariahealth.com (the &ldquo;Site&rdquo;), you agree to be bound by these Terms &amp; Conditions (&ldquo;Terms&rdquo;). These Terms constitute a legally binding agreement between you and Pharia Health Company (&ldquo;Pharia Health,&rdquo; &ldquo;we,&rdquo; &ldquo;our,&rdquo; or &ldquo;us&rdquo;). If you do not agree to these Terms, you must not use the Site.</p>
+                <p>This Site is an informational and marketing resource. The content on this Site is for general informational purposes only and does not constitute medical advice, diagnosis, or treatment. Use of this website does not create a patient-provider relationship with Pharia Health or any affiliated provider. If you receive clinical services from a Pharia Health affiliated provider, those services are governed by separate clinical agreements, treatment consent forms, and applicable regulations.</p>
+
+                <h2>2. Description of the Site</h2>
+                <p>The Site provides general information about Pharia Health and the services offered by its affiliated providers, including information about Transcranial Magnetic Stimulation (TMS) and related neurotech services. The Site also allows visitors to submit contact information to request more information or schedule a consultation.</p>
+                <p>The Site is not a clinical platform. Pharia Health does not deliver clinical care. No health assessments, diagnoses, treatment plans, or clinical services are delivered through the Site.</p>
+
+                <h2>3. Eligibility</h2>
+                <p>You must be at least 18 years of age to use this Site. By using the Site, you represent and warrant that you are at least 18 years old.</p>
+
+                <h2>4. Acceptable Use</h2>
+                <p>You agree to use the Site only for lawful purposes and in accordance with these Terms. You agree not to:</p>
+                <ul>
+                    <li>Use the Site in any way that violates any applicable law or regulation.</li>
+                    <li>Submit false, misleading, or fraudulent information through the Site.</li>
+                    <li>Attempt to interfere with the proper functioning of the Site.</li>
+                    <li>Use automated systems, bots, or scrapers to access the Site without our prior written consent.</li>
+                    <li>Submit any Protected Health Information, medical records, or sensitive clinical data through the Site&rsquo;s forms or communication channels.</li>
+                </ul>
+
+                <h2>5. Contact Information and Communications</h2>
+                <p>When you submit your contact information (name, email address, phone number) through the Site, you consent to Pharia Health contacting you by phone, email, or other means regarding your inquiry and our services.</p>
+                <p>By providing your phone number, you consent to receiving calls from Pharia Health for the purpose of responding to your inquiry, providing information about our services, and scheduling consultations. You may revoke this consent at any time by contacting us using the information in Section 14.</p>
+
+                <h2>6. SMS and Text Messaging Terms</h2>
+                <p>If you book an appointment for services provided by a Pharia Health affiliated provider, you may receive SMS text messages containing general appointment-related reminders. By booking an appointment and providing your phone number, you consent to receiving these messages.</p>
+                <p>Key terms regarding SMS messaging:</p>
+                <ul>
+                    <li><strong>Message Content:</strong> Messages do not contain Protected Health Information (PHI), including health information or treatment details.</li>
+                    <li><strong>Frequency:</strong> Message frequency varies depending on your appointment schedule.</li>
+                    <li><strong>Costs:</strong> Message and data rates may apply depending on your mobile carrier and plan.</li>
+                    <li><strong>Opt-Out:</strong> You may opt out at any time by replying STOP to any message. After opting out, you will receive a confirmation message and no further texts will be sent unless you re-subscribe.</li>
+                    <li><strong>Support:</strong> For questions about SMS messaging, please contact us using the information in Section 14.</li>
+                    <li><strong>No Sharing:</strong> Your phone number will not be shared with third parties for their marketing purposes.</li>
+                    <li><strong>Carrier Liability:</strong> Pharia Health is not responsible for delayed or undelivered messages due to carrier network issues.</li>
+                </ul>
+
+                <h2>7. No Medical Advice Disclaimer</h2>
+                <p>The information provided on this Site is for general informational purposes only and is not intended to be a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of a qualified healthcare provider with any questions you may have regarding a medical condition. Never disregard professional medical advice or delay in seeking it because of something you have read on this Site.</p>
+
+                <h2>8. Intellectual Property</h2>
+                <p>All content on the Site, including text, graphics, logos, images, and software, is the property of Pharia Health Company or its licensors and is protected by applicable intellectual property laws. You may not reproduce, distribute, modify, or create derivative works of any Site content without our prior written consent.</p>
+
+                <h2>9. Third-Party Links</h2>
+                <p>The Site may contain links to third-party websites or resources. These links are provided for your convenience only. Pharia Health has no control over and assumes no responsibility for the content, privacy policies, or practices of any third-party websites. Your use of third-party websites is at your own risk.</p>
+
+                <h2>10. Limitation of Liability</h2>
+                <p class="uppercase">To the fullest extent permitted by applicable law, Pharia Health Company shall not be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of profits or revenues, whether incurred directly or indirectly, or any loss of data, use, goodwill, or other intangible losses, resulting from your access to or use of (or inability to access or use) the Site.</p>
+
+                <h2>11. Disclaimer of Warranties</h2>
+                <p class="uppercase">The Site is provided on an &ldquo;as is&rdquo; and &ldquo;as available&rdquo; basis without any warranties of any kind, either express or implied, including but not limited to warranties of merchantability, fitness for a particular purpose, and non-infringement. Pharia Health does not warrant that the Site will be uninterrupted, secure, or error-free.</p>
+
+                <h2>12. Governing Law</h2>
+                <p>These Terms shall be governed by and construed in accordance with the laws of the State of Delaware, without regard to its conflict of law provisions. Any disputes arising under or in connection with these Terms shall be subject to the exclusive jurisdiction of the state and federal courts located in the State of Delaware.</p>
+
+                <h2>13. Changes to These Terms</h2>
+                <p>We reserve the right to modify these Terms at any time. When we make changes, we will update the &ldquo;Effective Date&rdquo; at the top of this page. Your continued use of the Site following the posting of revised Terms constitutes your acceptance of the changes.</p>
+
+                <h2>14. Contact Us</h2>
+                <p>If you have questions about these Terms &amp; Conditions, please contact us at: <a href="mailto:anna@phariahealth.com">anna@phariahealth.com</a>.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openLegalModal(id) {
+            document.getElementById(id).classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeLegalModal(id) {
+            document.getElementById(id).classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        document.querySelectorAll('.legal-modal').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) closeLegalModal(modal.id);
+            });
+        });
+    </script>
 
     <script type="module">
         import * as THREE from 'three';
