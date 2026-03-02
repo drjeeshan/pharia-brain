@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms &amp; Conditions | Pharia Health</title>
+    <meta name="description" content="Pharia Health Terms &amp; Conditions. Read the terms governing your use of phariahealth.com.">
+    <style>
+        @font-face {
+            font-family: 'Founders Grotesk';
+            src: url('Brand%20Fonts/FoundersGrotesk%20Web/founders-grotesk-light.woff2') format('woff2');
+            font-weight: 300;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Founders Grotesk';
+            src: url('Brand%20Fonts/FoundersGrotesk%20Web/founders-grotesk-regular.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Matter';
+            src: url('Brand%20Fonts/Matter%20Web/Matter-Regular.woff2') format('woff2'),
+                 url('Brand%20Fonts/Matter%20Web/Matter-Regular.woff') format('woff');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Matter';
+            src: url('Brand%20Fonts/Matter%20Web/Matter-Medium.woff2') format('woff2'),
+                 url('Brand%20Fonts/Matter%20Web/Matter-Medium.woff') format('woff');
+            font-weight: 500;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg-primary: #202621;
+            --accent-blue: #A4C8FF;
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.75);
+            --text-muted: rgba(255, 255, 255, 0.5);
+            --border-subtle: rgba(255, 255, 255, 0.1);
+            --font-headline: 'Founders Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-body: 'Matter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        html, body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            line-height: 1.5;
+        }
+
+        /* Header */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-primary);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .logo { display: flex; align-items: center; }
+        .logo-symbol { width: 36px; height: 36px; }
+
+        .header-cta {
+            background: var(--accent-blue);
+            color: var(--bg-primary);
+            padding: 10px 24px;
+            border-radius: 24px;
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .header-cta:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 20px rgba(164, 200, 255, 0.3);
+        }
+
+        /* Content */
+        .content {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 48px 24px 64px;
+        }
+
+        .content h1 {
+            font-family: var(--font-headline);
+            font-size: 2.4rem;
+            font-weight: 300;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .content .meta {
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        .content .meta.date {
+            font-weight: 600;
+            margin-bottom: 40px;
+        }
+
+        .content h2 {
+            font-family: var(--font-headline);
+            font-size: 1.4rem;
+            font-weight: 300;
+            color: var(--text-primary);
+            margin-top: 40px;
+            margin-bottom: 12px;
+        }
+
+        .content p {
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-top: 14px;
+        }
+
+        .content p.uppercase {
+            text-transform: uppercase;
+        }
+
+        .content ul {
+            list-style: disc;
+            padding-left: 24px;
+            margin-top: 14px;
+        }
+
+        .content ul li {
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 8px;
+        }
+
+        .content ul li strong {
+            color: var(--text-primary);
+        }
+
+        .content a {
+            color: var(--accent-blue);
+            text-decoration: underline;
+        }
+
+        .content a:hover {
+            opacity: 0.8;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 40px 24px 24px;
+            text-align: center;
+        }
+
+        .footer-logotype {
+            width: 100%;
+            max-width: 1400px;
+            height: auto;
+            opacity: 0.8;
+        }
+
+        .footer-legal {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-top: 20px;
+            padding-bottom: 20px;
+        }
+
+        .footer-legal a {
+            font-family: var(--font-body);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-legal a:hover {
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 767px) {
+            .header { padding: 16px 24px; }
+            .content h1 { font-size: 1.8rem; }
+            .content { padding: 32px 20px 48px; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <img src="pharia-symbol.svg" alt="Pharia" class="logo-symbol">
+        </div>
+        <a href="https://calendar.app.google/cTMLRgmxEUSYPG7U6" class="header-cta" target="_blank">Get Access</a>
+    </header>
+
+    <main class="content">
+        <h1>Terms &amp; Conditions</h1>
+        <div class="meta">Pharia Health Company</div>
+        <div class="meta">phariahealth.com</div>
+        <div class="meta date">Effective Date: February 27, 2026</div>
+
+        <h2>1. Agreement to Terms</h2>
+        <p>By accessing or using the website phariahealth.com (the &ldquo;Site&rdquo;), you agree to be bound by these Terms &amp; Conditions (&ldquo;Terms&rdquo;). These Terms constitute a legally binding agreement between you and Pharia Health Company (&ldquo;Pharia Health,&rdquo; &ldquo;we,&rdquo; &ldquo;our,&rdquo; or &ldquo;us&rdquo;). If you do not agree to these Terms, you must not use the Site.</p>
+        <p>This Site is an informational and marketing resource. The content on this Site is for general informational purposes only and does not constitute medical advice, diagnosis, or treatment. Use of this website does not create a patient-provider relationship with Pharia Health or any affiliated provider. If you receive clinical services from a Pharia Health affiliated provider, those services are governed by separate clinical agreements, treatment consent forms, and applicable regulations.</p>
+
+        <h2>2. Description of the Site</h2>
+        <p>The Site provides general information about Pharia Health and the services offered by its affiliated providers, including information about Transcranial Magnetic Stimulation (TMS) and related neurotech services. The Site also allows visitors to submit contact information to request more information or schedule a consultation.</p>
+        <p>The Site is not a clinical platform. Pharia Health does not deliver clinical care. No health assessments, diagnoses, treatment plans, or clinical services are delivered through the Site.</p>
+
+        <h2>3. Eligibility</h2>
+        <p>You must be at least 18 years of age to use this Site. By using the Site, you represent and warrant that you are at least 18 years old.</p>
+
+        <h2>4. Acceptable Use</h2>
+        <p>You agree to use the Site only for lawful purposes and in accordance with these Terms. You agree not to:</p>
+        <ul>
+            <li>Use the Site in any way that violates any applicable law or regulation.</li>
+            <li>Submit false, misleading, or fraudulent information through the Site.</li>
+            <li>Attempt to interfere with the proper functioning of the Site.</li>
+            <li>Use automated systems, bots, or scrapers to access the Site without our prior written consent.</li>
+            <li>Submit any Protected Health Information, medical records, or sensitive clinical data through the Site&rsquo;s forms or communication channels.</li>
+        </ul>
+
+        <h2>5. Contact Information and Communications</h2>
+        <p>When you submit your contact information (name, email address, phone number) through the Site, you consent to Pharia Health contacting you by phone, email, or other means regarding your inquiry and our services.</p>
+        <p>By providing your phone number, you consent to receiving calls from Pharia Health for the purpose of responding to your inquiry, providing information about our services, and scheduling consultations. You may revoke this consent at any time by contacting us using the information in Section 14.</p>
+
+        <h2>6. SMS and Text Messaging Terms</h2>
+        <p>If you book an appointment for services provided by a Pharia Health affiliated provider, you may receive SMS text messages containing general appointment-related reminders. By booking an appointment and providing your phone number, you consent to receiving these messages.</p>
+        <p>Key terms regarding SMS messaging:</p>
+        <ul>
+            <li><strong>Message Content:</strong> Messages do not contain Protected Health Information (PHI), including health information or treatment details.</li>
+            <li><strong>Frequency:</strong> Message frequency varies depending on your appointment schedule.</li>
+            <li><strong>Costs:</strong> Message and data rates may apply depending on your mobile carrier and plan.</li>
+            <li><strong>Opt-Out:</strong> You may opt out at any time by replying STOP to any message. After opting out, you will receive a confirmation message and no further texts will be sent unless you re-subscribe.</li>
+            <li><strong>Support:</strong> For questions about SMS messaging, please contact us using the information in Section 14.</li>
+            <li><strong>No Sharing:</strong> Your phone number will not be shared with third parties for their marketing purposes.</li>
+            <li><strong>Carrier Liability:</strong> Pharia Health is not responsible for delayed or undelivered messages due to carrier network issues.</li>
+        </ul>
+
+        <h2>7. No Medical Advice Disclaimer</h2>
+        <p>The information provided on this Site is for general informational purposes only and is not intended to be a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of a qualified healthcare provider with any questions you may have regarding a medical condition. Never disregard professional medical advice or delay in seeking it because of something you have read on this Site.</p>
+
+        <h2>8. Intellectual Property</h2>
+        <p>All content on the Site, including text, graphics, logos, images, and software, is the property of Pharia Health Company or its licensors and is protected by applicable intellectual property laws. You may not reproduce, distribute, modify, or create derivative works of any Site content without our prior written consent.</p>
+
+        <h2>9. Third-Party Links</h2>
+        <p>The Site may contain links to third-party websites or resources. These links are provided for your convenience only. Pharia Health has no control over and assumes no responsibility for the content, privacy policies, or practices of any third-party websites. Your use of third-party websites is at your own risk.</p>
+
+        <h2>10. Limitation of Liability</h2>
+        <p class="uppercase">To the fullest extent permitted by applicable law, Pharia Health Company shall not be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of profits or revenues, whether incurred directly or indirectly, or any loss of data, use, goodwill, or other intangible losses, resulting from your access to or use of (or inability to access or use) the Site.</p>
+
+        <h2>11. Disclaimer of Warranties</h2>
+        <p class="uppercase">The Site is provided on an &ldquo;as is&rdquo; and &ldquo;as available&rdquo; basis without any warranties of any kind, either express or implied, including but not limited to warranties of merchantability, fitness for a particular purpose, and non-infringement. Pharia Health does not warrant that the Site will be uninterrupted, secure, or error-free.</p>
+
+        <h2>12. Governing Law</h2>
+        <p>These Terms shall be governed by and construed in accordance with the laws of the State of Delaware, without regard to its conflict of law provisions. Any disputes arising under or in connection with these Terms shall be subject to the exclusive jurisdiction of the state and federal courts located in the State of Delaware.</p>
+
+        <h2>13. Changes to These Terms</h2>
+        <p>We reserve the right to modify these Terms at any time. When we make changes, we will update the &ldquo;Effective Date&rdquo; at the top of this page. Your continued use of the Site following the posting of revised Terms constitutes your acceptance of the changes.</p>
+
+        <h2>14. Contact Us</h2>
+        <p>If you have questions about these Terms &amp; Conditions, please contact us at: <a href="mailto:anna@phariahealth.com">anna@phariahealth.com</a>.</p>
+    </main>
+
+    <footer class="footer">
+        <img src="pharia-logotype.svg" alt="PHARIA HEALTH" class="footer-logotype">
+        <div class="footer-legal">
+            <a href="privacy-policy.html">Privacy Policy</a>
+            <a href="terms-and-conditions.html">Terms &amp; Conditions</a>
+        </div>
+    </footer>
+</body>
+</html>
